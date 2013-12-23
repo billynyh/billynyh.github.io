@@ -41,6 +41,8 @@
             
                 <a href="#">android</a>
             
+                <a href="#">github</a>
+            
                 <a href="#">ui</a>
             
                 <a href="#">twitter</a>
@@ -63,6 +65,106 @@
 
                 <div id="main">
                     
+    
+    <section class="post">
+        <div class="sticky">
+            <a href="http://billynyh.github.io/2013/12/23/my-2013-development.html">December 23, 2013</a>
+        </div>
+        <div class="content">
+        <header class="post-header">
+
+            <h2 class="post-title">
+                <a href="http://billynyh.github.io/2013/12/23/my-2013-development.html">My 2013 Android development
+</a>
+            </h2>
+
+            <p class="post-meta">
+                By <a href="#" class="post-author">billynyh</a> 
+                under 
+                
+                <a class="post-category post-category-android" href="#">android</a> 
+                
+                <a class="post-category post-category-github" href="#">github</a> 
+                
+            </p>
+        </header>
+
+        <div class="post-description">
+        <p>2013 was a fresh start for me. I joined a new team, started the Android product from scratch, get a nice number of active users and keep it growing. During my development, I referenced many opensource projects and learnt alot from them.</p>
+<h3><a href="https://github.com/kevinsawicki/http-request">kevinsawicki/http-request</a></h3>
+<p>This is the very first library I added to my project (support-v4 does not count). This library provided a nice wrap of http call. I am not sure if this can be used with other network library like square/okhttp and android/volley, hope I have time to try it out in 2014.</p>
+<h3><a href="https://github.com/jfeinstein10/SlidingMenu">jfeinstein10/SlidingMenu</a></h3>
+<p>This is the sliding menu I used at the beginning, I like the effect very much. Although I switched to Android DrawerLayout after it was introduced in support-v4, I do like the old SlidingMenu more. Personally I like to have the drawer push the content out, DrawerLayout is more like an overlay, they both make sense to me, let see will the design guideline include this kind of UI also.</p>
+<h3><a href="https://github.com/square/otto">square/otto</a></h3>
+<p>I am a big fan of Square opensource projects but I was not using any event bus so when I saw otto I did not get it at first. When things getting complicated that you cannot write everything in your Activity/Fragment, you will try to split the logic to different components. The old school way to communicate between components is implements some kind of listener, it works for a while, a short while... The app goes complicated way faster than I expect, so I decided to make a big structure change by using an event bus system. I have not compared other event bus library but otto works for me perfectly.</p>
+<h3>ActionBar</h3>
+<p>Before the official actionbar-compact was released after GoogleIO, I think most people will use ActionBarSherlock. However, I implmented my own. I think it gives me more flexibility if you implemented your own, especially when you dont need those inflate from menu support. The down side is you lost support from all opensource projects, I have to implement my own refresh/progress buttons, ShareActionProvider, cannot play with those fancy fading actionbar, not boring actionbar library, may even need to write my own android style pull to refresh. Those disadvantage are usually enough to stop me from using my own implementation, but I decided to keep it. Mostly because it turns out not that hard to migrate to my own actionbar as long as it is opensourced and I do not have to worry about two libraries not working together (because I am not using any...).</p>
+        </div>
+
+        </div>
+    
+    </section>
+    
+    <section class="post">
+        <div class="sticky">
+            <a href="http://billynyh.github.io/2013/12/22/github-todo.html">December 22, 2013</a>
+        </div>
+        <div class="content">
+        <header class="post-header">
+
+            <h2 class="post-title">
+                <a href="http://billynyh.github.io/2013/12/22/github-todo.html">Github TODO list 2013
+</a>
+            </h2>
+
+            <p class="post-meta">
+                By <a href="#" class="post-author">billynyh</a> 
+                under 
+                
+                <a class="post-category post-category-android" href="#">android</a> 
+                
+                <a class="post-category post-category-github" href="#">github</a> 
+                
+            </p>
+        </header>
+
+        <div class="post-description">
+        <p>Found some cool projects on Github but still do not have time to play with it. Here is my list containing projects I found in last 6 months:</p>
+<h3>Action Bar</h3>
+<ul>
+<li><a href="https://github.com/flavienlaurent/NotBoringActionBar">flavienlaurent/NotBoringActionBar</a> - this is the future of action bar, top of my list.</li>
+</ul>
+<h3>Facebook</h3>
+<ul>
+<li><a href="https://github.com/facebook/rebound">facebook/rebound</a> - though not everyone is happy with the facebook app on Android, it is so nice to see Facebook opensource some Android projects.</li>
+</ul>
+<h3>UI</h3>
+<ul>
+<li><a href="https://github.com/SpecialCyCi/AndroidResideMenu">SpecialCyCi/AndroidResideMenu</a> - not so Android accroding to current design guideline, but... why not? :D</li>
+<li><a href="https://github.com/6wunderkinder/android-sliding-layer-lib">6wunderkinder/android-sliding-layer-lib</a></li>
+<li><a href="https://github.com/umano/AndroidSlidingUpPanel">umano/AndroidSlidingUpPanel</a> - this is the second top of my list</li>
+<li><a href="https://github.com/etsy/AndroidStaggeredGrid">etsy/AndroidStaggeredGrid</a> - was featured in <a href="http://youtu.be/GjUxEddmjFw?t=20m26s">Android Design in Action: Our Favorite Design Details</a>, should keep an eye on this team.</li>
+<li><a href="https://github.com/edmodo/cropper">edmodo/cropper</a> - image cropper UI</li>
+<li><a href="https://github.com/gabrielemariotti/colorpickercollection">gabrielemariotti/colorpickercollection</a></li>
+</ul>
+<h3>Network</h3>
+<ul>
+<li>Have not spend much time on studying network library, not sure what kind of improvement I will get on using this</li>
+<li><a href="https://github.com/square/okhttp">square/okhttp</a></li>
+<li><a href="https://android.googlesource.com/platform/frameworks/volley">Android/volley</a> - this is not on github, just put it here also... <a href="https://developers.google.com/events/io/sessions/325304728">Google IO session</a></li>
+</ul>
+<h3>other</h3>
+<ul>
+<li><a href="https://github.com/path/android-priority-jobqueue">path/android-priority-jobqueue</a> - I implemented my own, but it is always good to learn from other's code</li>
+<li><a href="https://github.com/linkedin/hopscotch">linkedin/hopscotch</a> - product tour, didn't notice this project is from LinkedIn until I write this post lol</li>
+<li><a href="https://github.com/koush/ion">koush/ion</a> - a full featured image download lib, with a gif player integration that could help me :p</li>
+<li><a href="https://github.com/dlew/android-movies-demo">dlew/android-movies-demo</a> - some nice animations, though I don't think this is a good way to use the ViewPager</li>
+</ul>
+        </div>
+
+        </div>
+    
+    </section>
     
     <section class="post">
         <div class="sticky">
