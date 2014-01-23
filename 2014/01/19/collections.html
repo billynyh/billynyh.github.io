@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Billy's tech blog">
 
-    <title> Two tech talks from Twitter Android team
+    <title> Android development resources collections
   </title>
     
     <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.3.0/pure-min.css">
@@ -78,13 +78,13 @@
 
 <section class="post">
     <div class="sticky">
-        October 20, 2013
+        January 19, 2014
     </div>
     <div class="content">
         <header class="post-header">
 
             <h2 class="post-title">
-                Two tech talks from Twitter Android team
+                Android development resources collections
 
             </h2>
 
@@ -94,86 +94,38 @@
                 
                 <a class="post-category post-category-android" href="#">android</a> 
                 
-                <a class="post-category post-category-twitter" href="#">twitter</a> 
-                
             </p>
         </header>
 
         <div class="post-description">
-            <p>Watched two Android talks from Twitter today, one is about gradle and one about Vine.</p>
-
-<h3>Building Twitter for Android with Gradle</h3>
-<p>(by Jonathan Le - https://twitter.com/jle)</p>
-<iframe width="420" height="315" src="http://www.youtube.com/embed/EM5edIJUA10" frameborder="0" allowfullscreen></iframe>
-
-<p>The gradle one was short, mostly about the migration process of twitter Android team.
-Some interesting points from the talk:</p>
-
-<h4>Twitter app version</h4>
+            <h3>Recently read</h3>
 <ul>
-<li>1.0: 1 committers, Ant, build time 30s</li>
-<li>4.0: 15 committers, Ant+Ivy, build time 2min</li>
-<li>5.0: 80 committers, Gradle, build time 24s</li>
-</ul>
-<h4>Gradle process</h4>
-<ul>
-<li>setup private Sonatype Nexus repo</li>
-<li>publish aars to nexus</li>
-</ul>
-<h4>Should not use git submodules</h4>
-<ul>
-<li>The talk did not include more detail of this...</li>
-</ul>
-<h3>Building Vine on Android</h3>
-<p>(by Sara Haider - https://twitter.com/pandemona)</p>
-<iframe width="420" height="315" src="http://www.youtube.com/embed/7zamwc2lXhg" frameborder="0" allowfullscreen></iframe>
-
-<p>Finally have time to watch the whole video, very nice talk, included many technical tricks of building vine app. Some tricks remind me the time I was working on ActionSnap.</p>
-
-<h4>Playback tricks</h4>
-<ul>
-<li>Use MediaPlayer, TextureView(api 14) to play the video</li>
-<li>Autoplay, prefetch 2 videos</li>
-<li>MediaPlay.setLooping(true) is too slow. Early seek to improve the loop behavior</li>
-</ul>
-<h4>Recording</h4>
-<ul>
-<li>MediaRecorder has 700ms delay on start,stop</li>
-<li>use PreviewFrame to get images and record audio (wat?)</li>
-<li>need compare timestamp to synchronize audio/video</li>
-<li>use ~140MB memory for full 6 second cut</li>
-<li>largeHeap = true (of coz)</li>
-<li>separate process to get more memory</li>
-</ul>
-<h4>Cusor</h4>
-<ul>
-<li>hybrid cursor</li>
-<li>backed by ArrayList (?)</li>
-<li>update list view and write to db in the bg</li>
-</ul>
-<h4>Crash tracking</h4>
-<ul>
-<li>Crashlytics</li>
-<li>real time, tonnes of metadata</li>
-<li><b>zero unknown crashes #adore#</b></li>
-</ul>
-<h4>Span</h4>
-<ul>
-<li>bug on emoji</li>
-</ul>
-<h4>The f-word - fragmentation</h4>
-<ul>
-<li>Device specific hack<ul>
-<li>samsung s4 front facing camera strange aspect ratios</li>
-<li>htc not support multiple MediaPlayers at once</li>
-<li>Kindle (dumb)</li>
+<li>GTAC 2013 <a href="https://developers.google.com/google-test-automation-conference/2013/presentations">presentations</a><ul>
+<li><a href="https://www.youtube.com/watch?v=HUE_yrd8tl0">How Facebook Tests Facebook on Android</a>
+<iframe width="560" height="315" src="//www.youtube.com/embed/HUE_yrd8tl0" frameborder="0" allowfullscreen></iframe>
+<iframe src="https://docs.google.com/presentation/d/1cdSQhG7k2QI7GTObpFmUarMV84VI8-lE1ztRBajbhnY/embed?start=false&loop=false&delayms=3000" frameborder="0" width="560" height="450" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe></li>
 </ul>
 </li>
-<li>Default camera not always back camera</li>
+<li>Facebook: <a href="https://code.facebook.com/mobile/">mobile engi blog</a>, <a href="https://github.com/facebook">github</a> <ul>
+<li><a href="https://code.facebook.com/posts/454616284650560/building-a-faster-messenger/">Building a faster Messenger</a><blockquote>
+<p>Michael Marucheck, had the idea to actually edit the Java byte code after compilation. We used ASM to improve our dependency injection system by detecting bindings that are safe to remove, adding static methods that instantiate a bound type, and rewriting calls to the injector to instead call the appropriate static method. By improving this process, we were able to have a well-crafted dependency injection system that lets us test at scale, but still with the 30% gain in speed.</p>
+</blockquote>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Other</h3>
+<ul>
+<li>Twitter: <a href="https://www.youtube.com/user/TwitterUniversity/videos">youtube</a> </li>
+<li>Square: <a href="http://corner.squareup.com/">engi blog</a>, <a href="https://github.com/square">github</a></li>
+<li>Etsy: <a href="http://codeascraft.com/category/mobile/">blog - mobile</a>, <a href="https://github.com/etsy">github</a></li>
+<li>Pocket: <a href="http://getpocket.com/blog/category/development/">blog - dev</a></li>
+<li>Feedly: <a href="http://blog.feedly.com/">blog</a></li>
+<li>Romain Guy: <a href="http://www.curious-creature.org/category/android/">blog</a>, <a href="https://speakerdeck.com/romainguy">speaker deck</a></li>
 </ul>
         </div>
     
-        <div class="fb-comments" data-href="http://billynyh.github.io/2013/10/20/two-talks-from-twitter.html" data-numposts="5" ></div>
+        <div class="fb-comments" data-href="http://billynyh.github.io/2014/01/19/collections.html" data-numposts="5" ></div>
     
     </div>
 
