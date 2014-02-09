@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: twitter | Just code it]]></title>
+  <link href="http://billynyh.github.io//blog/categories/twitter/atom.xml" rel="self"/>
+  <link href="http://billynyh.github.io//"/>
+  <updated>2014-02-09T21:37:09+08:00</updated>
+  <id>http://billynyh.github.io//</id>
+  <author>
+    <name><![CDATA[Billy Ng]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Two tech talks from Twitter Android team]]></title>
+    <link href="http://billynyh.github.io//blog/2013/10/20/tech-talks-from-twitter-android/"/>
+    <updated>2013-10-20T23:48:54+08:00</updated>
+    <id>http://billynyh.github.io//blog/2013/10/20/tech-talks-from-twitter-android</id>
+    <content type="html"><![CDATA[<p>Watched two Android talks from Twitter today, one is about gradle and one about Vine.</p>
+
+
+<h3>Building Twitter for Android with Gradle</h3>
+
+<p>(by Jonathan Le &ndash; <a href="https://twitter.com/jle">https://twitter.com/jle</a>)</p>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/EM5edIJUA10" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+
+
+<p>The gradle one was short, mostly about the migration process of twitter Android team.
+Some interesting points from the talk:</p>
+
+
+<h4>Twitter app version</h4>
+
+<ul>
+<li>1.0: 1 committers, Ant, build time 30s</li>
+<li>4.0: 15 committers, Ant+Ivy, build time 2min</li>
+<li>5.0: 80 committers, Gradle, build time 24s
+
+<h4>Gradle process</h4></li>
+<li>setup private Sonatype Nexus repo</li>
+<li>publish aars to nexus</li>
+</ul>
+
+
+<h4>Should not use git submodules</h4>
+
+<ul>
+<li>The talk did not include more detail of this&hellip;</li>
+</ul>
+
+
+<h3>Building Vine on Android</h3>
+
+<p>(by Sara Haider &ndash; <a href="https://twitter.com/pandemona">https://twitter.com/pandemona</a>)</p>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/7zamwc2lXhg" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+
+
+<p>Finally have time to watch the whole video, very nice talk, included many technical tricks of building vine app. Some tricks remind me the time I was working on ActionSnap.</p>
+
+
+<h4>Playback tricks</h4>
+
+<ul>
+<li>Use MediaPlayer, TextureView(api 14) to play the video</li>
+<li>Autoplay, prefetch 2 videos</li>
+<li>MediaPlay.setLooping(true) is too slow. Early seek to improve the loop behavior</li>
+</ul>
+
+
+<h4>Recording</h4>
+
+<ul>
+<li>MediaRecorder has 700ms delay on start,stop</li>
+<li>use PreviewFrame to get images and record audio (wat?)</li>
+<li>need compare timestamp to synchronize audio/video</li>
+<li>use ~140MB memory for full 6 second cut</li>
+<li>largeHeap = true (of coz)</li>
+<li>separate process to get more memory</li>
+</ul>
+
+
+<h4>Cusor</h4>
+
+<ul>
+<li>hybrid cursor</li>
+<li>backed by ArrayList (?)</li>
+<li>update list view and write to db in the bg</li>
+</ul>
+
+
+<h4>Crash tracking</h4>
+
+<ul>
+<li>Crashlytics</li>
+<li>real time, tonnes of metadata</li>
+<li><b>zero unknown crashes #adore#</b></li>
+</ul>
+
+
+<h4>Span</h4>
+
+<ul>
+<li>bug on emoji</li>
+</ul>
+
+
+<h4>The f-word &ndash; fragmentation</h4>
+
+<ul>
+<li>Device specific hack
+
+<ul>
+<li>samsung s4 front facing camera strange aspect ratios</li>
+<li>htc not support multiple MediaPlayers at once</li>
+<li>Kindle (dumb)</li>
+</ul>
+</li>
+<li>Default camera not always back camera</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
