@@ -1,0 +1,202 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Useful features I missed during Android development - Just code it</title>
+	<meta name="author" content="Billy Ng">
+
+	
+	<meta name="description" content="This weekend, I am working on my Muzei extension and try to add a setting page to it. It is not hard to write everything myself, but I was not in the &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Just code it" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Just code it</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:billynyh.github.io/">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/billynyh" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/billynyh" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:billynyh.github.io/">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Useful Features I Missed During Android Development</h2>
+	<div class="entry-content"><p>This weekend, I am working on my Muzei extension and try to add a setting page to it. It is not hard to write everything myself, but I was not in the mood of writing code from scratch, so I just copy code from <a href="https://github.com/flavienlaurent/muzeihash">other opensource project</a>. Modifying other&rsquo;s code does not always speed up your development when your task is so simple, but you can take this chance to read other&rsquo;s code at the same time.</p>
+
+<p>I don&rsquo;t consider myself learned Android development correctly, but I guess most people started like me. I started with a small project, lookup the doc for the features I need, then learn other features while doing other projects.When you learn like this, it is easy to miss out simple features. Here are what I found this week:</p>
+
+<h2>Show divider in LinearLayout</h2>
+
+<p>Can&rsquo;t believe I missed this, there was a couple times that I need to append dummy view to act as divider. The worst thing about adding divider view yourself is not the extra code you added, is when you try to control visiblity of elements, you need to handle the dividers also.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">LinearLayout</span> <span class="nl">xmlns:</span><span class="n">android</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">showDividers</span><span class="o">=</span><span class="s">&quot;middle&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">divider</span><span class="o">=</span><span class="s">&quot;?android:dividerVertical&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">dividerPadding</span><span class="o">=</span><span class="s">&quot;4dp&quot;</span><span class="o">&gt;</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>CheckedTextView</h2>
+
+<p>The first time when I want to have checkbox put on the right side of the text, I went through the available options of CheckBox class and cannot find any good, then I go to google and stackoverflow, <a href="http://stackoverflow.com/questions/5000213/how-to-set-the-checkbox-on-the-right-side-of-the-text">first solution</a> is to put a TextView to the left of CheckBox. Usually I will just stop here and start coding, but it is obviously not good enoguh, as now you can only trigger it by clicking the checkbox but not the whole text+checkbox.</p>
+
+<p>If you tried the multiple choice feature of ListView, you will see it is exactly the behavior you look for, a little <a href="https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/layout/simple_list_item_multiple_choice.xml">dig in</a> will give you CheckedTextView.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">CheckedTextView</span> <span class="nl">xmlns:</span><span class="n">android</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@android:id/text1&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;?android:attr/listPreferredItemHeightSmall&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">textAppearance</span><span class="o">=</span><span class="s">&quot;?android:attr/textAppearanceListItemSmall&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">gravity</span><span class="o">=</span><span class="s">&quot;center_vertical&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">checkMark</span><span class="o">=</span><span class="s">&quot;?android:attr/listChoiceIndicatorMultiple&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">paddingStart</span><span class="o">=</span><span class="s">&quot;?android:attr/listPreferredItemPaddingStart&quot;</span>
+</span><span class='line'>    <span class="nl">android:</span><span class="n">paddingEnd</span><span class="o">=</span><span class="s">&quot;?android:attr/listPreferredItemPaddingEnd&quot;</span>
+</span><span class='line'><span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can even extend other layout with <a href="http://developer.android.com/reference/android/widget/Checkable.html">Checkable</a> interface, more detail <a href="http://chris.banes.me/2013/03/22/checkable-views/">here</a></p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-23T19:36:59+08:00" pubdate data-updated="true">Feb 23<span>rd</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Billy Ng
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+
+
+
+
+</body>
+</html>
