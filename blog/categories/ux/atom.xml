@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: ux | Just code it]]></title>
+  <link href="http://billynyh.github.io//blog/categories/ux/atom.xml" rel="self"/>
+  <link href="http://billynyh.github.io//"/>
+  <updated>2014-03-09T22:24:33+08:00</updated>
+  <id>http://billynyh.github.io//</id>
+  <author>
+    <name><![CDATA[Billy Ng]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Try out Quartz Composer and Origami]]></title>
+    <link href="http://billynyh.github.io//blog/2014/03/09/quartz-composer-origami/"/>
+    <updated>2014-03-09T19:59:11+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/03/09/quartz-composer-origami</id>
+    <content type="html"><![CDATA[<p>In late Jan, I watched a <a href="https://www.youtube.com/watch/?v=s5kNm-DgyjY">talk &ndash; Bringing Beautiful Interactions to Android Apps</a> from Facebook about how they use Quartz Composer(QC) when developing Facebok Home (and chat head). Compare to other prototyping tools, QC can better illustrate animations and interactions. It is quite impressive and I actually installed QC the day after and tried to play on it. But when I first opened it, I was totally lost, not saying it is hard to use, but it is obvious that there is a learning curve on this tool. I did not spend more time on it that time but kept it in my TODO list.</p>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/s5kNm-DgyjY" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<p>Two weeks later, Facebook released <a href="http://facebook.github.io/origami/">Origami</a>, an extension of QC. Followed with some articles about how it is used in Facebook. Yesterday I gave it another try. This time I am more serious compared to last time. My target is at least understand (not fully) how it works and be able to do a simple demo to my team.</p>
+
+<h2>Let&rsquo;s start</h2>
+
+<p>This time I started with the <a href="https://developer.apple.com/library/mac/documentation/graphicsimaging/conceptual/quartzcomposeruserguide/qc_intro/qc_intro.html">documentation</a>, not saying it is poorly documented, but it is not much fun to read it(my bad)&hellip; Then I went for tutorials, after a quick look of some articles on QC (not Origami), I had little concept of patches (but missed macro patch&hellip;), then I think maybe I can understand the Origami examples.</p>
+
+<p>When I opened the &ldquo;Photo Grid&rdquo; example, I only see three patches, I knew that there must be some hierarchy hidden from the interface, I tried to use the patch inspector to look around but have no idea where to go, I was stuck again. Then I found this <a href="http://vimeo.com/85578380">video</a> on Origami&rsquo;s twitter, which turned out was everything I needed.</p>
+
+<div class="video-container">
+<iframe src="http://player.vimeo.com/video/85578380" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+</div>
+
+
+<pre><code>It is the visual version spaghetti code // 6:50
+</code></pre>
+
+<h2>Short notes</h2>
+
+<ul>
+<li>&ldquo;Phone&rdquo; patch is the basic component for the phone prototype, which displays an image in device frame.</li>
+<li>Use &ldquo;Render in Image&rdquo; for the content to display.</li>
+<li>Double click the &ldquo;Render in Image&rdquo; patch to edit the macro patch of it.</li>
+<li>A &ldquo;Layer&rdquo; patch will be automatically added when you drag in an image.</li>
+</ul>
+
+
+<p><img src="/images/posts/20140309/qc-1.jpg"/></p></p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="http://facebook.github.io/origami/">http://facebook.github.io/origami/</a></li>
+<li><a href="https://medium.com/the-year-of-the-looking-glass/f1173d0bd181">Introducing Origami for Quartz Composer</a></li>
+<li><a href="http://www.wired.com/wiredenterprise/2014/03/facebook-paper/">Facebook Paper Has Forever Changed the Way We Build Mobile Apps</a></li>
+<li><a href="http://vimeo.com/85578380">Vimeo &ndash; Prototyping with Facebook Origami</a>
+
+<ul>
+<li>Asset for the example <a href="https://github.com/jaythrash/spy-book">https://github.com/jaythrash/spy-book</a></li>
+</ul>
+</li>
+<li><a href="https://www.youtube.com/watch/?v=s5kNm-DgyjY">Youtube &ndash; Bringing Beautiful Interactions to Android Apps &ndash; Mobile @ Scale</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
