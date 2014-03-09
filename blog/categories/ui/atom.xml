@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ui | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/ui/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-03-08T23:42:34+08:00</updated>
+  <updated>2014-03-09T20:41:21+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -32,21 +32,21 @@
 
 <p>I like the way they put the tab in actionbar and combined with the app logo. You can say it does not follow the design guideline, but in my opinion, it works better, and as long as the style consistent with the Holo theme, I would say it is a good design. However, I don&rsquo;t like they put the second level tab in the bottom, may be they can try using other style of indicator.</p>
 
-<p><img src="images/posts/20131030/dropbox.jpg"></p>
+<p><img src="/images/posts/20131030/dropbox.jpg"/></p>
 
 <h3>Flickr</h3>
 
 <p>Another UI I want to talk about is the slide up panel. I dont see many people discussing it, is it not popular? Not really. Google plus and Flickr are using it already. Comparing to navigate to another view, using gesture to drag out another view sometimes gives better user experience, you dont lose your current view and you have a chance to abort the action (slide out a little bit and close it back).</p>
 
-<p><img src="images/posts/20131030/flickr-1.jpg">
-<img src="images/posts/20131030/flickr-2.jpg">
-<img src="images/posts/20131030/flickr-3.jpg"></p>
+<p><img src="/images/posts/20131030/flickr-1.jpg"/>
+<img src="/images/posts/20131030/flickr-2.jpg"/>
+<img src="/images/posts/20131030/flickr-3.jpg"/></p>
 
 <p>While I write this article, I found that there is a new &ldquo;Photo&rdquo; app from Google in my application list, what supprised me is, the new share dialog. Beside the share dialog and action bar share provider, Google created a new share interface with the slide up panel. I like it.</p>
 
-<p><img src="images/posts/20131030/gphoto-1.jpg">
-<img src="images/posts/20131030/gphoto-2.jpg">
-<img src="images/posts/20131030/gphoto-3.jpg"></p>
+<p><img src="/images/posts/20131030/gphoto-1.jpg"/>
+<img src="/images/posts/20131030/gphoto-2.jpg"/>
+<img src="/images/posts/20131030/gphoto-3.jpg"/></p>
 
 <h3>(Google) Play Music</h3>
 
@@ -54,13 +54,13 @@
 
 <p>And beside fading, <a href="http://nicolaspomepuy.fr/?p=18">blur effect</a> is also coming. I think it is still quite computation heavy in some lower end device, but it should not stop you using it :p</p>
 
-<p><img src="images/posts/20131030/gmusic-1.jpg">
-<img src="images/posts/20131030/gmusic-2.jpg">
-<img src="images/posts/20131030/gmusic-3.jpg"></p>
+<p><img src="/images/posts/20131030/gmusic-1.jpg"/>
+<img src="/images/posts/20131030/gmusic-2.jpg"/>
+<img src="/images/posts/20131030/gmusic-3.jpg"/></p>
 
-<p><img src="images/posts/20131030/gmusic-4.jpg">
-<img src="images/posts/20131030/gmusic-5.jpg">
-<img src="images/posts/20131030/gmusic-6.jpg"></p>
+<p><img src="/images/posts/20131030/gmusic-4.jpg"/>
+<img src="/images/posts/20131030/gmusic-5.jpg"/>
+<img src="/images/posts/20131030/gmusic-6.jpg"/></p>
 
 <h2>Keep changing</h2>
 
