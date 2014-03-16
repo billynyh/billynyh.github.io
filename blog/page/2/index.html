@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="Last year I implemented a custom view that supports different gestures including zoom(scale), scroll, double tap. As a newbie on custom view, the &hellip;">
+	<meta name="description" content="Muzei live wallpaper is a new opensource project from Roman Nurik which provide a nice API for other developers to build extension on it easily. &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -78,6 +78,114 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/02/16/first-play-on-muzei/">
+		
+			First Play on Muzei</a>
+	</h2>
+	<div class="entry-content">
+		<p><a href="https://github.com/romannurik/muzei">Muzei live wallpaper</a> is a new opensource project from Roman Nurik which provide a nice API for other developers to build extension on it easily. Just a few days after its release on Feb 12, you can already find quite many different <a href="https://play.google.com/store/search?q=muzei&amp;c=apps">data source</a> for it. So I played for a while today and found that it is&hellip; really easy to implement your own data source.</p>
+
+<p>Here is a quick start on creating the extension.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyArtSource</span> <span class="kd">extends</span> <span class="n">RemoteMuzeiArtSource</span> <span class="o">{</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_INTERVAL</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span> <span class="c1">// 60min</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="kd">public</span> <span class="nf">MyArtSource</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">(</span><span class="s">&quot;my-art-source&quot;</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">setUserCommands</span><span class="o">(</span><span class="n">BUILTIN_COMMAND_ID_NEXT_ARTWORK</span><span class="o">);</span> <span class="c1">// manual switch image</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="nd">@Override</span>
+</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onTryUpdate</span><span class="o">(</span><span class="kt">int</span> <span class="n">reason</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">RetryException</span> <span class="o">{</span>
+</span><span class='line'>        <span class="c1">// fetch title, imageUrl, id, url from remote or hardcode</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">publishArtwork</span><span class="o">(</span><span class="k">new</span> <span class="n">Artwork</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">title</span><span class="o">(</span><span class="n">title</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">imageUri</span><span class="o">(</span><span class="n">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">imageUrl</span><span class="o">))</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">token</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">viewIntent</span><span class="o">(</span><span class="k">new</span> <span class="n">Intent</span><span class="o">(</span><span class="n">Intent</span><span class="o">.</span><span class="na">ACTION_VIEW</span><span class="o">,</span> <span class="n">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">url</span><span class="o">)))</span>
+</span><span class='line'>            <span class="o">.</span><span class="na">build</span><span class="o">());</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">scheduleUpdate</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">+</span> <span class="n">UPDATE_INTERVAL</span><span class="o">);</span> <span class="c1">// switch image after 60min</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>You can find my Muzei 9GAG extension on <a href="https://play.google.com/store/apps/details?id=com.billynyh.muzei9gag">Play store</a>, source code available on <a href="https://github.com/billynyh/android-muzei-9gag">Github</a></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-02-16T23:05:43+08:00" pubdate data-updated="true">Feb 16<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/muzei/'>muzei</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2014/02/16/first-play-on-muzei/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -487,114 +595,6 @@
 </div>
 	
 	<div class="comments"><a href="/blog/2013/12/22/github-collection/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/10/30/how-i-see-design-guideline/">
-		
-			How I See Android Design Guideline</a>
-	</h2>
-	<div class="entry-content">
-		<p>To make a good Android app, the design is important for sure, but is following the design guideline enough? I am a developer not a designer, but still want to share some thoughts on current design guideline.</p>
-
-<h2>Current design guideline is not complete</h2>
-
-<p>Mobile app design changes very fast. To make the app stand out, people put lots of effort to stay on top of the design trends, they improve existing UI, and sometimes create new. And when the public accepted that design, it may become part of the design guideline. For example, navigation drawer (sliding menu) and pull to refresh. The drawer is now in the design guideline and is even supported in support library. Pull to refresh is still new but you can see that Google have their own twist and is using in gmail and google plus app.</p>
-
-<h2>Case studies</h2>
-
-<p>Here are some apps that I think they are in a good direction of expanding the design guideline.</p>
-
-<h3>Dropbox</h3>
-
-<p>I like the way they put the tab in actionbar and combined with the app logo. You can say it does not follow the design guideline, but in my opinion, it works better, and as long as the style consistent with the Holo theme, I would say it is a good design. However, I don&rsquo;t like they put the second level tab in the bottom, may be they can try using other style of indicator.</p>
-
-<p><img src="/images/posts/20131030/dropbox.jpg"/></p>
-
-<h3>Flickr</h3>
-
-<p>Another UI I want to talk about is the slide up panel. I dont see many people discussing it, is it not popular? Not really. Google plus and Flickr are using it already. Comparing to navigate to another view, using gesture to drag out another view sometimes gives better user experience, you dont lose your current view and you have a chance to abort the action (slide out a little bit and close it back).</p>
-
-<p><img src="/images/posts/20131030/flickr-1.jpg"/>
-<img src="/images/posts/20131030/flickr-2.jpg"/>
-<img src="/images/posts/20131030/flickr-3.jpg"/></p>
-
-<p>While I write this article, I found that there is a new &ldquo;Photo&rdquo; app from Google in my application list, what supprised me is, the new share dialog. Beside the share dialog and action bar share provider, Google created a new share interface with the slide up panel. I like it.</p>
-
-<p><img src="/images/posts/20131030/gphoto-1.jpg"/>
-<img src="/images/posts/20131030/gphoto-2.jpg"/>
-<img src="/images/posts/20131030/gphoto-3.jpg"/></p>
-
-<h3>(Google) Play Music</h3>
-
-<p>The fading action bar is very impressive and definitely will be a trend. In the app, it has transparent action bar so you can see the whole image, and when you scroll down, it fade in to solid color to make the bars stand out. For more detail, Cyril Mottier wrote a good <a href="http://cyrilmottier.com/2013/05/24/pushing-the-actionbar-to-the-next-level/">article</a> on this.</p>
-
-<p>And beside fading, <a href="http://nicolaspomepuy.fr/?p=18">blur effect</a> is also coming. I think it is still quite computation heavy in some lower end device, but it should not stop you using it :p</p>
-
-<p><img src="/images/posts/20131030/gmusic-1.jpg"/>
-<img src="/images/posts/20131030/gmusic-2.jpg"/>
-<img src="/images/posts/20131030/gmusic-3.jpg"/></p>
-
-<p><img src="/images/posts/20131030/gmusic-4.jpg"/>
-<img src="/images/posts/20131030/gmusic-5.jpg"/>
-<img src="/images/posts/20131030/gmusic-6.jpg"/></p>
-
-<h2>Keep changing</h2>
-
-<p>Design guideline will keep changing. Limiting yourself in the guideline does not mean your app is good,
-sometime you need to study your users and expand the guideline yourself.
-Developer/designer should not be afraid to use UI that is not in design guideline, as long as it is good, it will be in the guideline.</p>
-
-<h3>Futher reading</h3>
-
-<ul>
-<li><a href="http://developer.android.com/design/patterns/new.html">New in Android(KitKat)</a></li>
-<li><a href="http://www.androiduipatterns.com/2013/09/googles-android-apps-look-boring-and.html">Google&rsquo;s Android Apps Look Boring &ndash; And It&rsquo;s a Good Thing</a></li>
-<li><a href="http://www.fastcolabs.com/3012752/four-android-app-design-guidelines-you-should-break">Four Android App Design Guidelines You Should Break</a>
-
-<ul>
-<li>(I dont agree on some of his points, may write another post on this)</li>
-</ul>
-</li>
-<li><a href="https://github.com/ManuelPeinado/FadingActionBar">https://github.com/ManuelPeinado/FadingActionBar</a></li>
-<li><a href="https://github.com/ManuelPeinado/GlassActionBar">https://github.com/ManuelPeinado/GlassActionBar</a></li>
-<li><a href="https://github.com/umano/AndroidSlidingUpPanel">https://github.com/umano/AndroidSlidingUpPanel</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-10-30T23:48:54+08:00" pubdate data-updated="true">Oct 30<span>th</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/ui/'>ui</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2013/10/30/how-i-see-design-guideline/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
