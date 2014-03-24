@@ -2,70 +2,74 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://billynyh.github.io//blog/2013/10/20/tech-talks-from-twitter-android/</loc>
-        <lastmod>2014-02-09T19:30:20+08:00</lastmod>
+        <lastmod>2014-02-23T10:13:15+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2013/10/30/how-i-see-design-guideline/</loc>
-        <lastmod>2014-03-09T20:38:15+08:00</lastmod>
+        <lastmod>2014-03-17T21:00:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2013/12/22/github-collection/</loc>
-        <lastmod>2014-02-09T19:30:20+08:00</lastmod>
+        <lastmod>2014-02-23T10:13:15+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2013/12/23/my-2013-development/</loc>
-        <lastmod>2014-02-09T19:30:20+08:00</lastmod>
+        <lastmod>2014-02-23T10:13:15+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/01/18/collections/</loc>
-        <lastmod>2014-02-09T19:30:20+08:00</lastmod>
+        <lastmod>2014-02-23T10:13:15+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/02/15/implmenting-view-gesture-1/</loc>
-        <lastmod>2014-02-16T22:57:32+08:00</lastmod>
+        <lastmod>2014-02-23T10:13:15+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/02/16/first-play-on-muzei/</loc>
-        <lastmod>2014-02-16T23:37:56+08:00</lastmod>
+        <lastmod>2014-02-23T10:13:15+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/02/23/features-missed-during-development/</loc>
-        <lastmod>2014-02-23T21:32:49+08:00</lastmod>
+        <lastmod>2014-03-17T21:00:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/03/02/fragment-state-pager-adapter/</loc>
-        <lastmod>2014-03-02T21:37:24+08:00</lastmod>
+        <lastmod>2014-03-17T21:00:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/03/08/5yr-part-1/</loc>
-        <lastmod>2014-03-16T22:56:05+08:00</lastmod>
+        <lastmod>2014-03-21T22:45:47+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/03/09/quartz-composer-origami/</loc>
-        <lastmod>2014-03-09T22:24:22+08:00</lastmod>
+        <lastmod>2014-03-17T21:00:08+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//blog/2014/03/16/5yr-part-2-why/</loc>
-        <lastmod>2014-03-17T00:03:55+08:00</lastmod>
+        <lastmod>2014-03-22T00:09:58+08:00</lastmod>
     </url>
     <url>
-        <loc>http://billynyh.github.io//archives/</loc>
-        <lastmod>2014-03-17T00:03:55+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://billynyh.github.io//blog/archives/</loc>
-        <lastmod>2014-03-17T00:03:55+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://billynyh.github.io//blog/</loc>
-        <lastmod>2014-03-17T00:03:55+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://billynyh.github.io//</loc>
-        <lastmod>2014-03-17T00:03:55+08:00</lastmod>
+        <loc>http://billynyh.github.io//blog/2014/03/24/gatekeeper/</loc>
+        <lastmod>2014-03-24T23:36:58+08:00</lastmod>
     </url>
     <url>
         <loc>http://billynyh.github.io//robots.txt</loc>
-        <lastmod>2014-02-09T19:26:56+08:00</lastmod>
+        <lastmod>2014-02-23T10:13:15+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://billynyh.github.io//blog/archives/</loc>
+        <lastmod>2014-03-24T23:36:58+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://billynyh.github.io//blog/</loc>
+        <lastmod>2014-03-24T23:36:58+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://billynyh.github.io//archives/</loc>
+        <lastmod>2014-03-24T23:36:58+08:00</lastmod>
+    </url>
+    <url>
+        <loc>http://billynyh.github.io//</loc>
+        <lastmod>2014-03-24T23:36:58+08:00</lastmod>
     </url>
 </urlset>
