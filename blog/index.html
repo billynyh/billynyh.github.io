@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="Recently read some articles from Julie Zhuo&rsquo;s, she is a Product design director in Facebook. Although her posts are not about engineering, I &hellip;">
+	<meta name="description" content="Few months ago, I spent a little time to try migrating my Android project from to gradle, although it is announced in last Google IO (May 2013), and &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -78,6 +78,78 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/03/31/gradle-migration/">
+		
+			Notes on Migrating Android Project From Ant to Gradle</a>
+	</h2>
+	<div class="entry-content">
+		<p>Few months ago, I spent a little time to try migrating my Android project from to gradle, although it is announced in last Google IO (May 2013), and saw some big companies switched to it early, I considered that not ready that time and decided to wait for later version.</p>
+
+<h3>Projects structures</h3>
+
+<p>The project I am working on used some library projects like pull to refresh, facebook sdk, google play services, etc, due to the limitation of the old ant build system, you have to include the source and compile with your app. We also splitted some of our own components to separate library projects for reuseing in other projects. Currently my app is depending on 14 other library projects, and it takes about 3 minutes to have do a clean build.</p>
+
+<p>We also use git submodules to include projects from other repositories. I am still not sure if this is the right way to manage projects especially when we keep modifying the libraries. It increases the complexity when we have multiple branches in development, and causes some pains when merging codes.</p>
+
+<h3>First migration attempt</h3>
+
+<p>I tried to migrate to gradle few months ago, when Android studio was in version 0.2 I think. One of the unknown part of the migration, it&rsquo;s 0 or 100, no 50% migrated. Even you build every library successfully, it does not mean you are getting close to finish the migration. In my case, I first made a simple app to get familiar with the build system, then migrated my libraries one by one, but guess what I got when I tried to have a complete build? Out of memory&hellip; I googled a little bit and found a way to increase the memory limit but still got the same error, in both command line and Android studio.</p>
+
+<p>I didn&rsquo;t put more time on that since the ant scripts still work at that time and I got (many) other tasks pending.</p>
+
+<h3>Second attempt</h3>
+
+<p>I recently reopened the migration task, mainly for 3 reasons.</p>
+
+<ol>
+<li>Eclipse can&rsquo;t handle the project anymore. When I tried to add some code in a core library project that is also used in 3 other library projects, eclipse just hangs there and I have to kill it myself.</li>
+<li>Need more tools for development. Actually this is one of the reason of my first attempt of migration, I had some (simple) scripts/code generators to help development, some are standalone but some are hooked into the build flow. It does not make sense to keep developing scripts based on ant if there is a migration coming, so I didn&rsquo;t add any scripts in the last 6 months. In order to continue the development, the migration task now becomes a blocker.</li>
+<li>Team expand. We are expecting more man power on Android, the migration has to be done before they start.</li>
+</ol>
+
+
+<p>Not like last time, this is no longer a &ldquo;try out&rdquo;, it has to be done, no matter how many effort required.</p>
+
+<p>After reinstalling the Android studio and gradle, I still got the out of memory error during compile. At this point, even I can get through the compile task of each library, I may got other error when combining everything in the app project, so I have to do some experiments first. I compiled all library projects to aar and uploaded to local maven repositories, this also required me to modify the build.gradle of the app project to use aar instead of compile form source. With some luck, I can compile the app with those aar successfully.</p>
+
+<p>Next step is to make it fits my development workflow. Some library projects need to compile from source and those relatively stable libraries can use aar. Fortunately it worked as expect and did not gave me out of memory error, and even better, it also worked on Android studio without any extra modification.</p>
+
+<p>Migrating the basic workflow is just the beginning, there are still many things to test before using it to do release, like app signing, proguard, build with different package names, etc&hellip; But before those tasks, there is still one problem needed to work on. I am not sure it is just me, but the gradle configure time seems very long with multi projects setup, and it may not suppose to be that slow. I posted my question on <a href="https://plus.google.com/u/0/105980838674582844427/posts/8sYLTN6WyCt">Google plus</a> and got some quick responses from Xavier Ducrohet. He said the configure time should be around 3s if run with daemon, but what I got is at least 10s for every one, even a simple &ldquo;gradle projects&rdquo; command call. I am not sure if this is the best I can get but it would not be a great development experience if every run need to wait for 10s and the actual compile is just 2s.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-31T00:44:28+08:00" pubdate data-updated="true">Mar 31<span>st</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/gradle/'>gradle</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -1195,63 +1267,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/12/23/my-2013-development/">
-		
-			My 2013 Android Development</a>
-	</h2>
-	<div class="entry-content">
-		<p>2013 was a fresh start for me. I joined a new team, started the Android product from scratch, get a nice number of active users and keep it growing. During my development, I referenced many opensource projects and learnt alot from them.</p>
-
-<h3><a href="https://github.com/kevinsawicki/http-request">kevinsawicki/http-request</a></h3>
-
-<p>This is the very first library I added to my project (support-v4 does not count). This library provided a nice wrap of http call. I am not sure if this can be used with other network library like square/okhttp and android/volley, hope I have time to try it out in 2014.</p>
-
-<h3><a href="https://github.com/jfeinstein10/SlidingMenu">jfeinstein10/SlidingMenu</a></h3>
-
-<p>This is the sliding menu I used at the beginning, I like the effect very much. Although I switched to Android DrawerLayout after it was introduced in support-v4, I do like the old SlidingMenu more. Personally I like to have the drawer push the content out, DrawerLayout is more like an overlay, they both make sense to me, let see will the design guideline include this kind of UI also.</p>
-
-<h3><a href="https://github.com/square/otto">square/otto</a></h3>
-
-<p>I am a big fan of Square opensource projects but I was not using any event bus so when I saw otto I did not get it at first. When things getting complicated that you cannot write everything in your Activity/Fragment, you will try to split the logic to different components. The old school way to communicate between components is implements some kind of listener, it works for a while, a short while&hellip; The app goes complicated way faster than I expect, so I decided to make a big structure change by using an event bus system. I have not compared other event bus library but otto works for me perfectly.</p>
-
-<h3>ActionBar</h3>
-
-<p>Before the official actionbar-compact was released after GoogleIO, I think most people will use ActionBarSherlock. However, I implmented my own. I think it gives me more flexibility if you implemented your own, especially when you dont need those inflate from menu support. The down side is you lost support from all opensource projects, I have to implement my own refresh/progress buttons, ShareActionProvider, cannot play with those fancy fading actionbar, not boring actionbar library, may even need to write my own android style pull to refresh. Those disadvantage are usually enough to stop me from using my own implementation, but I decided to keep it. Mostly because it turns out not that hard to migrate to my own actionbar as long as it is opensourced and I do not have to worry about two libraries not working together (because I am not using any&hellip;).</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-23T23:48:54+08:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/github/'>github</a>
-
-
-</div>
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
     
@@ -1272,6 +1287,19 @@
 })(jQuery);
 </script> <!-- Delete or comment this line to disable Fancybox -->
 
+
+<script type="text/javascript">
+      var disqus_shortname = 'billynyh';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
