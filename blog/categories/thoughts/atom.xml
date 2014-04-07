@@ -4,7 +4,7 @@
   <title><![CDATA[Category: thoughts | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/thoughts/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-03-31T00:48:51+08:00</updated>
+  <updated>2014-04-07T22:02:27+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,48 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Move fast and break things]]></title>
+    <link href="http://billynyh.github.io//blog/2014/04/07/move-fast-break-things/"/>
+    <updated>2014-04-07T21:45:34+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/04/07/move-fast-break-things</id>
+    <content type="html"><![CDATA[<h2>Who said that</h2>
+
+<p>Mark Zuckerberg <a href="http://www.wired.com/2012/02/zuck-letter">did</a>.</p>
+
+<p><blockquote><p>Moving fast enables us to build more things and learn faster. However, as most companies grow, they slow down too much because they’re more afraid of making mistakes than they are of losing opportunities by moving too slowly. We have a saying: “Move fast and break things.” The idea is that if you never break anything, you’re probably not moving fast enough.</p></blockquote></p>
+
+<p>I totally agree on the idea. However, like doing startups, the idea is important but what really matter is <strong>execution</strong>. How do you interpret &ldquo;move fast and break things&rdquo; affects the direction of the team. If you are in the wrong direction and move fast, there is no guarantee that you can go back to where you were even you &ldquo;move fast&rdquo; again.</p>
+
+<h2>Be able to move fast</h2>
+
+<p>Depends on the scale of your product, there should be different way to move fast. For new product or just a prototype, you should collect user feedbacks, move fast, break things, <strong>get on the right direction</strong> as soon as possible. That is the speed you needed to survive in the industry.</p>
+
+<p>What&rsquo;s next? You have some users, using your app everyday, but not yet the giant scale. To get more users, you need to keep moving and this is another type of moving fast. This time, you cannot just move fast and break things like the time when you start. From development point of view, as the code complexity increase, unless you have a good infrastructure, you will find that it is getting harder and harder to add features on top of it. When you add one feature, you may introduce two bugs, and slowed the app down at the same time. Beside that, there is a cost when you break things, maybe get some bad rating, maybe pissed off some users.</p>
+
+<p>This does not mean you should not move fast, but you have to <strong>do it smart</strong>. You have to be clear on what you want to achieve from moving fast. If you want to try out new interface and get user feedback, it does not need to be 100% polished, but don&rsquo;t rollout a 20% done ugly version, all you can get is bad rating instead of constructive feedback about the new features.</p>
+
+<p>I agree on moving fast, but I also believe in &ldquo;<strong>less is more</strong>&rdquo; (slow is fast?). At the end of the day, it is all about what the users want, new features may boost your number a little bit, but sometimes quality is what makes the users come back and use your app and not switching to other competitors.</p>
+
+<p>Instead of running on your foot, isn&rsquo;t it better to get a bike or a car if you want to move fast?</p>
+
+<h2>When you break things</h2>
+
+<p>Please, <strong>fix it</strong>, before you break another thing.</p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="http://www.wired.com/2012/02/zuck-letter">Mark Zuckerberg’s Letter to Investors</a></li>
+<li><a href="http://venturebeat.com/2012/06/26/facebook-hacker-stories/">Move fast, break things: Four stories for hackers from Facebook</a></li>
+<li><a href="http://spectrum.ieee.org/at-work/innovation/facebook-philosophy-move-fast-and-break-things">Facebook Philosophy: Move Fast and Break Things</a></li>
+<li><a href="http://mashable.com/2014/03/13/facebook-move-fast-break-things/">Are Facebook&rsquo;s &lsquo;Move Fast and Break Things&rsquo; Days Over?</a></li>
+<li><a href="http://startupbitsnbobs.com/2014/04/04/move-fast-and-break-things/">Startup就是一窩老鼠</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The gatekeeper]]></title>
