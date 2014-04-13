@@ -1,0 +1,192 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Android image decode bug on Samsung devices - Just code it</title>
+	<meta name="author" content="Billy Ng">
+
+	
+	<meta name="description" content="Image decode bug on Samsung devices Few weeks ago I got some users reported about seeing &ldquo;black lines&rdquo; on the images. In 9GAG app, &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="/atom.xml" rel="alternate" title="Just code it" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Just code it</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:billynyh.github.io/">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		<a class="twitter" href="http://twitter.com/billynyh" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/billynyh" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		
+		
+		
+		<a class="rss" href="/atom.xml" title="RSS">RSS</a>
+		
+    
+	</div>
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:billynyh.github.io/">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Android Image Decode Bug on Samsung Devices</h2>
+	<div class="entry-content"><h2>Image decode bug on Samsung devices</h2>
+
+<p>Few weeks ago I got some users reported about seeing &ldquo;black lines&rdquo; on the images. In 9GAG app, displaying images is everything so I can&rsquo;t just leave the problem unsolved.</p>
+
+<p>At first I thought it is a problem I worked on before that when multiple download tasks running for the same image, may corrupt the file. However, this time is a little bit different.</p>
+
+<p><img src="/images/posts/20140413/blacklines.png"/></p>
+
+<p>I checked those reports and find that only users using (high end?) Samsung devices (S4 and Note3) hit this problem, and I cannot reproduce the problem on my testing devices. Luckily, we recently equipped a Samsung Galaxy S4 in office so I can schedule some time on this problem. And they are actually not black lines, they are transparent lines&hellip;</p>
+
+<p>Even I suspected it is a manufacture specific problem, I did not expect I can reproduce the problem easily, so I am a little bit surprised to see the problem on the device. There are two possible causes of the problem, 1. the image file corrupted, 2. the image is correct but corrupted during decode to bitmap object. After a little test, I can confirm that I am dealing with (2)&hellip; When debugging with logcat, the following logs appear everytime the problem occurs.</p>
+
+<pre><code>skia  D  JPEG content is corrupt, got a zero length row(272)
+skia  D  JPEG content is corrupt, got a zero length row(273)
+skia  D  JPEG content is corrupt, got a zero length row(274)
+skia  D  JPEG content is corrupt, got a zero length row(275)
+skia  D  JPEG content is corrupt, got a zero length row(276)
+skia  D  JPEG content is corrupt, got a zero length row(277)
+</code></pre>
+
+<p>I thought once I have the error message, I am done, problem like this must be all over google and stackoverflow&hellip;</p>
+
+<p>Nope, <a href="https://www.google.com/search?q=skia+JPEG+content+is+corrupt">not this time</a>.</p>
+
+<p>There is not much I can do when there is only logs but no error message returned, I can&rsquo;t even detect the problem and reload the images. So I approach to tackle the problem is to reduce the chance of happening instead of fixing it. One observation is that, even this is not a step of reproduce, it usually/always comes with a dalvikvm heap grow. Follow on this direction and tuned a bit memory performance, somehow like harder to hit the problem. (magic?)</p>
+
+<p>This is for sure not a &ldquo;fix&rdquo;, and &ldquo;looks harder to hit the problem&rdquo; could actually be luck, but that&rsquo;s all I can get in a few hour scheduled time.</p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-13T23:21:18+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/bitmap/'>bitmap</a>, <a class='category' href='/blog/categories/samsung/'>samsung</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Billy Ng
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'billynyh';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://billynyh.github.io//blog/2014/04/13/android-image-black-lines/';
+        var disqus_url = 'http://billynyh.github.io//blog/2014/04/13/android-image-black-lines/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
