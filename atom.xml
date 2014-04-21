@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-04-13T23:30:27+08:00</updated>
+  <updated>2014-04-21T23:07:04+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,39 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Talks from Facebook, Paper team]]></title>
+    <link href="http://billynyh.github.io//blog/2014/04/21/talks-from-paper/"/>
+    <updated>2014-04-21T21:10:00+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/04/21/talks-from-paper</id>
+    <content type="html"><![CDATA[<p>During the long weekend of Easter holiday, I spent some time on watching tech talks from Facebook. The newly uploaded &ldquo;Building Paper 2014&rdquo; series is really cool. Even I don&rsquo;t do iOS, seeing how they tackle the problems and share their approach is totally enjoyable.</p>
+
+<p>Android and iOS apps may have different platform structures, but when your app goes bigger, most likely you will need another level of abstraction to handle large amount of logic, UI and communication betweens components. And when you want further performance tuning, you may need to go beyond the platform like what Paper team did. At that stage, although you are using different languages, the architecture will be similar across platforms.</p>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/ZdiBPHpxGd0" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<p>I also like the part about <a href="https://www.youtube.com/watch?v=-KrF4bIofeo">contextually aware tutorials</a>, if you have time, you should watch the <a href="https://www.youtube.com/watch?v=OiY1cheLpmI">whole event</a>.</p>
+
+<h2>UI details and A/B test</h2>
+
+<p>Besides new talks, I also watched an old talk from &ldquo;Mobile Developer Day by Facebook + Parse 2013&rdquo;. Not sure why I skipped this talk before, probably because the title is so generic &ndash; <a href="https://www.youtube.com/watch?v=e2w8z6mI47U">Mobile at Facebook</a>. The part that caught my attention is the A/B testing on their drawer to nav bar changes. It&rsquo;s not about what framework they used, not about how many users they put in the AB test, it&rsquo;s about how you see the numbers.</p>
+
+<p>She mentioned that after changing the drawer to nav bar, the result in internal test is good, navigation experience is improved, users feel the app faster. However, when they shipped to 1% test, they find that users liking and commenting less, because users are kind of distracted by the nav bar notification.</p>
+
+<p>This is very interesting to me. We do not have a very detailed metrics system on mobile (have some, but not detailed), I am sure if we do AB test like that, we will not be able to see the abnormal usage changes. This even put me in a doubt that what if we already did changes like that and we still don&rsquo;t know that?</p>
+
+<p>This is like a regression test, not on code but on usage.</p>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/e2w8z6mI47U" frameborder="0" allowfullscreen></iframe>
+</div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android image decode bug on Samsung devices]]></title>
