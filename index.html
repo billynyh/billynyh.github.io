@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="From being interviewed to interview others I have been working as a developer in different startups, I am not a decision maker in any of it, but as &hellip;">
+	<meta name="description" content="Huh? As an experienced software engineer, you are expected to write code reusable, modularized, clean, blah blah. Of course you do that in your &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -78,6 +78,71 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/05/06/dirty-code/">
+		
+			Write Dirty Code</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Huh?</h2>
+
+<p>As an experienced software engineer, you are expected to write code reusable, modularized, clean, blah blah. Of course you do that in your product, but sometime you need dirty code to do dirty work, and I enjoy doing that. :)</p>
+
+<h2>Code generator</h2>
+
+<p>One of my favorite dirty code is code generator. When writing Java, sometime you need to write lots of getter setter, at first you just copy and paste, but after a few months, you will find the class goes big and messy, and it is easy to make mistakes, you may forget to change a variable, or put in wrong default value&hellip;</p>
+
+<p>So, how about a little code generator? Make a config file containing the fields and data type, and just generate the java class for you. You don&rsquo;t even need to write the generator in Java, in my case, I have a python script that reads yaml config file and generates Java code.</p>
+
+<p>That script is simple and ad hoc, you are not going to maintain that so when you want to &ldquo;reuse&rdquo; it, just copy the script, modify it, do whatever you want.</p>
+
+<h2>Custom build scripts</h2>
+
+<p>I have been using ant to build Android for a long time, just migrated to Gradle recently. One of the problem with the old system is lack of multiple build support. What I did in last 3 years is, have a custom ant task that modify the package name in AndroidManifest.xml and update all import of R in code.</p>
+
+<p>And combine with code generator scripts, I can create builds with different config files which is one very important during development.</p>
+
+<p>It is generally not a good idea to modify every .java files before compile, but with the limitation of the build system and you don&rsquo;t have the resources to dig deep, I would just use the dirty way (proudly).</p>
+
+<h2>Get your hands dirty</h2>
+
+<p>After working for some years, we switched our mind set from a programmer to an engineer, we may forget how to get dirty, forget how we used to &ldquo;hack&rdquo; things, forget how we rushed a course project in one night. By being a better engineer, we write better code, but we should not lose the ability of being dirty.</p>
+
+<p>Use dirty code to do dirty work is just an example of use the right tool for the task.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-05-06T22:55:49+08:00" pubdate data-updated="true">May 6<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/development/'>development</a>, <a class='category' href='/blog/categories/dirty/'>dirty</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -352,78 +417,6 @@ skia  D  JPEG content is corrupt, got a zero length row(277)
 
 
 	<a class='category' href='/blog/categories/thoughts/'>thoughts</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/03/31/gradle-migration/">
-		
-			Notes on Migrating Android Project From Ant to Gradle</a>
-	</h2>
-	<div class="entry-content">
-		<p>Few months ago, I spent a little time to try migrating my Android project from to gradle, although it is announced in last Google IO (May 2013), and saw some big companies switched to it early, I considered that not ready that time and decided to wait for later version.</p>
-
-<h3>Projects structures</h3>
-
-<p>The project I am working on used some library projects like pull to refresh, facebook sdk, google play services, etc, due to the limitation of the old ant build system, you have to include the source and compile with your app. We also splitted some of our own components to separate library projects for reuseing in other projects. Currently my app is depending on 14 other library projects, and it takes about 3 minutes to have do a clean build.</p>
-
-<p>We also use git submodules to include projects from other repositories. I am still not sure if this is the right way to manage projects especially when we keep modifying the libraries. It increases the complexity when we have multiple branches in development, and causes some pains when merging codes.</p>
-
-<h3>First migration attempt</h3>
-
-<p>I tried to migrate to gradle few months ago, when Android studio was in version 0.2 I think. One of the unknown part of the migration, it&rsquo;s 0 or 100, no 50% migrated. Even you build every library successfully, it does not mean you are getting close to finish the migration. In my case, I first made a simple app to get familiar with the build system, then migrated my libraries one by one, but guess what I got when I tried to have a complete build? Out of memory&hellip; I googled a little bit and found a way to increase the memory limit but still got the same error, in both command line and Android studio.</p>
-
-<p>I didn&rsquo;t put more time on that since the ant scripts still work at that time and I got (many) other tasks pending.</p>
-
-<h3>Second attempt</h3>
-
-<p>I recently reopened the migration task, mainly for 3 reasons.</p>
-
-<ol>
-<li>Eclipse can&rsquo;t handle the project anymore. When I tried to add some code in a core library project that is also used in 3 other library projects, eclipse just hangs there and I have to kill it myself.</li>
-<li>Need more tools for development. Actually this is one of the reason of my first attempt of migration, I had some (simple) scripts/code generators to help development, some are standalone but some are hooked into the build flow. It does not make sense to keep developing scripts based on ant if there is a migration coming, so I didn&rsquo;t add any scripts in the last 6 months. In order to continue the development, the migration task now becomes a blocker.</li>
-<li>Team expand. We are expecting more man power on Android, the migration has to be done before they start.</li>
-</ol>
-
-
-<p>Not like last time, this is no longer a &ldquo;try out&rdquo;, it has to be done, no matter how many effort required.</p>
-
-<p>After reinstalling the Android studio and gradle, I still got the out of memory error during compile. At this point, even I can get through the compile task of each library, I may got other error when combining everything in the app project, so I have to do some experiments first. I compiled all library projects to aar and uploaded to local maven repositories, this also required me to modify the build.gradle of the app project to use aar instead of compile form source. With some luck, I can compile the app with those aar successfully.</p>
-
-<p>Next step is to make it fits my development workflow. Some library projects need to compile from source and those relatively stable libraries can use aar. Fortunately it worked as expect and did not gave me out of memory error, and even better, it also worked on Android studio without any extra modification.</p>
-
-<p>Migrating the basic workflow is just the beginning, there are still many things to test before using it to do release, like app signing, proguard, build with different package names, etc&hellip; But before those tasks, there is still one problem needed to work on. I am not sure it is just me, but the gradle configure time seems very long with multi projects setup, and it may not suppose to be that slow. I posted my question on <a href="https://plus.google.com/u/0/105980838674582844427/posts/8sYLTN6WyCt">Google plus</a> and got some quick responses from Xavier Ducrohet. He said the configure time should be around 3s if run with daemon, but what I got is at least 10s for every one, even a simple &ldquo;gradle projects&rdquo; command call. I am not sure if this is the best I can get but it would not be a great development experience if every run need to wait for 10s and the actual compile is just 2s.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-03-31T00:44:28+08:00" pubdate data-updated="true">Mar 31<span>st</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/gradle/'>gradle</a>
 
 
 </div>
