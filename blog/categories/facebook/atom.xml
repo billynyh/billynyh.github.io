@@ -4,7 +4,7 @@
   <title><![CDATA[Category: facebook | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/facebook/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-05-07T00:38:45+08:00</updated>
+  <updated>2014-05-12T00:46:21+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,49 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[F8 Mobile talks]]></title>
+    <link href="http://billynyh.github.io//blog/2014/05/12/play-list/"/>
+    <updated>2014-05-12T00:35:47+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/05/12/play-list</id>
+    <content type="html"><![CDATA[<p>Got some days off last few weeks (public holiday and AL), spent quite lots of time on watching tech talks. (Another video summary post&hellip;)</p>
+
+<h3><a href="https://www.youtube.com/watch?v=QErcmjPxEtg">Hacker Way: Designing the New Messenger</a></h3>
+
+<p>The first one I watched was about designing Facebook messenger, a little bit slow, but talked about some design iterations and considerations through out the process which is quite interesting.</p>
+
+<h3><a href="https://www.youtube.com/watch?v=mOyoTUETmSM">Hacker Way: Releasing and Optimizing Mobile Apps for the World</a></h3>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/mOyoTUETmSM" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<p>This one is really interesting. It talked about their Android app shipping schedule and workflow. The talk also included their buck system, heard this from other talks but this is the first time I heard (maybe I missed before) about the share build result over network, which is quite&hellip; crazy amazing.</p>
+
+<h3><a href="https://www.youtube.com/watch?v=TCuVxU07NWs">Hacker Way: Mobile Engineering at Facebook&rsquo;s Scale</a></h3>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/TCuVxU07NWs" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<p>Similar contents but also worth watching.</p>
+
+<h3><a href="http://www.infoq.com/presentations/Dagger">Dagger: A Fast Dependency Injector for Android and Java</a></h3>
+
+<p>I have been researching the possibility of using dependency injection in current project. I think I will use it eventually, especially Facebook and Square are using it for a while. The biggest problem right now is it may affected every part of the app and I am not comfortable doing that without unit tests&hellip;</p>
+
+<p>I also re-watched these two videos from IO 2013 as I am working on related view performance recently</p>
+
+<ul>
+<li><a href="https://www.youtube.com/watch?v=vQZFaec9NpA">Google I/O 2013 &ndash; Android Graphics Performance</a></li>
+<li><a href="https://www.youtube.com/watch?v=NYtB6mlu7vA">Google I/O 2013 &ndash; Writing Custom Views for Android</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Talks from Facebook, Paper team]]></title>
