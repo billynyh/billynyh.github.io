@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="5 years ago Where do you see yourself in 5 years. This was the very first question I got asked in an interview after graduated from university in &hellip;">
+	<meta name="description" content="In late Jan, I watched a talk &ndash; Bringing Beautiful Interactions to Android Apps from Facebook about how they use Quartz Composer(QC) when &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -78,6 +78,96 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/03/09/quartz-composer-origami/">
+		
+			Try Out Quartz Composer and Origami</a>
+	</h2>
+	<div class="entry-content">
+		<p>In late Jan, I watched a <a href="https://www.youtube.com/watch/?v=s5kNm-DgyjY">talk &ndash; Bringing Beautiful Interactions to Android Apps</a> from Facebook about how they use Quartz Composer(QC) when developing Facebok Home (and chat head). Compare to other prototyping tools, QC can better illustrate animations and interactions. It is quite impressive and I actually installed QC the day after and tried to play on it. But when I first opened it, I was totally lost, not saying it is hard to use, but it is obvious that there is a learning curve on this tool. I did not spend more time on it that time but kept it in my TODO list.</p>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/s5kNm-DgyjY" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<p>Two weeks later, Facebook released <a href="http://facebook.github.io/origami/">Origami</a>, an extension of QC. Followed with some articles about how it is used in Facebook. Yesterday I gave it another try. This time I am more serious compared to last time. My target is at least understand (not fully) how it works and be able to do a simple demo to my team.</p>
+
+<h2>Let&rsquo;s start</h2>
+
+<p>This time I started with the <a href="https://developer.apple.com/library/mac/documentation/graphicsimaging/conceptual/quartzcomposeruserguide/qc_intro/qc_intro.html">documentation</a>, not saying it is poorly documented, but it is not much fun to read it(my bad)&hellip; Then I went for tutorials, after a quick look of some articles on QC (not Origami), I had little concept of patches (but missed macro patch&hellip;), then I think maybe I can understand the Origami examples.</p>
+
+<p>When I opened the &ldquo;Photo Grid&rdquo; example, I only see three patches, I knew that there must be some hierarchy hidden from the interface, I tried to use the patch inspector to look around but have no idea where to go, I was stuck again. Then I found this <a href="http://vimeo.com/85578380">video</a> on Origami&rsquo;s twitter, which turned out was everything I needed.</p>
+
+<div class="video-container">
+<iframe src="http://player.vimeo.com/video/85578380" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
+</div>
+
+
+<pre><code>It is the visual version spaghetti code // 6:50
+</code></pre>
+
+<h2>Short notes</h2>
+
+<ul>
+<li>&ldquo;Phone&rdquo; patch is the basic component for the phone prototype, which displays an image in device frame.</li>
+<li>Use &ldquo;Render in Image&rdquo; for the content to display.</li>
+<li>Double click the &ldquo;Render in Image&rdquo; patch to edit the macro patch of it.</li>
+<li>A &ldquo;Layer&rdquo; patch will be automatically added when you drag in an image.</li>
+</ul>
+
+
+<p><img src="/images/posts/20140309/qc-1.jpg"/></p></p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="http://facebook.github.io/origami/">http://facebook.github.io/origami/</a></li>
+<li><a href="https://medium.com/the-year-of-the-looking-glass/f1173d0bd181">Introducing Origami for Quartz Composer</a></li>
+<li><a href="http://www.wired.com/wiredenterprise/2014/03/facebook-paper/">Facebook Paper Has Forever Changed the Way We Build Mobile Apps</a></li>
+<li><a href="http://vimeo.com/85578380">Vimeo &ndash; Prototyping with Facebook Origami</a>
+
+<ul>
+<li>Asset for the example <a href="https://github.com/jaythrash/spy-book">https://github.com/jaythrash/spy-book</a></li>
+</ul>
+</li>
+<li><a href="https://www.youtube.com/watch/?v=s5kNm-DgyjY">Youtube &ndash; Bringing Beautiful Interactions to Android Apps &ndash; Mobile @ Scale</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-09T19:59:11+08:00" pubdate data-updated="true">Mar 9<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/prototyping/'>prototyping</a>, <a class='category' href='/blog/categories/ux/'>ux</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -707,186 +797,6 @@
 
 
 	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/github/'>github</a>, <a class='category' href='/blog/categories/muzei/'>muzei</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/02/15/implmenting-view-gesture-1/">
-		
-			Implementing Zoomable View - Part 1</a>
-	</h2>
-	<div class="entry-content">
-		<p>Last year I implemented a custom view that supports different gestures including zoom(scale), scroll, double tap. As a newbie on custom view, the whole measuring and drawing already spent me some time, so the gesture control turned out enough to use but was actually incomplete and not finished.</p>
-
-<p>Recently, I have a task to embed my custom view to ViewPager and other custom ViewGroup that intercept touch events. As expected, my custom view takes all the touch events so the ViewPager cannot perform horizontal swipe. I woule like to take this chance to review my gesture handling and hopefully can make it work.</p>
-
-<p>What I did last year is mostly referencing Chris Banes&rsquo;s <a href="https://github.com/chrisbanes/PhotoView/blob/master/library/src/uk/co/senab/photoview/PhotoViewAttacher.java">PhotoView library</a>. The basic idea is:</p>
-
-<ul>
-<li>create a &ldquo;view attacher&rdquo; that implements a View.OnTouchListener</li>
-<li>create instance of <a href="http://developer.android.com/reference/android/view/ScaleGestureDetector.html">ScaleGesutreDetector</a> and <a href="http://developer.android.com/reference/android/view/GestureDetector.html">GestureDetector</a>, notice that <a href="https://github.com/chrisbanes/PhotoView/blob/master/library/src/uk/co/senab/photoview/gestures/GestureDetector.java">PhotoView&rsquo;s GestureDetector</a> is not the one in Android framework</li>
-<li>use those detectors in OnTouchListener&rsquo;s onTouch method</li>
-</ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ZoomableViewAttacher</span> <span class="kd">implements</span> <span class="n">View</span><span class="o">.</span><span class="na">OnTouchListener</span> <span class="o">{</span>
-</span><span class='line'>    <span class="n">GestureDetector</span> <span class="n">mGestureDetector</span><span class="o">;</span>
-</span><span class='line'>    <span class="n">ScaleGestureDetector</span> <span class="n">mScaleGestureDetector</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="o">...</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kd">final</span> <span class="kt">boolean</span> <span class="nf">onTouch</span><span class="o">(</span><span class="n">View</span> <span class="n">v</span><span class="o">,</span> <span class="n">MotionEvent</span> <span class="n">ev</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kt">boolean</span> <span class="n">handled</span> <span class="o">=</span> <span class="kc">false</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="o">...</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="kc">null</span> <span class="o">!=</span> <span class="n">mGestureDetector</span> <span class="o">&amp;&amp;</span> <span class="n">mGestureDetector</span><span class="o">.</span><span class="na">onTouchEvent</span><span class="o">(</span><span class="n">ev</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">handled</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="kc">null</span> <span class="o">!=</span> <span class="n">mScaleGestureDetector</span> <span class="o">&amp;&amp;</span> <span class="n">mScaleGestureDetector</span><span class="o">.</span><span class="na">onTouchEvent</span><span class="o">(</span><span class="n">ev</span><span class="o">))</span> <span class="o">{</span>
-</span><span class='line'>            <span class="n">handled</span> <span class="o">=</span> <span class="kc">true</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="k">return</span> <span class="n">handled</span><span class="o">;</span> <span class="c1">// or just return true;</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>So far this worked for me last year as I am using the view alone, I did not have to consider the case that the view&rsquo;s parent intercepted the touch event.</p>
-
-<p>Now the problem is, how do I prevent the ViewPager intercepting my touch event? After digging deeper, I found a requestDisallowInterceptTouchEvent method in ViewParent. According to the framework <a href="http://developer.android.com/reference/android/view/ViewParent.html#requestDisallowInterceptTouchEvent(boolean)">doc</a></p>
-
-<blockquote><p>Called when a child does not want this parent and its ancestors to intercept touch events with onInterceptTouchEvent(MotionEvent).</p><p>This parent should pass this call onto its parents. This parent must obey this request for the duration of the touch (that is, only clear the flag after this parent has received an up or a cancel.</p></blockquote>
-
-
-<p>Which means, if I call the method in correct time, I should be able to enable and disable ViewPager&rsquo;s onInterceptTouchEvent. Googled a little bit on requestDisallowInterceptTouchEvent, found some example on StackOverflow like</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">switch</span> <span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getAction</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">MotionEvent</span><span class="o">.</span><span class="na">ACTION_DOWN</span><span class="o">:</span>
-</span><span class='line'>        <span class="n">parent</span><span class="o">.</span><span class="na">requestDisallowInterceptTouchEvent</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">break</span><span class="o">;</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">MotionEvent</span><span class="o">.</span><span class="na">ACTION_CANCEL</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">MotionEvent</span><span class="o">.</span><span class="na">ACTION_UP</span><span class="o">:</span>
-</span><span class='line'>        <span class="n">parent</span><span class="o">.</span><span class="na">requestDisallowInterceptTouchEvent</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">break</span><span class="o">;</span>
-</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">break</span><span class="o">;</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This is obviously not enough for me, since it disabled the parent for the whole touch motion, if I touch on my custom and actually want to perform a page swipe on ViewPager, thie code will definitely break the ViewPager usage.</p>
-
-<p>My first attempt is something like:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="k">switch</span> <span class="o">(</span><span class="n">event</span><span class="o">.</span><span class="na">getAction</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">MotionEvent</span><span class="o">.</span><span class="na">ACTION_DOWN</span><span class="o">:</span>
-</span><span class='line'>        <span class="n">parent</span><span class="o">.</span><span class="na">requestDisallowInterceptTouchEvent</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">break</span><span class="o">;</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">MotionEvent</span><span class="o">.</span><span class="na">ACTION_CANCEL</span><span class="o">:</span>
-</span><span class='line'>    <span class="k">case</span> <span class="n">MotionEvent</span><span class="o">.</span><span class="na">ACTION_UP</span><span class="o">:</span>
-</span><span class='line'>        <span class="n">parent</span><span class="o">.</span><span class="na">requestDisallowInterceptTouchEvent</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-</span><span class='line'>        <span class="k">break</span><span class="o">;</span>
-</span><span class='line'>    <span class="k">default</span><span class="o">:</span>
-</span><span class='line'>        <span class="k">break</span><span class="o">;</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(!</span><span class="n">canScroll</span><span class="o">())</span> <span class="o">{</span>
-</span><span class='line'>        <span class="c1">// re-enable parents&#39; onInterceptTouchEvent</span>
-</span><span class='line'>        <span class="n">parent</span><span class="o">.</span><span class="na">requestDisallowInterceptTouchEvent</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>It would be great if GestureDetector can directly give me the information needed for my canScroll() method. However, it seems that GestureDetector need a few events to determine if it is a scroll, there is a gap of 3-5 events between my first ACTION_DOWN and onScoll callback, so I need a better way to determine the condition for calling parent.requestDisallowInterceptTouchEvent().</p>
-
-<p>In part 2, I will continue with the implementation of canScroll() method.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-02-15T22:27:54+08:00" pubdate data-updated="true">Feb 15<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/gesture/'>gesture</a>, <a class='category' href='/blog/categories/view/'>view</a>
 
 
 </div>

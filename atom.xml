@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-05-12T00:46:21+08:00</updated>
+  <updated>2014-06-01T23:35:05+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Why I failed to have side projects]]></title>
+    <link href="http://billynyh.github.io//blog/2014/06/01/failed-side-project/"/>
+    <updated>2014-06-01T23:18:21+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/06/01/failed-side-project</id>
+    <content type="html"><![CDATA[<p>At the beginning of last few years, I wrote down a list of things I want to do through out the year. I finished some, gave up some, and some stays on the list. One of the longest staying item is &ndash; &ldquo;start a side project&rdquo;.</p>
+
+<h2>What takes me so long</h2>
+
+<p>It is easy to come up with something, but it is even easier to ban the idea. At first I thought maybe it is easier to start when I get more experience, learned more tools, but the truth is, the more you see, the harder you start.</p>
+
+<p>For example, I come up with an idea of building an Android app that provide list of XXX and allow user to do YYY on it. Sometime I would not even start when I find that it is not easy to get the XXX list, or after I wrote some scripts to crawl the list, I get distracted in other idea and put down the started project, sometime you just get tired in work and decided to take a break in weekend.</p>
+
+<p>Obviously I am not determined enough. But another problem I found for myself is, I start losing that kind of fire I had 5 years ago.</p>
+
+<h2>Excitement</h2>
+
+<p>Two months ago, I helped in a workshop for my middle school about using <a href="http://appinventor.mit.edu/explore/">AppInventer</a> to build Android apps, targeting F1-F3 students (12-15yo). When I prepared the material, the first thing I found is that, not surprisingly, the tool has VERY limited features. I am not even sure what I can build using that, how do I give advise to those students?</p>
+
+<p>During the workshop, before telling them what the tool can/cannot do, I let them students brainstorm the project topics, and told them not to worry if it is possible, we can &ldquo;fake&rdquo; it. Turned out they came up with some interesting idea, of course most are impossible to actually build it with their skill level (or even mine) and with that tool. But seeing their discussion reminded me a very important thing, <strong>the excitement</strong>.</p>
+
+<h2>Don&rsquo;t think too much</h2>
+
+<p>People have different reasons to start side projects, for me, it is simple, just to keep myself motivated and do things that I may not have chance to do in work.</p>
+
+<h2>Related reading</h2>
+
+<ul>
+<li><a href="https://medium.com/busy-building-things/start-something-the-power-of-side-projects-648223f673af">Start Something: The Power of Side Projects</a></li>
+<li><a href="https://medium.com/freelancers-life/side-projects-are-the-new-resume-a07e211240b2">Side projects are the new resume</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[F8 Mobile talks]]></title>
@@ -1256,126 +1291,6 @@ Developer/designer should not be afraid to use UI that is not in design guidelin
 <li><a href="https://github.com/ManuelPeinado/FadingActionBar">https://github.com/ManuelPeinado/FadingActionBar</a></li>
 <li><a href="https://github.com/ManuelPeinado/GlassActionBar">https://github.com/ManuelPeinado/GlassActionBar</a></li>
 <li><a href="https://github.com/umano/AndroidSlidingUpPanel">https://github.com/umano/AndroidSlidingUpPanel</a></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Two tech talks from Twitter Android team]]></title>
-    <link href="http://billynyh.github.io//blog/2013/10/20/tech-talks-from-twitter-android/"/>
-    <updated>2013-10-20T23:48:54+08:00</updated>
-    <id>http://billynyh.github.io//blog/2013/10/20/tech-talks-from-twitter-android</id>
-    <content type="html"><![CDATA[<p>Watched two Android talks from Twitter today, one is about gradle and one about Vine.</p>
-
-
-<h3>Building Twitter for Android with Gradle</h3>
-
-<p>(by Jonathan Le &ndash; <a href="https://twitter.com/jle">https://twitter.com/jle</a>)</p>
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/EM5edIJUA10" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
-
-
-<p>The gradle one was short, mostly about the migration process of twitter Android team.
-Some interesting points from the talk:</p>
-
-
-<h4>Twitter app version</h4>
-
-<ul>
-<li>1.0: 1 committers, Ant, build time 30s</li>
-<li>4.0: 15 committers, Ant+Ivy, build time 2min</li>
-<li>5.0: 80 committers, Gradle, build time 24s
-
-<h4>Gradle process</h4></li>
-<li>setup private Sonatype Nexus repo</li>
-<li>publish aars to nexus</li>
-</ul>
-
-
-<h4>Should not use git submodules</h4>
-
-<ul>
-<li>The talk did not include more detail of this&hellip;</li>
-</ul>
-
-
-<h3>Building Vine on Android</h3>
-
-<p>(by Sara Haider &ndash; <a href="https://twitter.com/pandemona">https://twitter.com/pandemona</a>)</p>
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/7zamwc2lXhg" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
-
-
-<p>Finally have time to watch the whole video, very nice talk, included many technical tricks of building vine app. Some tricks remind me the time I was working on ActionSnap.</p>
-
-
-<h4>Playback tricks</h4>
-
-<ul>
-<li>Use MediaPlayer, TextureView(api 14) to play the video</li>
-<li>Autoplay, prefetch 2 videos</li>
-<li>MediaPlay.setLooping(true) is too slow. Early seek to improve the loop behavior</li>
-</ul>
-
-
-<h4>Recording</h4>
-
-<ul>
-<li>MediaRecorder has 700ms delay on start,stop</li>
-<li>use PreviewFrame to get images and record audio (wat?)</li>
-<li>need compare timestamp to synchronize audio/video</li>
-<li>use ~140MB memory for full 6 second cut</li>
-<li>largeHeap = true (of coz)</li>
-<li>separate process to get more memory</li>
-</ul>
-
-
-<h4>Cusor</h4>
-
-<ul>
-<li>hybrid cursor</li>
-<li>backed by ArrayList (?)</li>
-<li>update list view and write to db in the bg</li>
-</ul>
-
-
-<h4>Crash tracking</h4>
-
-<ul>
-<li>Crashlytics</li>
-<li>real time, tonnes of metadata</li>
-<li><b>zero unknown crashes #adore#</b></li>
-</ul>
-
-
-<h4>Span</h4>
-
-<ul>
-<li>bug on emoji</li>
-</ul>
-
-
-<h4>The f-word &ndash; fragmentation</h4>
-
-<ul>
-<li>Device specific hack
-
-<ul>
-<li>samsung s4 front facing camera strange aspect ratios</li>
-<li>htc not support multiple MediaPlayers at once</li>
-<li>Kindle (dumb)</li>
-</ul>
-</li>
-<li>Default camera not always back camera</li>
 </ul>
 
 ]]></content>
