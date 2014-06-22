@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-06-01T23:35:05+08:00</updated>
+  <updated>2014-06-22T20:17:12+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,58 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ViewCompat.canScrollVertically()]]></title>
+    <link href="http://billynyh.github.io//blog/2014/06/22/viewcompat-support-v4/"/>
+    <updated>2014-06-22T19:56:29+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/06/22/viewcompat-support-v4</id>
+    <content type="html"><![CDATA[<p>Due to watching world cup evey night through out the week, I spent most of my time these two weekends sleeping. Even not able to do some serious coding, I tried to clean up my long pending reading list, and I just took a look of <a href="http://developer.android.com/reference/android/support/v4/widget/SwipeRefreshLayout.html">SwipeRefreshLayout</a>.</p>
+
+<p>Saw this class a while ago, just from the name of this class, I expected it to be a ViewGroup that handles the pull gesture of the Android style pull to refresh. I was not very interested in this class because there is no plan to touch the refresh UI in work, but it is always good to know it is in the support library.</p>
+
+<p>What really caught my attention is the canChildScrollUp() method in SwipeRefreshLayout. It used ViewCompat.canScrollVertically and special handled pre-ICS.</p>
+
+<p><a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">Source line 348</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">canChildScrollUp</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">os</span><span class="o">.</span><span class="na">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.</span><span class="na">SDK_INT</span> <span class="o">&lt;</span> <span class="mi">14</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">mTarget</span> <span class="k">instanceof</span> <span class="n">AbsListView</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="kd">final</span> <span class="n">AbsListView</span> <span class="n">absListView</span> <span class="o">=</span> <span class="o">(</span><span class="n">AbsListView</span><span class="o">)</span> <span class="n">mTarget</span><span class="o">;</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getChildCount</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>                    <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">absListView</span><span class="o">.</span><span class="na">getFirstVisiblePosition</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getChildAt</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>                            <span class="o">.</span><span class="na">getTop</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getPaddingTop</span><span class="o">());</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">mTarget</span><span class="o">.</span><span class="na">getScrollY</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">ViewCompat</span><span class="o">.</span><span class="na">canScrollVertically</span><span class="o">(</span><span class="n">mTarget</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(Well I don&rsquo;t understand why the ViewCompat method cannot(?) handle pre-ICS&hellip; then what&rsquo;s the point of Compat?)</p>
+
+<p>I wasn&rsquo;t aware there is a canScrollVertically() method in View since ICS, and the ViewCompat also provides some interesting method that could simplify some custom ViewGroup implementation. Should put more time to review what&rsquo;s new in those commonly used classes as I believe there is no need to support pre-ICS soon.</p>
+
+<p>Refrerence: <a href="http://antonioleiva.com/swiperefreshlayout/">http://antonioleiva.com/swiperefreshlayout/</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Why I failed to have side projects]]></title>
@@ -1217,80 +1269,6 @@ skia  D  JPEG content is corrupt, got a zero length row(277)
 <li><a href="https://github.com/path/android-priority-jobqueue">path/android-priority-jobqueue</a> &ndash; I implemented my own, but it is always good to learn from other&rsquo;s code</li>
 <li><a href="https://github.com/koush/ion">koush/ion</a> &ndash; a full featured image download lib, with a gif player integration that could help me :p</li>
 <li><a href="https://github.com/dlew/android-movies-demo">dlew/android-movies-demo</a> &ndash; some nice animations, though I don&rsquo;t think this is a good way to use the ViewPager</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How I see Android design guideline]]></title>
-    <link href="http://billynyh.github.io//blog/2013/10/30/how-i-see-design-guideline/"/>
-    <updated>2013-10-30T23:48:54+08:00</updated>
-    <id>http://billynyh.github.io//blog/2013/10/30/how-i-see-design-guideline</id>
-    <content type="html"><![CDATA[<p>To make a good Android app, the design is important for sure, but is following the design guideline enough? I am a developer not a designer, but still want to share some thoughts on current design guideline.</p>
-
-<h2>Current design guideline is not complete</h2>
-
-<p>Mobile app design changes very fast. To make the app stand out, people put lots of effort to stay on top of the design trends, they improve existing UI, and sometimes create new. And when the public accepted that design, it may become part of the design guideline. For example, navigation drawer (sliding menu) and pull to refresh. The drawer is now in the design guideline and is even supported in support library. Pull to refresh is still new but you can see that Google have their own twist and is using in gmail and google plus app.</p>
-
-<h2>Case studies</h2>
-
-<p>Here are some apps that I think they are in a good direction of expanding the design guideline.</p>
-
-<h3>Dropbox</h3>
-
-<p>I like the way they put the tab in actionbar and combined with the app logo. You can say it does not follow the design guideline, but in my opinion, it works better, and as long as the style consistent with the Holo theme, I would say it is a good design. However, I don&rsquo;t like they put the second level tab in the bottom, may be they can try using other style of indicator.</p>
-
-<p><img src="http://billynyh.github.io//images/posts/20131030/dropbox.jpg"/></p>
-
-<h3>Flickr</h3>
-
-<p>Another UI I want to talk about is the slide up panel. I dont see many people discussing it, is it not popular? Not really. Google plus and Flickr are using it already. Comparing to navigate to another view, using gesture to drag out another view sometimes gives better user experience, you dont lose your current view and you have a chance to abort the action (slide out a little bit and close it back).</p>
-
-<p><img src="http://billynyh.github.io//images/posts/20131030/flickr-1.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/flickr-2.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/flickr-3.jpg"/></p>
-
-<p>While I write this article, I found that there is a new &ldquo;Photo&rdquo; app from Google in my application list, what supprised me is, the new share dialog. Beside the share dialog and action bar share provider, Google created a new share interface with the slide up panel. I like it.</p>
-
-<p><img src="http://billynyh.github.io//images/posts/20131030/gphoto-1.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/gphoto-2.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/gphoto-3.jpg"/></p>
-
-<h3>(Google) Play Music</h3>
-
-<p>The fading action bar is very impressive and definitely will be a trend. In the app, it has transparent action bar so you can see the whole image, and when you scroll down, it fade in to solid color to make the bars stand out. For more detail, Cyril Mottier wrote a good <a href="http://cyrilmottier.com/2013/05/24/pushing-the-actionbar-to-the-next-level/">article</a> on this.</p>
-
-<p>And beside fading, <a href="http://nicolaspomepuy.fr/?p=18">blur effect</a> is also coming. I think it is still quite computation heavy in some lower end device, but it should not stop you using it :p</p>
-
-<p><img src="http://billynyh.github.io//images/posts/20131030/gmusic-1.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/gmusic-2.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/gmusic-3.jpg"/></p>
-
-<p><img src="http://billynyh.github.io//images/posts/20131030/gmusic-4.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/gmusic-5.jpg"/>
-<img src="http://billynyh.github.io//images/posts/20131030/gmusic-6.jpg"/></p>
-
-<h2>Keep changing</h2>
-
-<p>Design guideline will keep changing. Limiting yourself in the guideline does not mean your app is good,
-sometime you need to study your users and expand the guideline yourself.
-Developer/designer should not be afraid to use UI that is not in design guideline, as long as it is good, it will be in the guideline.</p>
-
-<h3>Futher reading</h3>
-
-<ul>
-<li><a href="http://developer.android.com/design/patterns/new.html">New in Android(KitKat)</a></li>
-<li><a href="http://www.androiduipatterns.com/2013/09/googles-android-apps-look-boring-and.html">Google&rsquo;s Android Apps Look Boring &ndash; And It&rsquo;s a Good Thing</a></li>
-<li><a href="http://www.fastcolabs.com/3012752/four-android-app-design-guidelines-you-should-break">Four Android App Design Guidelines You Should Break</a>
-
-<ul>
-<li>(I dont agree on some of his points, may write another post on this)</li>
-</ul>
-</li>
-<li><a href="https://github.com/ManuelPeinado/FadingActionBar">https://github.com/ManuelPeinado/FadingActionBar</a></li>
-<li><a href="https://github.com/ManuelPeinado/GlassActionBar">https://github.com/ManuelPeinado/GlassActionBar</a></li>
-<li><a href="https://github.com/umano/AndroidSlidingUpPanel">https://github.com/umano/AndroidSlidingUpPanel</a></li>
 </ul>
 
 ]]></content>
