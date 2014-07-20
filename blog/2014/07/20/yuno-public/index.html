@@ -1,0 +1,191 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Y U NO public (or protected) - Just code it</title>
+	<meta name="author" content="Billy Ng">
+
+	
+	<meta name="description" content="Last time talked about SwipeRefreshLayout in support v4, finally got chance to use it in work. The integration is very simple and does not change the &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="" rel="alternate" title="Just code it" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Just code it</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/about"><i class="fa-android"></i> About me</a></li>
+	<li><a href="/"><i class="fa-code"></i> Blog</a></li>
+	<li><a href="/blog/archives"><i class="fa-database"></i> Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/about"><i class="fa-android"></i> About me</a></li>
+	<li><a href="/"><i class="fa-code"></i> Blog</a></li>
+	<li><a href="/blog/archives"><i class="fa-database"></i> Archives</a></li>
+</ul>
+</div>
+	</div>
+    <!--
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:billynyh.github.io/">
+			</form>
+		</div>
+	</div>
+    -->
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/billynyh" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/+BillyNgYuHang?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/billynyh" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/billynyh" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/billynyh">LinkedIn</a>
+		
+		
+		
+		
+    
+	</div>
+    <!--
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:billynyh.github.io/">
+	</form>
+    -->
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Y U NO Public (or Protected)</h2>
+	<div class="entry-content"><p>Last time talked about SwipeRefreshLayout in support v4, finally got chance to use it in work. The integration is very simple and does not change the structure of ListView like <a href="https://github.com/chrisbanes/android-pulltorefresh">Android-PullToRefresh</a> (no offensive, I have been using the library for a year and still love it).</p>
+
+<p>I also like the progress bar embeded in the view very much, and would like to use it in other components to make my apps&rsquo;s UI consistent. A quick look to the <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">source code</a> and found that it is implemented in the class <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeProgressBar.java">SwipeProgressBar</a>. It is sad that the class is not public and it seems there is no similar class in the framework and support library.</p>
+
+<p>So, I just copy the code of SwipeProgressBar and BakedBezierInterpolator myself and put it in my common lib, then use it in my app.</p>
+
+<p>I understand that there are some kind of design principle of the class/methods visibility, but sometime it is quite frustrating that after going through the framework source code and found that you cannot to extend the class because some properties are private and does not have a public/protected getter.</p>
+
+<p><img src="/images/posts/20140720/yuno.jpg" style="width:300px" /></p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="http://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">Controlling Access to Members of a Class</a></li>
+</ul>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-07-20T20:47:27+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Billy Ng
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'billynyh';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://billynyh.github.io//blog/2014/07/20/yuno-public/';
+        var disqus_url = 'http://billynyh.github.io//blog/2014/07/20/yuno-public/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

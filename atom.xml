@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-06-22T20:17:12+08:00</updated>
+  <updated>2014-07-20T22:01:58+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,30 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Y U NO public (or protected)]]></title>
+    <link href="http://billynyh.github.io//blog/2014/07/20/yuno-public/"/>
+    <updated>2014-07-20T20:47:27+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/07/20/yuno-public</id>
+    <content type="html"><![CDATA[<p>Last time talked about SwipeRefreshLayout in support v4, finally got chance to use it in work. The integration is very simple and does not change the structure of ListView like <a href="https://github.com/chrisbanes/android-pulltorefresh">Android-PullToRefresh</a> (no offensive, I have been using the library for a year and still love it).</p>
+
+<p>I also like the progress bar embeded in the view very much, and would like to use it in other components to make my apps&rsquo;s UI consistent. A quick look to the <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">source code</a> and found that it is implemented in the class <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeProgressBar.java">SwipeProgressBar</a>. It is sad that the class is not public and it seems there is no similar class in the framework and support library.</p>
+
+<p>So, I just copy the code of SwipeProgressBar and BakedBezierInterpolator myself and put it in my common lib, then use it in my app.</p>
+
+<p>I understand that there are some kind of design principle of the class/methods visibility, but sometime it is quite frustrating that after going through the framework source code and found that you cannot to extend the class because some properties are private and does not have a public/protected getter.</p>
+
+<p><img src="http://billynyh.github.io//images/posts/20140720/yuno.jpg" style="width:300px" /></p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="http://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">Controlling Access to Members of a Class</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ViewCompat.canScrollVertically()]]></title>
@@ -1218,59 +1242,6 @@ skia  D  JPEG content is corrupt, got a zero length row(277)
 <h3>ActionBar</h3>
 
 <p>Before the official actionbar-compact was released after GoogleIO, I think most people will use ActionBarSherlock. However, I implmented my own. I think it gives me more flexibility if you implemented your own, especially when you dont need those inflate from menu support. The down side is you lost support from all opensource projects, I have to implement my own refresh/progress buttons, ShareActionProvider, cannot play with those fancy fading actionbar, not boring actionbar library, may even need to write my own android style pull to refresh. Those disadvantage are usually enough to stop me from using my own implementation, but I decided to keep it. Mostly because it turns out not that hard to migrate to my own actionbar as long as it is opensourced and I do not have to worry about two libraries not working together (because I am not using any&hellip;).</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Github TODO list 2013]]></title>
-    <link href="http://billynyh.github.io//blog/2013/12/22/github-collection/"/>
-    <updated>2013-12-22T23:48:54+08:00</updated>
-    <id>http://billynyh.github.io//blog/2013/12/22/github-collection</id>
-    <content type="html"><![CDATA[<p>Found some cool projects on Github but still do not have time to play with it. Here is my list containing projects I found in last 6 months:</p>
-
-<h3>Action Bar</h3>
-
-<ul>
-<li><a href="https://github.com/flavienlaurent/NotBoringActionBar">flavienlaurent/NotBoringActionBar</a> &ndash; this is the future of action bar, top of my list.</li>
-</ul>
-
-
-<h3>Facebook</h3>
-
-<ul>
-<li><a href="https://github.com/facebook/rebound">facebook/rebound</a> &ndash; though not everyone is happy with the facebook app on Android, it is so nice to see Facebook opensource some Android projects.</li>
-</ul>
-
-
-<h3>UI</h3>
-
-<ul>
-<li><a href="https://github.com/SpecialCyCi/AndroidResideMenu">SpecialCyCi/AndroidResideMenu</a> &ndash; not so Android accroding to current design guideline, but&hellip; why not? :D</li>
-<li><a href="https://github.com/6wunderkinder/android-sliding-layer-lib">6wunderkinder/android-sliding-layer-lib</a></li>
-<li><a href="https://github.com/umano/AndroidSlidingUpPanel">umano/AndroidSlidingUpPanel</a> &ndash; this is the second top of my list</li>
-<li><a href="https://github.com/etsy/AndroidStaggeredGrid">etsy/AndroidStaggeredGrid</a> &ndash; was featured in <a href="http://youtu.be/GjUxEddmjFw?t=20m26s">Android Design in Action: Our Favorite Design Details</a>, should keep an eye on this team.</li>
-<li><a href="https://github.com/edmodo/cropper">edmodo/cropper</a> &ndash; image cropper UI</li>
-<li><a href="https://github.com/gabrielemariotti/colorpickercollection">gabrielemariotti/colorpickercollection</a></li>
-</ul>
-
-
-<h3>Network</h3>
-
-<ul>
-<li>Have not spend much time on studying network library, not sure what kind of improvement I will get on using this</li>
-<li><a href="https://github.com/square/okhttp">square/okhttp</a></li>
-<li><a href="https://android.googlesource.com/platform/frameworks/volley">Android/volley</a> &ndash; this is not on github, just put it here also&hellip; <a href="https://developers.google.com/events/io/sessions/325304728">Google IO session</a></li>
-</ul>
-
-
-<h3>other</h3>
-
-<ul>
-<li><a href="https://github.com/path/android-priority-jobqueue">path/android-priority-jobqueue</a> &ndash; I implemented my own, but it is always good to learn from other&rsquo;s code</li>
-<li><a href="https://github.com/koush/ion">koush/ion</a> &ndash; a full featured image download lib, with a gif player integration that could help me :p</li>
-<li><a href="https://github.com/dlew/android-movies-demo">dlew/android-movies-demo</a> &ndash; some nice animations, though I don&rsquo;t think this is a good way to use the ViewPager</li>
-</ul>
-
 ]]></content>
   </entry>
   
