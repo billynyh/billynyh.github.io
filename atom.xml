@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-07-20T22:17:21+08:00</updated>
+  <updated>2014-07-20T22:34:57+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -18,11 +18,11 @@
     <link href="http://billynyh.github.io//blog/2014/07/20/yuno-public/"/>
     <updated>2014-07-20T20:47:27+08:00</updated>
     <id>http://billynyh.github.io//blog/2014/07/20/yuno-public</id>
-    <content type="html"><![CDATA[<p>Recently started a new project in work so I finally have a chance to use SwipeRefreshLayout in work. The integration is very simple and does not change the structure of ListView like <a href="https://github.com/chrisbanes/android-pulltorefresh">Android-PullToRefresh</a> (I still love that library).</p>
+    <content type="html"><![CDATA[<p>Recently started a new project in work so I finally have a chance to use SwipeRefreshLayout. The integration is very simple and does not change the structure of ListView like <a href="https://github.com/chrisbanes/android-pulltorefresh">Android-PullToRefresh</a> (I still love that library), so it should be easier to perform custom logic on the ListView afterwards.</p>
 
 <p>I also like the progress bar embeded in the view very much, and would like to use it in other components to make my apps&rsquo;s UI consistent. A quick look to the <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">source code</a> and found that it is implemented in the class <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeProgressBar.java">SwipeProgressBar</a>. It is sad that the class is not public and it seems there is no similar class in the framework and support library.</p>
 
-<p>So, I just copy the code of SwipeProgressBar and BakedBezierInterpolator myself and put it in my common lib, then use it in my app.</p>
+<p>So, I just copy the code of SwipeProgressBar and BakedBezierInterpolator(required by SwipeProgressBar and also not public) myself and put it in my common lib, then use it in my app.</p>
 
 <p>I understand that there are some kind of design principle of the class/methods visibility, but sometime it is quite frustrating that after going through the framework source code and found that you cannot to extend the class because some properties are private and does not have a public/protected getter.</p>
 
