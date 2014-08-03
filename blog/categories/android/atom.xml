@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/android/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-07-25T01:15:30+08:00</updated>
+  <updated>2014-08-03T12:44:08+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,72 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Quick look of messaging app UI]]></title>
+    <link href="http://billynyh.github.io//blog/2014/08/03/messaging-ui/"/>
+    <updated>2014-08-03T12:13:04+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/08/03/messaging-ui</id>
+    <content type="html"><![CDATA[<p>I use messaging app everyday, whatsapp, Facebook messenger, gtalk, web and mobile. The UI of different apps looks natural to me and never tried to &ldquo;see&rdquo; the design of it.</p>
+
+<p>Recently I am working on a messaging UI with a screenshot designer gave me. When I try to imagine how will this design looks like with real chat usage, I am sure there are lots of details not included in the design so I take a deeper look of the messaging app I used everyday.</p>
+
+<p>When you received a message, you usually can see sender information (name / avatar), message content, and sent time. And for the message you send, you may also see deliver status (sent/fail/received/read), retry when fail.</p>
+
+<p>Here are some elements besdies those basic thing.</p>
+
+<h2>Date header</h2>
+
+<p>To avoid displaying the date in every message, a common handling is to have a &ldquo;Date header&rdquo; to divide the messages, and whatsapp also added a sticky header for the date.</p>
+
+<p><a rel="gallery-date" href="/images/posts/20140803/b-2.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-2.jpg"/>
+</a>
+<a rel="gallery-date" href="/images/posts/20140803/b-3.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-3.jpg"/>
+</a></p>
+
+<h2>1-to-1 message VS group chat</h2>
+
+<p>In whatsapp 1-to-1, it only shows the name in action bar and does not include it in the content, it totally makes sense because you know who you are talking to when you are in that page. And for group chat, as more then one people you are talking to but the incoming messages are all aligned left, it is necessary to have the name before each message.</p>
+
+<p>Facebook messenger also has similar logic of adding name but it is outside the bubble.</p>
+
+<p></p>
+<a rel="gallery-chat" href="/images/posts/20140803/b-0.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-0.jpg"/>
+</a>
+<a rel="gallery-chat" href="/images/posts/20140803/b-6.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-6.jpg"/>
+</a>
+</p></p>
+
+<h2>Message grouping</h2>
+
+<p>Most messaging app styled the messages with talk bubbles, it is interesting to see that some of them are not simply a bubble.</p>
+
+<p>
+<a rel="gallery-grouping" href="/images/posts/20140803/b-5.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-5.jpg"/>
+</a>
+<a rel="gallery-grouping" href="/images/posts/20140803/b-3.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-3.jpg"/>
+</a>
+<a rel="gallery-grouping" href="/images/posts/20140803/b-1.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-1.jpg"/>
+</a>
+</p>
+
+
+<p>For Facebook messenger, I found that when continuous messages from same person is grouped, avatar is only showed once, in both 1-to-1 or group message. However, sometimes messages are not grouped, I guess it only groups messages within a short time.</p>
+
+<p>For whatsapp, it groups continuous messages to one single bubble, my first reaction is it would be fun to write a list view adapter for that, need to have 3 item types for one message (start, middle, end) and the types may change when new messages come in, eg. end &ndash;> middle.</p>
+
+<h2>Understand what&rsquo;s behind it</h2>
+
+<p>It is easy to reference other&rsquo;s UI, but it is also important to understand why they handle information that way and even we will not handle like them, make sure we aware of it.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Y U NO public (or protected)]]></title>
@@ -153,41 +219,6 @@
 <iframe src="http://www.youtube.com/embed/e2w8z6mI47U" frameborder="0" allowfullscreen></iframe>
 </div>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android image decode bug on Samsung devices]]></title>
-    <link href="http://billynyh.github.io//blog/2014/04/13/android-image-black-lines/"/>
-    <updated>2014-04-13T23:21:18+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/04/13/android-image-black-lines</id>
-    <content type="html"><![CDATA[<h2>Image decode bug on Samsung devices</h2>
-
-<p>Few weeks ago I got some users reported about seeing &ldquo;black lines&rdquo; on the images. In 9GAG app, displaying images is everything so I can&rsquo;t just leave the problem unsolved.</p>
-
-<p>At first I thought it is a problem I worked on before that when multiple download tasks running for the same image, may corrupt the file. However, this time is a little bit different.</p>
-
-<p><img src="/images/posts/20140413/blacklines.png"/></p>
-
-<p>I checked those reports and find that only users using (high end?) Samsung devices (S4 and Note3) hit this problem, and I cannot reproduce the problem on my testing devices. Luckily, we recently equipped a Samsung Galaxy S4 in office so I can schedule some time on this problem. And they are actually not black lines, they are transparent lines&hellip;</p>
-
-<p>Even I suspected it is a manufacture specific problem, I did not expect I can reproduce the problem easily, so I am a little bit surprised to see the problem on the device. There are two possible causes of the problem, 1. the image file corrupted, 2. the image is correct but corrupted during decode to bitmap object. After a little test, I can confirm that I am dealing with (2)&hellip; When debugging with logcat, the following logs appear everytime the problem occurs.</p>
-
-<pre><code>skia  D  JPEG content is corrupt, got a zero length row(272)
-skia  D  JPEG content is corrupt, got a zero length row(273)
-skia  D  JPEG content is corrupt, got a zero length row(274)
-skia  D  JPEG content is corrupt, got a zero length row(275)
-skia  D  JPEG content is corrupt, got a zero length row(276)
-skia  D  JPEG content is corrupt, got a zero length row(277)
-</code></pre>
-
-<p>I thought once I have the error message, I am done, problem like this must be all over google and stackoverflow&hellip;</p>
-
-<p>Nope, <a href="https://www.google.com/search?q=skia+JPEG+content+is+corrupt">not this time</a>.</p>
-
-<p>There is not much I can do when there is only logs but no error message returned, I can&rsquo;t even detect the problem and reload the images. So I approach to tackle the problem is to reduce the chance of happening instead of fixing it. One observation is that, even this is not a step of reproduce, it usually/always comes with a dalvikvm heap grow. Follow on this direction and tuned a bit memory performance, somehow like harder to hit the problem. (magic?)</p>
-
-<p>This is for sure not a &ldquo;fix&rdquo;, and &ldquo;looks harder to hit the problem&rdquo; could actually be luck, but that&rsquo;s all I can get in a few hour scheduled time.</p>
 ]]></content>
   </entry>
   

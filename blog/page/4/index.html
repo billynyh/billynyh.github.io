@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="This weekend, I am working on my Muzei extension and try to add a setting page to it. It is not hard to write everything myself, but I was not in &hellip;">
+	<meta name="description" content="Background Last week I was working on a remove action on ViewPager, so based on the knowledge from ListView&rsquo;s adapter, I tried removing the &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -88,6 +88,364 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/03/02/fragment-state-pager-adapter/">
+		
+			A Deeper Look of ViewPager and FragmentStatePagerAdaper</a>
+	</h2>
+	<div class="entry-content">
+		<h2>Background</h2>
+
+<p>Last week I was working on a remove action on ViewPager, so based on the knowledge from ListView&rsquo;s adapter, I tried removing the item and called notifyDataSetChanged, it didn&rsquo;t work. So I googled a little bit and found that I need to override the getItemPosition method in PagerAdapter when removing item.</p>
+
+<p>This is the doc from PagerAdapter</p>
+
+<blockquote><p>A data set change may involve pages being added, removed, or changing position. The ViewPager will keep the current page active provided the adapter implements the method getItemPosition(Object).</p></blockquote>
+
+<p>and description of getItemPosition</p>
+
+<blockquote><p>Called when the host view is attempting to determine if an item&rsquo;s position has changed. Returns POSITION_UNCHANGED if the position of the given item has not changed or POSITION_NONE if the item is no longer present in the adapter.</p></blockquote>
+
+<p>Then I put it in my pager adapter, got a different behavior, but still not work correctly. Three thoughts came to me immediately:</p>
+
+<ol>
+<li>something wrong in my getItemPosition</li>
+<li>something wrong when I integrate with my other code.</li>
+<li>something wrong in FragmentStatePagerAdapter</li>
+</ol>
+
+
+<p>For 1, it is easy to verify by printing logs and it looked good to me. 2, I don&rsquo;t think so but still spend some time to check my code first. As expected, problem still existed. I always have a problem with Fragment lifecycle, everytime I thought I understand more, a new problem came out and breaks my understanding of fragment lifecycle. I tried hard to avoid go deep to the implementation of FragmentStatePagerAdapter, but this time I have no choice.</p>
+
+<h2>FragmentStatePagerAdapter</h2>
+
+<p>I am a little bit surprised by the <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/app/FragmentStatePagerAdapter.java">short code length</a> of it.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="c1">//https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/app/FragmentStatePagerAdapter.java</span>
+</span><span class='line'><span class="kd">private</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Fragment</span><span class="o">&gt;</span> <span class="n">mFragments</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Fragment</span><span class="o">&gt;();</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="n">Object</span> <span class="nf">instantiateItem</span><span class="o">(</span><span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="kt">int</span> <span class="n">position</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">mFragments</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&gt;</span> <span class="n">position</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Fragment</span> <span class="n">f</span> <span class="o">=</span> <span class="n">mFragments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">position</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">f</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">f</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">mCurTransaction</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">mCurTransaction</span> <span class="o">=</span> <span class="n">mFragmentManager</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">Fragment</span> <span class="n">fragment</span> <span class="o">=</span> <span class="n">getItem</span><span class="o">(</span><span class="n">position</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="n">mFragments</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">position</span><span class="o">,</span> <span class="n">fragment</span><span class="o">);</span>
+</span><span class='line'>    <span class="n">mCurTransaction</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">container</span><span class="o">.</span><span class="na">getId</span><span class="o">(),</span> <span class="n">fragment</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">return</span> <span class="n">fragment</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">destroyItem</span><span class="o">(</span><span class="n">ViewGroup</span> <span class="n">container</span><span class="o">,</span> <span class="kt">int</span> <span class="n">position</span><span class="o">,</span> <span class="n">Object</span> <span class="n">object</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">Fragment</span> <span class="n">fragment</span> <span class="o">=</span> <span class="o">(</span><span class="n">Fragment</span><span class="o">)</span><span class="n">object</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">mCurTransaction</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">mCurTransaction</span> <span class="o">=</span> <span class="n">mFragmentManager</span><span class="o">.</span><span class="na">beginTransaction</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="o">...</span>
+</span><span class='line'>    <span class="n">mSavedState</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">position</span><span class="o">,</span> <span class="n">mFragmentManager</span><span class="o">.</span><span class="na">saveFragmentInstanceState</span><span class="o">(</span><span class="n">fragment</span><span class="o">));</span>
+</span><span class='line'>    <span class="n">mFragments</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">position</span><span class="o">,</span> <span class="kc">null</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">mCurTransaction</span><span class="o">.</span><span class="na">remove</span><span class="o">(</span><span class="n">fragment</span><span class="o">);</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Here is what FragmentStatePagerAdapter does in instantiateItem and destroyItem, in short, it maintains an ArrayList mFragments which mFragments.get(i) returns the fragment that is in position i, null if fragment not in fragment manager. By default, ViewPager will keep one item before and after current item, so if you are at position 1 (0-based), mFragments will be like</p>
+
+<table>
+<thead>
+<tr>
+<th> 0 </th>
+<th> 1 </th>
+<th> 2 </th>
+<th> 3 </th>
+<th> 4 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> F0 </td>
+<td> F1 </td>
+<td> F2 </td>
+<td> null </td>
+<td> null </td>
+</tr>
+</tbody>
+</table>
+
+
+<h2>Remove item</h2>
+
+<p>What will happen if I remove F1 and call notifyDataSetChanged? the result of getItemPosition should be</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>F0: 0 (or POSITION_UNCHANGED?)
+</span><span class='line'>F1: POSITION_NONE
+</span><span class='line'>F2: 1</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Right?</p>
+
+<p>Then I expect mFragments become</p>
+
+<table>
+<thead>
+<tr>
+<th> 0 </th>
+<th> 1 </th>
+<th> 2 </th>
+<th> 3 </th>
+<th> 4 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td> F0 </td>
+<td> F2 </td>
+<td> null </td>
+<td> null </td>
+<td> null </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>But from the source of FragmentStatePagerAdapter, I don&rsquo;t think it has any handling of it. I copied the source and added some log to dump mFragments out, and find that it is like</p>
+
+<table>
+<thead>
+<tr>
+<th align="left"> Step </th>
+<th> What I see </th>
+<th> 0 </th>
+<th> 1 </th>
+<th> 2 </th>
+<th> 3 </th>
+<th> 4 </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"> 1 </td>
+<td>curr item F1 </td>
+<td> F0 </td>
+<td> F1 </td>
+<td> F2 </td>
+<td> null </td>
+<td> null </td>
+</tr>
+<tr>
+<td align="left"> 2 </td>
+<td>after remove F1, F2 becomes curr item </td>
+<td> F0 </td>
+<td> null </td>
+<td>  F2 </td>
+<td> null </td>
+<td> null </td>
+</tr>
+<tr>
+<td align="left"> 3 </td>
+<td>swipe next, no item displayed but F4 instantiated </td>
+<td> null </td>
+<td> null </td>
+<td> F2 </td>
+<td> F4 </td>
+<td> null </td>
+</tr>
+<tr>
+<td align="left"> 4 </td>
+<td>swipe next, curr item F4 </td>
+<td> null </td>
+<td> null </td>
+<td> F2 </td>
+<td> F4 </td>
+<td> F5 </td>
+</tr>
+<tr>
+<td align="left"> 5 </td>
+<td>swipe next, curr item F5 </td>
+<td> null </td>
+<td> null </td>
+<td> null </td>
+<td> F4 </td>
+<td> F5 </td>
+</tr>
+</tbody>
+</table>
+
+
+<p>then the app crashed on step 5 when it tries to destroy F2.</p>
+
+<h2>Dafaq?</h2>
+
+<p>First of all, what happened in step 2? It just removed F1 and left F2 there, and ViewPager just display it?</p>
+
+<p>Yes, something like that.</p>
+
+<ol>
+<li>When F1 is removed and called notifyDataSetChanged, ViewPager will call getItemPosition for each item, in the order of F0, F1, F2.</li>
+<li>When POSITION_NONE is returned for F1, adapter&rsquo;s destroyItem is called and F1 is removed from FragmentManager and mFragments.</li>
+<li>Then for F2, it returned the new position 1, which match the current position, so ViewPager uses F2 directly, but <strong>leave mFragments in adapter not updated</strong>.</li>
+<li>After that, it should create F3 by calling instantiateItem on position 2, however, as mFragments still keeping F2 in position 2, it is directly returned and F3 is never created.</li>
+<li>In the first swipe after remove, ViewPager tries to display data in position 2 which the fragment F2 is already used in position 1. At the same time, F0 is removed from FragmentManager, F4 is created as item in position 3.</li>
+<li>Second swipe, position 3(F4) becomes current item, position 1(F2) removed from FragmentManager, F5 created for position 4.</li>
+<li>Third swipe, position 4(F5) becomes current item, ViewPager tried to destroy position 2, but position 2 is also F2, destroying that cause
+
+<blockquote><p>IllegalStateException: Fragment {} is not currently in the FragmentManager.</p></blockquote></li>
+</ol>
+
+
+<h2>Workaround</h2>
+
+<p>When I tried to isolate the problem, I accidentally return POSITION_NONE for all item, and it actually gave the result I want without crash. It worked because all fragments are destroyed in notifyDataSetChanged and re-instantiated, it does the tricks but may cause other performance problem so I am looking for a better solution.</p>
+
+<h2>Possible fix</h2>
+
+<p>I have not start yet, but as mFragments in FragmentStatePagerAdapter is private, extending it and override some methods cannot change it at all. Good news is, you can copy the source and compile it yourself.</p>
+
+<p>To fix this, you need to find a way to update mFragments after checking getItemPosition and destroyItem. My initial thoughts is to handle that in finishUpdate(). The new finishUpdate will become something like:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">finishUpdate</span><span class="o">(</span><span class="n">ViewGroup</span> <span class="n">container</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">mCurTransaction</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">mCurTransaction</span><span class="o">.</span><span class="na">commitAllowingStateLoss</span><span class="o">();</span>
+</span><span class='line'>        <span class="n">mCurTransaction</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+</span><span class='line'>        <span class="n">mFragmentManager</span><span class="o">.</span><span class="na">executePendingTransactions</span><span class="o">();</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Fragment</span><span class="o">&gt;</span> <span class="n">update</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">Fragment</span><span class="o">&gt;();</span>
+</span><span class='line'>    <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="o">,</span> <span class="n">n</span><span class="o">=</span><span class="n">mFragments</span><span class="o">.</span><span class="na">size</span><span class="o">();</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">Fragment</span> <span class="n">f</span> <span class="o">=</span> <span class="n">mFragments</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">f</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="k">continue</span><span class="o">;</span>
+</span><span class='line'>        <span class="kt">int</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">getItemPosition</span><span class="o">(</span><span class="n">f</span><span class="o">);</span>
+</span><span class='line'>        <span class="k">while</span> <span class="o">(</span><span class="n">update</span><span class="o">.</span><span class="na">size</span><span class="o">()</span> <span class="o">&lt;=</span> <span class="n">pos</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="n">update</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>        <span class="n">update</span><span class="o">.</span><span class="na">set</span><span class="o">(</span><span class="n">pos</span><span class="o">,</span> <span class="n">f</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>    <span class="n">mFragments</span> <span class="o">=</span> <span class="n">update</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>One problem is that finishUpdate is also called in other places so need to make sure this change will not break other code and not causing performance issue.</p>
+
+<h2>About this post&hellip;</h2>
+
+<p>At first I just want to write a short notes on the problem I met during work, then I tried to isolate the problem and reproduce it, tried to find similar posts on stackoverflow, read the soure code to confirm the problem, and even tried to fix it&hellip; This is totally not my plan for this weekend but I actually quite enjoy reading the source code of support library.</p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="https://plus.google.com/u/0/105980838674582844427/posts/a1xwgEEehCs">Discussion on gplus</a> thx Adam Powell for replying my post.</li>
+<li>Source of <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/view/ViewPager.java">ViewPager</a> and <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/app/FragmentStatePagerAdapter.java">FragmentStatePagerAdapter</a></li>
+<li><a href="https://code.google.com/p/android/issues/detail?id=37990">https://code.google.com/p/android/issues/detail?id=37990</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-02T21:01:40+08:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/viewpager/'>viewpager</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -549,63 +907,6 @@
 
 
 	<a class='category' href='/blog/categories/android/'>android</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2013/12/23/my-2013-development/">
-		
-			My 2013 Android Development</a>
-	</h2>
-	<div class="entry-content">
-		<p>2013 was a fresh start for me. I joined a new team, started the Android product from scratch, get a nice number of active users and keep it growing. During my development, I referenced many opensource projects and learnt alot from them.</p>
-
-<h3><a href="https://github.com/kevinsawicki/http-request">kevinsawicki/http-request</a></h3>
-
-<p>This is the very first library I added to my project (support-v4 does not count). This library provided a nice wrap of http call. I am not sure if this can be used with other network library like square/okhttp and android/volley, hope I have time to try it out in 2014.</p>
-
-<h3><a href="https://github.com/jfeinstein10/SlidingMenu">jfeinstein10/SlidingMenu</a></h3>
-
-<p>This is the sliding menu I used at the beginning, I like the effect very much. Although I switched to Android DrawerLayout after it was introduced in support-v4, I do like the old SlidingMenu more. Personally I like to have the drawer push the content out, DrawerLayout is more like an overlay, they both make sense to me, let see will the design guideline include this kind of UI also.</p>
-
-<h3><a href="https://github.com/square/otto">square/otto</a></h3>
-
-<p>I am a big fan of Square opensource projects but I was not using any event bus so when I saw otto I did not get it at first. When things getting complicated that you cannot write everything in your Activity/Fragment, you will try to split the logic to different components. The old school way to communicate between components is implements some kind of listener, it works for a while, a short while&hellip; The app goes complicated way faster than I expect, so I decided to make a big structure change by using an event bus system. I have not compared other event bus library but otto works for me perfectly.</p>
-
-<h3>ActionBar</h3>
-
-<p>Before the official actionbar-compact was released after GoogleIO, I think most people will use ActionBarSherlock. However, I implmented my own. I think it gives me more flexibility if you implemented your own, especially when you dont need those inflate from menu support. The down side is you lost support from all opensource projects, I have to implement my own refresh/progress buttons, ShareActionProvider, cannot play with those fancy fading actionbar, not boring actionbar library, may even need to write my own android style pull to refresh. Those disadvantage are usually enough to stop me from using my own implementation, but I decided to keep it. Mostly because it turns out not that hard to migrate to my own actionbar as long as it is opensourced and I do not have to worry about two libraries not working together (because I am not using any&hellip;).</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-23T23:48:54+08:00" pubdate data-updated="true">Dec 23<span>rd</span>, 2013</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/github/'>github</a>
 
 
 </div>
