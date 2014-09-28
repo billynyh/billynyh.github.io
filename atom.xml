@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-08-03T21:51:22+08:00</updated>
+  <updated>2014-09-28T15:35:16+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,71 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android XMPP Development]]></title>
+    <link href="http://billynyh.github.io//blog/2014/09/28/android-xmpp-dev/"/>
+    <updated>2014-09-28T15:31:48+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/09/28/android-xmpp-dev</id>
+    <content type="html"><![CDATA[<p>I was working on a chat feature on Android last two months using the aSmack library, here are some notes for future reference, although some detail may already not applicable for latest version of smack.</p>
+
+<p><a href="https://github.com/igniterealtime/Smack">Smack</a></p>
+
+<blockquote><p>Smack is a library for communicating with XMPP servers to perform real-time communications, including instant messaging and group chat.<br/>    <br/>Extremely simple to use, yet powerful API. Sending a text message to a user can be accomplished in only a few lines of code</p></blockquote>
+
+
+<p><a href="https://github.com/Flowdalic/asmack">aSmack</a></p>
+
+<blockquote><p>buildsystem for Smack on Android</p></blockquote>
+
+
+<h2>Integration</h2>
+
+<p>The sample code is very simple, just create a connection object, .connect(), .login(), create a chat object and send. But to integrate to Android, of course we need to do it in a background service, and here are the items I personally found difficult to handle well.</p>
+
+<ul>
+<li>Handle connection state, connection listener seems not handle all connection events</li>
+<li>May stuck in strange login state</li>
+<li>User do action while connecting</li>
+<li>Decide when to close the connection and stop background service</li>
+<li>Smack does not have much doc</li>
+<li>aSmack does not have doc at all</li>
+<li>Smack is still in development</li>
+<li>Not so extensible in some cases and it is hard to modify the library</li>
+</ul>
+
+
+<h2>Customized login method</h2>
+
+<p>If you customized the xmpp server to provide custom authenticate logic to integrate to external service, you can extends SASLMechanism in client side to support that. However, the authenticate call only accept jid and password parameter, and you may need to do some hack to pass more data to it if your authentication api required. Also, the response format of the login call is very limited, you cannot return extra customized error message so there may be some troubles when you want to have different handling on error cases in client side.</p>
+
+<h2>Customized IQ</h2>
+
+<p>Adding customized IQ is quite easy in smack, though you need it in a few places and may not work if you missed one. For one IQ type, you need to be clear on two things, the format you sent out and the format you receive. For the ease of development, you may want to put both implementation in one class, just make sure you don&rsquo;t messed with it.</p>
+
+<p>For sent out, you actually just need to construct the xml string and return in getChildElementXML(), no other setup needed.</p>
+
+<p>For receiving IQ response, first you need to create IQProvider and add to ProviderManager, matching the xmlns in the query object. The IQProvider is used to convert the response packet to your customized IQ object. Then you need to extends PacketListener, and when you create the connection object, add the listener to it, with a PacketTypeFilter to match your IQ class. With both provider and listener setup correctly, you should be able to receive the response of the IQ.</p>
+
+<h2>XEP 0198 &ndash; stream management</h2>
+
+<p>I have no knowledge of XMPP before working on this project (actually still don&rsquo;t know much about the protocol), but after implemented the basic program flow, we found that it is easy to trigger some message lost conditions. Turned out that xmpp is designed for stable network condition, so the support of mobile usage is actually quite bad.</p>
+
+<ul>
+<li><a href="http://fnanp.in-ulm.de/blog/2014/01/16/01-woes.html">http://fnanp.in-ulm.de/blog/2014/01/16/01-woes.html</a></li>
+<li><a href="http://op-co.de/blog/posts/mobile_xmpp_in_2014/">http://op-co.de/blog/posts/mobile_xmpp_in_2014/</a></li>
+</ul>
+
+
+<p>An extension XEP 0198 is targeted for the message lost condition, I am not sure if it can really solve the problem, but at the time I started the development around end of July, XEP 0198 is not supported in Smack. The project seems quite active and the latest alpha version of Smack (4.0) seems included stream management but seems they have quite many changes and need some time to migrate from older version so I have not tried it yet. Also Smack 4.0 have Android support integrated so no need to use aSmack anymore.</p>
+
+<ul>
+<li><a href="https://github.com/igniterealtime/Smack">https://github.com/igniterealtime/Smack</a></li>
+<li><a href="https://igniterealtime.jiveon.com/blogs/ignite/2014/09/13/smack-410-alpha1-available">https://igniterealtime.jiveon.com/blogs/ignite/2014/09/13/smack-410-alpha1-available</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Quick look of messaging app UI]]></title>
@@ -1233,56 +1298,6 @@ skia  D  JPEG content is corrupt, got a zero length row(277)
 <p>It would be great if GestureDetector can directly give me the information needed for my canScroll() method. However, it seems that GestureDetector need a few events to determine if it is a scroll, there is a gap of 3-5 events between my first ACTION_DOWN and onScoll callback, so I need a better way to determine the condition for calling parent.requestDisallowInterceptTouchEvent().</p>
 
 <p>In part 2, I will continue with the implementation of canScroll() method.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android development resources collections]]></title>
-    <link href="http://billynyh.github.io//blog/2014/01/18/collections/"/>
-    <updated>2014-01-18T23:48:54+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/01/18/collections</id>
-    <content type="html"><![CDATA[<h3>Recently read</h3>
-
-<ul>
-<li>GTAC 2013 <a href="https://developers.google.com/google-test-automation-conference/2013/presentations">presentations</a> * <a href="http://www.youtube.com/watch?v=HUE_yrd8tl0">How Facebook Tests Facebook on Android</a>
-
-<ul>
-<li><a href="http://goo.gl/278b4">Slides</a></li>
-</ul>
-</li>
-</ul>
-
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/HUE_yrd8tl0" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
-<p></p>
-
-<ul>
-<li>Facebook: <a href="https://code.facebook.com/mobile/">mobile engi blog</a>, <a href="https://github.com/facebook">github</a>
-
-<ul>
-<li><a href="https://code.facebook.com/posts/454616284650560/building-a-faster-messenger/">Building a faster Messenger</a>
-
-<blockquote><p>Michael Marucheck, had the idea to actually edit the Java byte code after compilation. We used ASM to improve our dependency injection system by detecting bindings that are safe to remove, adding static methods that instantiate a bound type, and rewriting calls to the injector to instead call the appropriate static method. By improving this process, we were able to have a well-crafted dependency injection system that lets us test at scale, but still with the 30% gain in speed.</p></blockquote></li>
-</ul>
-</li>
-</ul>
-
-
-<h3>Other</h3>
-
-<ul>
-<li>Twitter: <a href="https://www.youtube.com/user/TwitterUniversity/videos">youtube</a></li>
-<li>Square: <a href="http://corner.squareup.com/">engi blog</a>, <a href="https://github.com/square">github</a></li>
-<li>Etsy: <a href="http://codeascraft.com/category/mobile/">blog &ndash; mobile</a>, <a href="https://github.com/etsy">github</a></li>
-<li>Pocket: <a href="http://getpocket.com/blog/category/development/">blog &ndash; dev</a></li>
-<li>Feedly: <a href="http://blog.feedly.com/">blog</a></li>
-<li>Romain Guy: <a href="http://www.curious-creature.org/category/android/">blog</a>, <a href="https://speakerdeck.com/romainguy">speaker deck</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

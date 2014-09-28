@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/android/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-08-03T21:51:22+08:00</updated>
+  <updated>2014-09-28T15:35:16+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,69 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Android XMPP Development]]></title>
+    <link href="http://billynyh.github.io//blog/2014/09/28/android-xmpp-dev/"/>
+    <updated>2014-09-28T15:31:48+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/09/28/android-xmpp-dev</id>
+    <content type="html"><![CDATA[<p>I was working on a chat feature on Android last two months using the aSmack library, here are some notes for future reference, although some detail may already not applicable for latest version of smack.</p>
+
+<p><a href="https://github.com/igniterealtime/Smack">Smack</a></p>
+
+<p><blockquote><p>Smack is a library for communicating with XMPP servers to perform real-time communications, including instant messaging and group chat.</p></p><p><p>Extremely simple to use, yet powerful API. Sending a text message to a user can be accomplished in only a few lines of code</p></blockquote></p>
+
+<p><a href="https://github.com/Flowdalic/asmack">aSmack</a></p>
+
+<p><blockquote><p>buildsystem for Smack on Android</p></blockquote></p>
+
+<h2>Integration</h2>
+
+<p>The sample code is very simple, just create a connection object, .connect(), .login(), create a chat object and send. But to integrate to Android, of course we need to do it in a background service, and here are the items I personally found difficult to handle well.</p>
+
+<ul>
+<li>Handle connection state, connection listener seems not handle all connection events</li>
+<li>May stuck in strange login state</li>
+<li>User do action while connecting</li>
+<li>Decide when to close the connection and stop background service</li>
+<li>Smack does not have much doc</li>
+<li>aSmack does not have doc at all</li>
+<li>Smack is still in development</li>
+<li>Not so extensible in some cases and it is hard to modify the library</li>
+</ul>
+
+
+<h2>Customized login method</h2>
+
+<p>If you customized the xmpp server to provide custom authenticate logic to integrate to external service, you can extends SASLMechanism in client side to support that. However, the authenticate call only accept jid and password parameter, and you may need to do some hack to pass more data to it if your authentication api required. Also, the response format of the login call is very limited, you cannot return extra customized error message so there may be some troubles when you want to have different handling on error cases in client side.</p>
+
+<h2>Customized IQ</h2>
+
+<p>Adding customized IQ is quite easy in smack, though you need it in a few places and may not work if you missed one. For one IQ type, you need to be clear on two things, the format you sent out and the format you receive. For the ease of development, you may want to put both implementation in one class, just make sure you don&rsquo;t messed with it.</p>
+
+<p>For sent out, you actually just need to construct the xml string and return in getChildElementXML(), no other setup needed.</p>
+
+<p>For receiving IQ response, first you need to create IQProvider and add to ProviderManager, matching the xmlns in the query object. The IQProvider is used to convert the response packet to your customized IQ object. Then you need to extends PacketListener, and when you create the connection object, add the listener to it, with a PacketTypeFilter to match your IQ class. With both provider and listener setup correctly, you should be able to receive the response of the IQ.</p>
+
+<h2>XEP 0198 &ndash; stream management</h2>
+
+<p>I have no knowledge of XMPP before working on this project (actually still don&rsquo;t know much about the protocol), but after implemented the basic program flow, we found that it is easy to trigger some message lost conditions. Turned out that xmpp is designed for stable network condition, so the support of mobile usage is actually quite bad.</p>
+
+<ul>
+<li><a href="http://fnanp.in-ulm.de/blog/2014/01/16/01-woes.html">http://fnanp.in-ulm.de/blog/2014/01/16/01-woes.html</a></li>
+<li><a href="http://op-co.de/blog/posts/mobile_xmpp_in_2014/">http://op-co.de/blog/posts/mobile_xmpp_in_2014/</a></li>
+</ul>
+
+
+<p>An extension XEP 0198 is targeted for the message lost condition, I am not sure if it can really solve the problem, but at the time I started the development around end of July, XEP 0198 is not supported in Smack. The project seems quite active and the latest alpha version of Smack (4.0) seems included stream management but seems they have quite many changes and need some time to migrate from older version so I have not tried it yet. Also Smack 4.0 have Android support integrated so no need to use aSmack anymore.</p>
+
+<ul>
+<li><a href="https://github.com/igniterealtime/Smack">https://github.com/igniterealtime/Smack</a></li>
+<li><a href="https://igniterealtime.jiveon.com/blogs/ignite/2014/09/13/smack-410-alpha1-available">https://igniterealtime.jiveon.com/blogs/ignite/2014/09/13/smack-410-alpha1-available</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Quick look of messaging app UI]]></title>
@@ -185,39 +248,6 @@
 <li><a href="https://www.youtube.com/watch?v=vQZFaec9NpA">Google I/O 2013 &ndash; Android Graphics Performance</a></li>
 <li><a href="https://www.youtube.com/watch?v=NYtB6mlu7vA">Google I/O 2013 &ndash; Writing Custom Views for Android</a></li>
 </ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Talks from Facebook, Paper team]]></title>
-    <link href="http://billynyh.github.io//blog/2014/04/21/talks-from-paper/"/>
-    <updated>2014-04-21T21:10:00+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/04/21/talks-from-paper</id>
-    <content type="html"><![CDATA[<p>During the long weekend of Easter holiday, I spent some time on watching tech talks from Facebook. The newly uploaded &ldquo;Building Paper 2014&rdquo; series is really cool. Even I don&rsquo;t do iOS, seeing how they tackle the problems and share their approach is totally enjoyable.</p>
-
-<p>Android and iOS apps may have different platform structures, but when your app goes bigger, most likely you will need another level of abstraction to handle large amount of logic, UI and communication betweens components. And when you want further performance tuning, you may need to go beyond the platform like what Paper team did. At that stage, although you are using different languages, the architecture will be similar across platforms.</p>
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/ZdiBPHpxGd0" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
-<p>I also like the part about <a href="https://www.youtube.com/watch?v=-KrF4bIofeo">contextually aware tutorials</a>, if you have time, you should watch the <a href="https://www.youtube.com/watch?v=OiY1cheLpmI">whole event</a>.</p>
-
-<h2>UI details and A/B test</h2>
-
-<p>Besides new talks, I also watched an old talk from &ldquo;Mobile Developer Day by Facebook + Parse 2013&rdquo;. Not sure why I skipped this talk before, probably because the title is so generic &ndash; <a href="https://www.youtube.com/watch?v=e2w8z6mI47U">Mobile at Facebook</a>. The part that caught my attention is the A/B testing on their drawer to nav bar changes. It&rsquo;s not about what framework they used, not about how many users they put in the AB test, it&rsquo;s about how you see the numbers.</p>
-
-<p>She mentioned that after changing the drawer to nav bar, the result in internal test is good, navigation experience is improved, users feel the app faster. However, when they shipped to 1% test, they find that users liking and commenting less, because users are kind of distracted by the nav bar notification.</p>
-
-<p>This is very interesting to me. We do not have a very detailed metrics system on mobile (have some, but not detailed), I am sure if we do AB test like that, we will not be able to see the abnormal usage changes. This even put me in a doubt that what if we already did changes like that and we still don&rsquo;t know that?</p>
-
-<p>This is like a regression test, not on code but on usage.</p>
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/e2w8z6mI47U" frameborder="0" allowfullscreen></iframe>
-</div>
 
 ]]></content>
   </entry>
