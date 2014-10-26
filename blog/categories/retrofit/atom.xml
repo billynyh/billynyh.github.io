@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: retrofit | Just code it]]></title>
+  <link href="http://billynyh.github.io//blog/categories/retrofit/atom.xml" rel="self"/>
+  <link href="http://billynyh.github.io//"/>
+  <updated>2014-10-26T17:49:29+08:00</updated>
+  <id>http://billynyh.github.io//</id>
+  <author>
+    <name><![CDATA[Billy Ng]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Android OAuth with signpost and retrofit]]></title>
+    <link href="http://billynyh.github.io//blog/2014/10/26/android-retrofit-oauth-signpost/"/>
+    <updated>2014-10-26T17:34:45+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/10/26/android-retrofit-oauth-signpost</id>
+    <content type="html"><![CDATA[<p>This week I finally got time to play with square&rsquo;s retrofit library. The first thing I wanted to try is to use it to for Twitter API. I immediately met a problem &ndash; how to do oauth? I was hoping retrofit would just work out of the box, but I can&rsquo;t find any example in the site, and even not much results when google/stackoverflow around.</p>
+
+<p>It seems that twitter4j provide full support of twitter api from oauth to getting posts, but as my goal is to try out retrofit, I decided not to use twitter4j at this point. Moreover, I will call different api later so it&rsquo;s better for me to figure out how to do oauth on Android.</p>
+
+<h2>Scribe-java</h2>
+
+<p>I first found this <a href="https://github.com/fernandezpablo85/scribe-java">Scribe</a> java library, I like the way the author describe the library.</p>
+
+<pre><code>Who said OAuth was difficult? Configuring scribe is so easy your grandma can do it! check it out:
+</code></pre>
+
+<p> And it supports many existing oauth library including Google, Facebook, Yahoo, LinkedIn, Twitter, etc&hellip;  It is easy to find <a href="http://schwiz.net/blog/2011/using-scribe-with-android/">example on integrating scribe with android</a>. I tried this library and can successfully get pass the authorization steps, but one problem is that the library wrapped the request object so it may not work well with retrofit, I stopped here and did not dig deeper with this library even I like this a lot.</p>
+
+<h2>Signpost</h2>
+
+<p>Then I tried <a href="https://code.google.com/p/oauth-signpost/">Signpost</a> (<a href="https://github.com/mttkay/signpost">github</a>), this is a simple library that focus on signing the request and does not wrap request with custom object. Not like Scribe, Signpost does not implement any existing service, but implementing one is just providing the corresponding oauth api url.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">OAuthConsumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultOAuthConsumer</span><span class="o">(&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="n">API_KEY</span><span class="o">,</span> <span class="n">API_SECRET</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span><span class="n">OAuthProvider</span> <span class="n">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultOAuthProvider</span><span class="o">(&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span>    <span class="s">&quot;https://api.twitter.com/oauth/request_token&quot;</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;https://api.twitter.com/oauth/access_token&quot;</span><span class="o">,</span>
+</span><span class='line'>    <span class="s">&quot;https://api.twitter.com/oauth/authorize&quot;</span><span class="o">);</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p>The Android integration of signpost is similar to scribe. After the authorization steps, it can hook into retrofit by <a href="https://gist.github.com/julianshen/5889097">extending the client</a>.</p>
+
+<p>Here is my code for integration &ndash; <a href="https://gist.github.com/billynyh/9e96d228b0e64c7c3251">gist</a></p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><p>Signpost</p>
+
+<ul>
+<li><a href="https://github.com/mttkay/signpost">https://github.com/mttkay/signpost</a></li>
+<li><a href="https://code.google.com/p/oauth-signpost/">https://code.google.com/p/oauth-signpost/</a></li>
+<li><a href="https://gist.github.com/julianshen/5889097">https://gist.github.com/julianshen/5889097</a></li>
+<li><a href="http://julianshen.blogspot.hk/2013/06/android-retrofit-signpost-retrofitoauth.html">http://julianshen.blogspot.hk/2013/06/android-retrofit-signpost-retrofitoauth.html</a></li>
+<li><a href="https://github.com/square/retrofit/issues/185">https://github.com/square/retrofit/issues/185</a></li>
+</ul>
+</li>
+<li><p>Scribe</p>
+
+<ul>
+<li><a href="https://github.com/fernandezpablo85/scribe-java">https://github.com/fernandezpablo85/scribe-java</a></li>
+<li><a href="https://github.com/fernandezpablo85/scribe-java/wiki/getting-started">https://github.com/fernandezpablo85/scribe-java/wiki/getting-started</a></li>
+<li><a href="https://github.com/fernandezpablo85/scribe-java/blob/master/src/test/java/org/scribe/examples/TwitterExample.java">scribe twitter example</a></li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

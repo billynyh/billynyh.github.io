@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="Got some days off last few weeks (public holiday and AL), spent quite lots of time on watching tech talks. (Another video summary post&hellip;) &hellip;">
+	<meta name="description" content="At the beginning of last few years, I wrote down a list of things I want to do through out the year. I finished some, gave up some, and some stays &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -88,6 +88,73 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/06/01/failed-side-project/">
+		
+			Why I Failed to Have Side Projects</a>
+	</h2>
+	<div class="entry-content">
+		<p>At the beginning of last few years, I wrote down a list of things I want to do through out the year. I finished some, gave up some, and some stays on the list. One of the longest staying item is &ndash; &ldquo;start a side project&rdquo;.</p>
+
+<h2>What takes me so long</h2>
+
+<p>It is easy to come up with something, but it is even easier to ban the idea. At first I thought maybe it is easier to start when I get more experience, learned more tools, but the truth is, the more you see, the harder you start.</p>
+
+<p>For example, I come up with an idea of building an Android app that provide list of XXX and allow user to do YYY on it. Sometime I would not even start when I find that it is not easy to get the XXX list, or after I wrote some scripts to crawl the list, I get distracted in other idea and put down the started project, sometime you just get tired in work and decided to take a break in weekend.</p>
+
+<p>Obviously I am not determined enough. But another problem I found for myself is, I start losing that kind of fire I had 5 years ago.</p>
+
+<h2>Excitement</h2>
+
+<p>Two months ago, I helped in a workshop for my middle school about using <a href="http://appinventor.mit.edu/explore/">AppInventer</a> to build Android apps, targeting F1-F3 students (12-15yo). When I prepared the material, the first thing I found is that, not surprisingly, the tool has VERY limited features. I am not even sure what I can build using that, how do I give advise to those students?</p>
+
+<p>During the workshop, before telling them what the tool can/cannot do, I let them students brainstorm the project topics, and told them not to worry if it is possible, we can &ldquo;fake&rdquo; it. Turned out they came up with some interesting idea, of course most are impossible to actually build it with their skill level (or even mine) and with that tool. But seeing their discussion reminded me a very important thing, <strong>the excitement</strong>.</p>
+
+<h2>Don&rsquo;t think too much</h2>
+
+<p>People have different reasons to start side projects, for me, it is simple, just to keep myself motivated and do things that I may not have chance to do in work.</p>
+
+<h2>Related reading</h2>
+
+<ul>
+<li><a href="https://medium.com/busy-building-things/start-something-the-power-of-side-projects-648223f673af">Start Something: The Power of Side Projects</a></li>
+<li><a href="https://medium.com/freelancers-life/side-projects-are-the-new-resume-a07e211240b2">Side projects are the new resume</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-01T23:18:21+08:00" pubdate data-updated="true">Jun 1<span>st</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/side-project/'>side project</a>, <a class='category' href='/blog/categories/thoughts/'>thoughts</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -367,76 +434,9 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/04/13/android-image-black-lines/">
-		
-			Android Image Decode Bug on Samsung Devices</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Image decode bug on Samsung devices</h2>
-
-<p>Few weeks ago I got some users reported about seeing &ldquo;black lines&rdquo; on the images. In 9GAG app, displaying images is everything so I can&rsquo;t just leave the problem unsolved.</p>
-
-<p>At first I thought it is a problem I worked on before that when multiple download tasks running for the same image, may corrupt the file. However, this time is a little bit different.</p>
-
-<p><img src="/images/posts/20140413/blacklines.png"/></p>
-
-<p>I checked those reports and find that only users using (high end?) Samsung devices (S4 and Note3) hit this problem, and I cannot reproduce the problem on my testing devices. Luckily, we recently equipped a Samsung Galaxy S4 in office so I can schedule some time on this problem. And they are actually not black lines, they are transparent lines&hellip;</p>
-
-<p>Even I suspected it is a manufacture specific problem, I did not expect I can reproduce the problem easily, so I am a little bit surprised to see the problem on the device. There are two possible causes of the problem, 1. the image file corrupted, 2. the image is correct but corrupted during decode to bitmap object. After a little test, I can confirm that I am dealing with (2)&hellip; When debugging with logcat, the following logs appear everytime the problem occurs.</p>
-
-<pre><code>skia  D  JPEG content is corrupt, got a zero length row(272)
-skia  D  JPEG content is corrupt, got a zero length row(273)
-skia  D  JPEG content is corrupt, got a zero length row(274)
-skia  D  JPEG content is corrupt, got a zero length row(275)
-skia  D  JPEG content is corrupt, got a zero length row(276)
-skia  D  JPEG content is corrupt, got a zero length row(277)
-</code></pre>
-
-<p>I thought once I have the error message, I am done, problem like this must be all over google and stackoverflow&hellip;</p>
-
-<p>Nope, <a href="https://www.google.com/search?q=skia+JPEG+content+is+corrupt">not this time</a>.</p>
-
-<p>There is not much I can do when there is only logs but no error message returned, I can&rsquo;t even detect the problem and reload the images. So I approach to tackle the problem is to reduce the chance of happening instead of fixing it. One observation is that, even this is not a step of reproduce, it usually/always comes with a dalvikvm heap grow. Follow on this direction and tuned a bit memory performance, somehow like harder to hit the problem. (magic?)</p>
-
-<p>This is for sure not a &ldquo;fix&rdquo;, and &ldquo;looks harder to hit the problem&rdquo; could actually be luck, but that&rsquo;s all I can get in a few hour scheduled time.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-13T23:21:18+08:00" pubdate data-updated="true">Apr 13<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/bitmap/'>bitmap</a>, <a class='category' href='/blog/categories/samsung/'>samsung</a>
-
-
-</div>
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
-        <a href="/" class="prev">Prev</a>
+        <a href="/blog/" class="prev">Prev</a>
     
     
         <a href="/blog/page/3/" class="next">Next</a>

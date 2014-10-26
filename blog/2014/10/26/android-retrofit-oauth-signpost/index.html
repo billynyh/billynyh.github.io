@@ -1,0 +1,236 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Android OAuth with signpost and retrofit - Just code it</title>
+	<meta name="author" content="Billy Ng">
+
+	
+	<meta name="description" content="This week I finally got time to play with square&rsquo;s retrofit library. The first thing I wanted to try is to use it to for Twitter API. I &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="" rel="alternate" title="Just code it" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">Just code it</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/about"><i class="fa-android"></i> About me</a></li>
+	<li><a href="/"><i class="fa-code"></i> Blog</a></li>
+	<li><a href="/blog/archives"><i class="fa-database"></i> Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/about"><i class="fa-android"></i> About me</a></li>
+	<li><a href="/"><i class="fa-code"></i> Blog</a></li>
+	<li><a href="/blog/archives"><i class="fa-database"></i> Archives</a></li>
+</ul>
+</div>
+	</div>
+    <!--
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="http://google.com/search" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:billynyh.github.io/">
+			</form>
+		</div>
+	</div>
+    -->
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		<a class="facebook" href="http://www.facebook.com/billynyh" title="Facebook">Facebook</a>
+		
+		
+		<a class="google" href="https://plus.google.com/+BillyNgYuHang?rel=author" title="Google+">Google+</a>
+		
+		
+		<a class="twitter" href="http://twitter.com/billynyh" title="Twitter">Twitter</a>
+		
+		
+		<a class="github" href="https://github.com/billynyh" title="GitHub">GitHub</a>
+		
+    
+		
+		
+		<a class="linkedin" href="http://www.linkedin.com/in/billynyh">LinkedIn</a>
+		
+		
+		
+		
+    
+	</div>
+    <!--
+	<form class="search" action="http://google.com/search" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:billynyh.github.io/">
+	</form>
+    -->
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">Android OAuth With Signpost and Retrofit</h2>
+	<div class="entry-content"><p>This week I finally got time to play with square&rsquo;s retrofit library. The first thing I wanted to try is to use it to for Twitter API. I immediately met a problem &ndash; how to do oauth? I was hoping retrofit would just work out of the box, but I can&rsquo;t find any example in the site, and even not much results when google/stackoverflow around.</p>
+
+<p>It seems that twitter4j provide full support of twitter api from oauth to getting posts, but as my goal is to try out retrofit, I decided not to use twitter4j at this point. Moreover, I will call different api later so it&rsquo;s better for me to figure out how to do oauth on Android.</p>
+
+<h2>Scribe-java</h2>
+
+<p>I first found this <a href="https://github.com/fernandezpablo85/scribe-java">Scribe</a> java library, I like the way the author describe the library.</p>
+
+<pre><code>Who said OAuth was difficult? Configuring scribe is so easy your grandma can do it! check it out:
+</code></pre>
+
+<p> And it supports many existing oauth library including Google, Facebook, Yahoo, LinkedIn, Twitter, etc&hellip;  It is easy to find <a href="http://schwiz.net/blog/2011/using-scribe-with-android/">example on integrating scribe with android</a>. I tried this library and can successfully get pass the authorization steps, but one problem is that the library wrapped the request object so it may not work well with retrofit, I stopped here and did not dig deeper with this library even I like this a lot.</p>
+
+<h2>Signpost</h2>
+
+<p>Then I tried <a href="https://code.google.com/p/oauth-signpost/">Signpost</a> (<a href="https://github.com/mttkay/signpost">github</a>), this is a simple library that focus on signing the request and does not wrap request with custom object. Not like Scribe, Signpost does not implement any existing service, but implementing one is just providing the corresponding oauth api url.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">OAuthConsumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultOAuthConsumer</span><span class="o">(</span>
+</span><span class='line'>        <span class="n">API_KEY</span><span class="o">,</span> <span class="n">API_SECRET</span><span class="o">);</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">OAuthProvider</span> <span class="n">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultOAuthProvider</span><span class="o">(</span>
+</span><span class='line'>        <span class="s">&quot;https://api.twitter.com/oauth/request_token&quot;</span><span class="o">,</span>
+</span><span class='line'>        <span class="s">&quot;https://api.twitter.com/oauth/access_token&quot;</span><span class="o">,</span>
+</span><span class='line'>        <span class="s">&quot;https://api.twitter.com/oauth/authorize&quot;</span><span class="o">);</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The Android integration of signpost is similar to scribe. After the authorization steps, it can hook into retrofit by <a href="https://gist.github.com/julianshen/5889097">extending the client</a>.</p>
+
+<p>Here is my code for integration &ndash; <a href="https://gist.github.com/billynyh/9e96d228b0e64c7c3251">gist</a></p>
+
+<h2>Reference</h2>
+
+<ul>
+<li><p>Signpost</p>
+
+<ul>
+<li><a href="https://github.com/mttkay/signpost">https://github.com/mttkay/signpost</a></li>
+<li><a href="https://code.google.com/p/oauth-signpost/">https://code.google.com/p/oauth-signpost/</a></li>
+<li><a href="https://gist.github.com/julianshen/5889097">https://gist.github.com/julianshen/5889097</a></li>
+<li><a href="http://julianshen.blogspot.hk/2013/06/android-retrofit-signpost-retrofitoauth.html">http://julianshen.blogspot.hk/2013/06/android-retrofit-signpost-retrofitoauth.html</a></li>
+<li><a href="https://github.com/square/retrofit/issues/185">https://github.com/square/retrofit/issues/185</a></li>
+</ul>
+</li>
+<li><p>Scribe</p>
+
+<ul>
+<li><a href="https://github.com/fernandezpablo85/scribe-java">https://github.com/fernandezpablo85/scribe-java</a></li>
+<li><a href="https://github.com/fernandezpablo85/scribe-java/wiki/getting-started">https://github.com/fernandezpablo85/scribe-java/wiki/getting-started</a></li>
+<li><a href="https://github.com/fernandezpablo85/scribe-java/blob/master/src/test/java/org/scribe/examples/TwitterExample.java">scribe twitter example</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-10-26T17:34:45+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/oauth/'>oauth</a>, <a class='category' href='/blog/categories/retrofit/'>retrofit</a>, <a class='category' href='/blog/categories/signpost/'>signpost</a>
+
+
+</div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		<a class="addthis_button_tweet"></a>
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2014
+
+    Billy Ng
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'billynyh';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://billynyh.github.io//blog/2014/10/26/android-retrofit-oauth-signpost/';
+        var disqus_url = 'http://billynyh.github.io//blog/2014/10/26/android-retrofit-oauth-signpost/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
