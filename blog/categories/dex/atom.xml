@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: dex | Just code it]]></title>
+  <link href="http://billynyh.github.io//blog/categories/dex/atom.xml" rel="self"/>
+  <link href="http://billynyh.github.io//"/>
+  <updated>2014-11-01T22:53:52+08:00</updated>
+  <id>http://billynyh.github.io//</id>
+  <author>
+    <name><![CDATA[Billy Ng]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Little experience on solving dex method count limit]]></title>
+    <link href="http://billynyh.github.io//blog/2014/11/01/dex-method-count/"/>
+    <updated>2014-11-01T20:02:45+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/11/01/dex-method-count</id>
+    <content type="html"><![CDATA[<p>I have heard about the dex 65536 method count limit long time ago and I finally meet this problem recently. After digging around, I decided to strip off some unused method in an external jar, using jarjar.</p>
+
+<p>Here are some little steps I used, using asmack jar as example.</p>
+
+<h3>Before fix</h3>
+
+<pre><code># convert jar to dex
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack.dex asmack.jar
+# method count
+&gt;&gt; dex-method-count asmack.dex
+5584
+&gt;&gt; dex-method-count-by-package asmack.dex
+...
+113 com.novell
+...
+61  de.measite
+...
+1894    org.jivesoftware.smack
+...
+3585    org.jivesoftware.smackx
+...
+423 org.apachea
+...
+</code></pre>
+
+<h3>Create rule.txt with this line</h3>
+
+<pre><code>zap org.jivesoftware.**
+</code></pre>
+
+<h3>Run jarjar</h3>
+
+<pre><code># run modify jar
+&gt;&gt; java -jar jarjar.jar process rule.txt asmack.jar asmack-modified.jar
+
+# build dex file again
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack-modified.dex asmack-modified.jar
+
+# see the difference
+&gt;&gt; dex-method-count asmack-modified.dex
+554
+</code></pre>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="https://code.google.com/p/jarjar/">https://code.google.com/p/jarjar/</a></li>
+<li><a href="https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71">https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71</a></li>
+<li><a href="http://jakewharton.com/play-services-is-a-monolith/">http://jakewharton.com/play-services-is-a-monolith/</a></li>
+<li>dex.sh &ndash; <a href="https://gist.github.com/JakeWharton/6002797">https://gist.github.com/JakeWharton/6002797</a></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

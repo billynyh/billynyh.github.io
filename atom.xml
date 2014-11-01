@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-10-26T17:49:29+08:00</updated>
+  <updated>2014-11-01T22:53:52+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Little experience on solving dex method count limit]]></title>
+    <link href="http://billynyh.github.io//blog/2014/11/01/dex-method-count/"/>
+    <updated>2014-11-01T20:02:45+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/11/01/dex-method-count</id>
+    <content type="html"><![CDATA[<p>I have heard about the dex 65536 method count limit long time ago and I finally meet this problem recently. After digging around, I decided to strip off some unused method in an external jar, using jarjar.</p>
+
+<p>Here are some little steps I used, using asmack jar as example.</p>
+
+<h3>Before fix</h3>
+
+<pre><code># convert jar to dex
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack.dex asmack.jar
+# method count
+&gt;&gt; dex-method-count asmack.dex
+5584
+&gt;&gt; dex-method-count-by-package asmack.dex
+...
+113 com.novell
+...
+61  de.measite
+...
+1894    org.jivesoftware.smack
+...
+3585    org.jivesoftware.smackx
+...
+423 org.apachea
+...
+</code></pre>
+
+<h3>Create rule.txt with this line</h3>
+
+<pre><code>zap org.jivesoftware.**
+</code></pre>
+
+<h3>Run jarjar</h3>
+
+<pre><code># run modify jar
+&gt;&gt; java -jar jarjar.jar process rule.txt asmack.jar asmack-modified.jar
+
+# build dex file again
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack-modified.dex asmack-modified.jar
+
+# see the difference
+&gt;&gt; dex-method-count asmack-modified.dex
+554
+</code></pre>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="https://code.google.com/p/jarjar/">https://code.google.com/p/jarjar/</a></li>
+<li><a href="https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71">https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71</a></li>
+<li><a href="http://jakewharton.com/play-services-is-a-monolith/">http://jakewharton.com/play-services-is-a-monolith/</a></li>
+<li>dex.sh &ndash; <a href="https://gist.github.com/JakeWharton/6002797">https://gist.github.com/JakeWharton/6002797</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android OAuth with signpost and retrofit]]></title>
@@ -1145,80 +1205,6 @@ skia  D  JPEG content is corrupt, got a zero length row(277)
 
 
 <p>You can even extend other layout with <a href="http://developer.android.com/reference/android/widget/Checkable.html">Checkable</a> interface, more detail <a href="http://chris.banes.me/2013/03/22/checkable-views/">here</a></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[First play on Muzei]]></title>
-    <link href="http://billynyh.github.io//blog/2014/02/16/first-play-on-muzei/"/>
-    <updated>2014-02-16T23:05:43+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/02/16/first-play-on-muzei</id>
-    <content type="html"><![CDATA[<p><a href="https://github.com/romannurik/muzei">Muzei live wallpaper</a> is a new opensource project from Roman Nurik which provide a nice API for other developers to build extension on it easily. Just a few days after its release on Feb 12, you can already find quite many different <a href="https://play.google.com/store/search?q=muzei&amp;c=apps">data source</a> for it. So I played for a while today and found that it is&hellip; really easy to implement your own data source.</p>
-
-<p>Here is a quick start on creating the extension.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">MyArtSource</span> <span class="kd">extends</span> <span class="n">RemoteMuzeiArtSource</span> <span class="o">{</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">UPDATE_INTERVAL</span> <span class="o">=</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">60</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">;</span> <span class="c1">// 60min</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="kd">public</span> <span class="nf">MyArtSource</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kd">super</span><span class="o">(</span><span class="s">&quot;my-art-source&quot;</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">onCreate</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>        <span class="kd">super</span><span class="o">.</span><span class="na">onCreate</span><span class="o">();</span>
-</span><span class='line'>        <span class="n">setUserCommands</span><span class="o">(</span><span class="n">BUILTIN_COMMAND_ID_NEXT_ARTWORK</span><span class="o">);</span> <span class="c1">// manual switch image</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="nd">@Override</span>
-</span><span class='line'>    <span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onTryUpdate</span><span class="o">(</span><span class="kt">int</span> <span class="n">reason</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">RetryException</span> <span class="o">{</span>
-</span><span class='line'>        <span class="c1">// fetch title, imageUrl, id, url from remote or hardcode</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">publishArtwork</span><span class="o">(</span><span class="k">new</span> <span class="n">Artwork</span><span class="o">.</span><span class="na">Builder</span><span class="o">()</span>
-</span><span class='line'>            <span class="o">.</span><span class="na">title</span><span class="o">(</span><span class="n">title</span><span class="o">)</span>
-</span><span class='line'>            <span class="o">.</span><span class="na">imageUri</span><span class="o">(</span><span class="n">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">imageUrl</span><span class="o">))</span>
-</span><span class='line'>            <span class="o">.</span><span class="na">token</span><span class="o">(</span><span class="n">id</span><span class="o">)</span>
-</span><span class='line'>            <span class="o">.</span><span class="na">viewIntent</span><span class="o">(</span><span class="k">new</span> <span class="n">Intent</span><span class="o">(</span><span class="n">Intent</span><span class="o">.</span><span class="na">ACTION_VIEW</span><span class="o">,</span> <span class="n">Uri</span><span class="o">.</span><span class="na">parse</span><span class="o">(</span><span class="n">url</span><span class="o">)))</span>
-</span><span class='line'>            <span class="o">.</span><span class="na">build</span><span class="o">());</span>
-</span><span class='line'>
-</span><span class='line'>        <span class="n">scheduleUpdate</span><span class="o">(</span><span class="n">System</span><span class="o">.</span><span class="na">currentTimeMillis</span><span class="o">()</span> <span class="o">+</span> <span class="n">UPDATE_INTERVAL</span><span class="o">);</span> <span class="c1">// switch image after 60min</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can find my Muzei 9GAG extension on <a href="https://play.google.com/store/apps/details?id=com.billynyh.muzei9gag">Play store</a>, source code available on <a href="https://github.com/billynyh/android-muzei-9gag">Github</a></p>
 ]]></content>
   </entry>
   

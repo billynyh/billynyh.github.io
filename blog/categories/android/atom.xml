@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/android/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-10-26T17:49:29+08:00</updated>
+  <updated>2014-11-01T22:53:52+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Little experience on solving dex method count limit]]></title>
+    <link href="http://billynyh.github.io//blog/2014/11/01/dex-method-count/"/>
+    <updated>2014-11-01T20:02:45+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/11/01/dex-method-count</id>
+    <content type="html"><![CDATA[<p>I have heard about the dex 65536 method count limit long time ago and I finally meet this problem recently. After digging around, I decided to strip off some unused method in an external jar, using jarjar.</p>
+
+<p>Here are some little steps I used, using asmack jar as example.</p>
+
+<h3>Before fix</h3>
+
+<pre><code># convert jar to dex
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack.dex asmack.jar
+# method count
+&gt;&gt; dex-method-count asmack.dex
+5584
+&gt;&gt; dex-method-count-by-package asmack.dex
+...
+113 com.novell
+...
+61  de.measite
+...
+1894    org.jivesoftware.smack
+...
+3585    org.jivesoftware.smackx
+...
+423 org.apachea
+...
+</code></pre>
+
+<h3>Create rule.txt with this line</h3>
+
+<pre><code>zap org.jivesoftware.**
+</code></pre>
+
+<h3>Run jarjar</h3>
+
+<pre><code># run modify jar
+&gt;&gt; java -jar jarjar.jar process rule.txt asmack.jar asmack-modified.jar
+
+# build dex file again
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack-modified.dex asmack-modified.jar
+
+# see the difference
+&gt;&gt; dex-method-count asmack-modified.dex
+554
+</code></pre>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="https://code.google.com/p/jarjar/">https://code.google.com/p/jarjar/</a></li>
+<li><a href="https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71">https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71</a></li>
+<li><a href="http://jakewharton.com/play-services-is-a-monolith/">http://jakewharton.com/play-services-is-a-monolith/</a></li>
+<li>dex.sh &ndash; <a href="https://gist.github.com/JakeWharton/6002797">https://gist.github.com/JakeWharton/6002797</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Android OAuth with signpost and retrofit]]></title>
@@ -243,49 +303,6 @@
 <li><a href="http://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">Controlling Access to Members of a Class</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[ViewCompat.canScrollVertically()]]></title>
-    <link href="http://billynyh.github.io//blog/2014/06/22/viewcompat-support-v4/"/>
-    <updated>2014-06-22T19:56:29+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/06/22/viewcompat-support-v4</id>
-    <content type="html"><![CDATA[<p>Due to watching world cup evey night through out the week, I spent most of my time these two weekends sleeping. Even not able to do some serious coding, I tried to clean up my long pending reading list, and I just took a look of <a href="http://developer.android.com/reference/android/support/v4/widget/SwipeRefreshLayout.html">SwipeRefreshLayout</a>.</p>
-
-<p>Saw this class a while ago, just from the name of this class, I expected it to be a ViewGroup that handles the pull gesture of the Android style pull to refresh. I was not very interested in this class because there is no plan to touch the refresh UI in work, but it is always good to know it is in the support library.</p>
-
-<p>What really caught my attention is the canChildScrollUp() method in SwipeRefreshLayout. It used ViewCompat.canScrollVertically and special handled pre-ICS.</p>
-
-<p><a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">Source line 348</a></p>
-
-<p>``` java</p>
-
-<p>public boolean canChildScrollUp() {</p>
-
-<pre><code>if (android.os.Build.VERSION.SDK_INT &lt; 14) {
-    if (mTarget instanceof AbsListView) {
-        final AbsListView absListView = (AbsListView) mTarget;
-        return absListView.getChildCount() &gt; 0
-                &amp;&amp; (absListView.getFirstVisiblePosition() &gt; 0 || absListView.getChildAt(0)
-                        .getTop() &lt; absListView.getPaddingTop());
-    } else {
-        return mTarget.getScrollY() &gt; 0;
-    }
-} else {
-    return ViewCompat.canScrollVertically(mTarget, -1);
-}
-</code></pre>
-
-<p>}</p>
-
-<p>```</p>
-
-<p>(Well I don&rsquo;t understand why the ViewCompat method cannot(?) handle pre-ICS&hellip; then what&rsquo;s the point of Compat?)</p>
-
-<p>I wasn&rsquo;t aware there is a canScrollVertically() method in View since ICS, and the ViewCompat also provides some interesting method that could simplify some custom ViewGroup implementation. Should put more time to review what&rsquo;s new in those commonly used classes as I believe there is no need to support pre-ICS soon.</p>
-
-<p>Refrerence: <a href="http://antonioleiva.com/swiperefreshlayout/">http://antonioleiva.com/swiperefreshlayout/</a></p>
 ]]></content>
   </entry>
   
