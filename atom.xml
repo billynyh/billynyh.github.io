@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2014-12-08T07:47:44+08:00</updated>
+  <updated>2014-12-28T17:19:53+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,51 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[2014 Review]]></title>
+    <link href="http://billynyh.github.io//blog/2014/12/28/2014-review/"/>
+    <updated>2014-12-28T17:02:00+08:00</updated>
+    <id>http://billynyh.github.io//blog/2014/12/28/2014-review</id>
+    <content type="html"><![CDATA[<p>Not sure what is the best word to describe this year, it was kind of negative, but I grew when getting through this.</p>
+
+<h2>Personal Goal</h2>
+
+<p>Well let&rsquo;s start with something positive. I set a few goals when the year start, and some of them are reached.</p>
+
+<ul>
+<li>5M downloads, this was the goal in 2013, delayed a little bit, still happy to make it.</li>
+<li>Lose some weight. Although it came back &ndash;_&ndash; I did lose some.</li>
+<li>This blog. At first I wrote weekly but then starts run out of topics (and time) and became one post per month. Writing helps me organize my thought and keeps me thinking.</li>
+</ul>
+
+
+<h2>Disappointment</h2>
+
+<p>I take my work very seriously, it kills me to watch the team wasting time week over week. I spent quite a lot of time to think if it is my problem or not, I tried to give them benefit of the doubt as I was not involved in most decision, I tried not to blame people on not good at their job because we are a team. However, as I think deeper, I always came to the darker conclusions.</p>
+
+<blockquote><p>Are we really a team?</p></blockquote>
+
+
+
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/zE7PKRjrid4" frameborder="0" allowfullscreen></iframe>
+</div>
+
+
+<h2>Moving on</h2>
+
+<p>Making the decision is easy, the hard part is to handle it right. Turned out I was thinking too much, this year could be a bit different if I just trust my guts, but I learned a lot in the process. I would not say it is a waste of time, even though we did spend time for nothing for months. The more time you lost, the more you willing to make it right, and that&rsquo;s the power to moving on.</p>
+
+<p>Your life is like a start up when you work in one, you move fast, you take risks. 2013 was a new start, 2014 was a process, 2015 is a whole new start.</p>
+
+<div class="video-container">
+<iframe src="http://www.youtube.com/embed/jEiTaIAj8bQ" frameborder="0" allowfullscreen></iframe>
+</div>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Little experience on solving dex method count limit]]></title>
@@ -1138,73 +1183,6 @@ skia  D  JPEG content is corrupt, got a zero length row(277)
 <li><a href="https://code.google.com/p/android/issues/detail?id=37990">https://code.google.com/p/android/issues/detail?id=37990</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Useful features I missed during Android development]]></title>
-    <link href="http://billynyh.github.io//blog/2014/02/23/features-missed-during-development/"/>
-    <updated>2014-02-23T19:36:59+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/02/23/features-missed-during-development</id>
-    <content type="html"><![CDATA[<p>This weekend, I am working on my Muzei extension and try to add a setting page to it. It is not hard to write everything myself, but I was not in the mood of writing code from scratch, so I just copy code from <a href="https://github.com/flavienlaurent/muzeihash">other opensource project</a>. Modifying other&rsquo;s code does not always speed up your development when your task is so simple, but you can take this chance to read other&rsquo;s code at the same time.</p>
-
-<p>I don&rsquo;t consider myself learned Android development correctly, but I guess most people started like me. I started with a small project, lookup the doc for the features I need, then learn other features while doing other projects.When you learn like this, it is easy to miss out simple features. Here are what I found this week:</p>
-
-<h2>Show divider in LinearLayout</h2>
-
-<p>Can&rsquo;t believe I missed this, there was a couple times that I need to append dummy view to act as divider. The worst thing about adding divider view yourself is not the extra code you added, is when you try to control visiblity of elements, you need to handle the dividers also.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">LinearLayout</span> <span class="nl">xmlns:</span><span class="n">android</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">orientation</span><span class="o">=</span><span class="s">&quot;horizontal&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">showDividers</span><span class="o">=</span><span class="s">&quot;middle&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">divider</span><span class="o">=</span><span class="s">&quot;?android:dividerVertical&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">dividerPadding</span><span class="o">=</span><span class="s">&quot;4dp&quot;</span><span class="o">&gt;</span>
-</span><span class='line'>    <span class="o">...</span>
-</span><span class='line'><span class="o">&lt;/</span><span class="n">LinearLayout</span><span class="o">&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<h2>CheckedTextView</h2>
-
-<p>The first time when I want to have checkbox put on the right side of the text, I went through the available options of CheckBox class and cannot find any good, then I go to google and stackoverflow, <a href="http://stackoverflow.com/questions/5000213/how-to-set-the-checkbox-on-the-right-side-of-the-text">first solution</a> is to put a TextView to the left of CheckBox. Usually I will just stop here and start coding, but it is obviously not good enoguh, as now you can only trigger it by clicking the checkbox but not the whole text+checkbox.</p>
-
-<p>If you tried the multiple choice feature of ListView, you will see it is exactly the behavior you look for, a little <a href="https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/layout/simple_list_item_multiple_choice.xml">dig in</a> will give you CheckedTextView.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="o">&lt;</span><span class="n">CheckedTextView</span> <span class="nl">xmlns:</span><span class="n">android</span><span class="o">=</span><span class="s">&quot;http://schemas.android.com/apk/res/android&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">id</span><span class="o">=</span><span class="s">&quot;@android:id/text1&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_width</span><span class="o">=</span><span class="s">&quot;match_parent&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">layout_height</span><span class="o">=</span><span class="s">&quot;?android:attr/listPreferredItemHeightSmall&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">textAppearance</span><span class="o">=</span><span class="s">&quot;?android:attr/textAppearanceListItemSmall&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">gravity</span><span class="o">=</span><span class="s">&quot;center_vertical&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">checkMark</span><span class="o">=</span><span class="s">&quot;?android:attr/listChoiceIndicatorMultiple&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">paddingStart</span><span class="o">=</span><span class="s">&quot;?android:attr/listPreferredItemPaddingStart&quot;</span>
-</span><span class='line'>    <span class="nl">android:</span><span class="n">paddingEnd</span><span class="o">=</span><span class="s">&quot;?android:attr/listPreferredItemPaddingEnd&quot;</span>
-</span><span class='line'><span class="o">/&gt;</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>You can even extend other layout with <a href="http://developer.android.com/reference/android/widget/Checkable.html">Checkable</a> interface, more detail <a href="http://chris.banes.me/2013/03/22/checkable-views/">here</a></p>
 ]]></content>
   </entry>
   
