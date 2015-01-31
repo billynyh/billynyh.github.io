@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: changes | Just code it]]></title>
+  <link href="http://billynyh.github.io//blog/categories/changes/atom.xml" rel="self"/>
+  <link href="http://billynyh.github.io//"/>
+  <updated>2015-01-31T18:16:17+08:00</updated>
+  <id>http://billynyh.github.io//</id>
+  <author>
+    <name><![CDATA[Billy Ng]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Let's do it]]></title>
+    <link href="http://billynyh.github.io//blog/2015/01/31/lets-do-it/"/>
+    <updated>2015-01-31T18:13:47+08:00</updated>
+    <id>http://billynyh.github.io//blog/2015/01/31/lets-do-it</id>
+    <content type="html"><![CDATA[<p>Have been busy on this last few months, some get through, some didn&rsquo;t.</p>
+
+<p>This is just the beginning of the real game, stay focus and take this chance!</p>
+]]></content>
+  </entry>
+  
+</feed>

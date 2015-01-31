@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="Recently started a new project in work so I finally have a chance to use SwipeRefreshLayout. The integration is very simple and does not change the &hellip;">
+	<meta name="description" content="I use messaging app everyday, whatsapp, Facebook messenger, gtalk, web and mobile. The UI of different apps looks natural to me and never tried to & &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -88,6 +88,104 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/08/03/messaging-ui/">
+		
+			Quick Look of Messaging App UI</a>
+	</h2>
+	<div class="entry-content">
+		<p>I use messaging app everyday, whatsapp, Facebook messenger, gtalk, web and mobile. The UI of different apps looks natural to me and never tried to &ldquo;see&rdquo; the design of it.</p>
+
+<p>Recently I am working on a messaging UI with a screenshot designer gave me. When I try to imagine how will this design looks like with real chat usage, I am sure there are lots of details not included in the design so I take a deeper look of the messaging app I used everyday.</p>
+
+<p>When you received a message, you usually can see sender information (name / avatar), message content, and sent time. And for the message you send, you may also see deliver status (sent/fail/received/read), retry when fail.</p>
+
+<p>Here are some elements besdies those basic thing.</p>
+
+<h2>Date header</h2>
+
+<p>To avoid displaying the date in every message, a common handling is to have a &ldquo;Date header&rdquo; to divide the messages, and whatsapp also added a sticky header for the date.</p>
+
+<p><a rel="gallery-date" href="/images/posts/20140803/b-2.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-2.jpg"/>
+</a>
+<a rel="gallery-date" href="/images/posts/20140803/b-3.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-3.jpg"/>
+</a></p>
+
+<h2>1-to-1 message VS group chat</h2>
+
+<p>In whatsapp 1-to-1, it only shows the name in action bar and does not include it in the content, it totally makes sense because you know who you are talking to when you are in that page. And for group chat, as more then one people you are talking to but the incoming messages are all aligned left, it is necessary to have the name before each message.</p>
+
+<p>Facebook messenger also has similar logic of adding name but it is outside the bubble.</p>
+
+<p></p>
+<a rel="gallery-chat" href="/images/posts/20140803/b-0.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-0.jpg"/>
+</a>
+<a rel="gallery-chat" href="/images/posts/20140803/b-6.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-6.jpg"/>
+</a>
+</p></p>
+
+<h2>Message grouping</h2>
+
+<p>Most messaging app styled the messages with talk bubbles, it is interesting to see that some of them are not simply a bubble.</p>
+
+<p>
+<a rel="gallery-grouping" href="/images/posts/20140803/b-5.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-5.jpg"/>
+</a>
+<a rel="gallery-grouping" href="/images/posts/20140803/b-3.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-3.jpg"/>
+</a>
+<a rel="gallery-grouping" href="/images/posts/20140803/b-1.jpg" class="fancybox">
+<img src="/images/posts/20140803/c-1.jpg"/>
+</a>
+</p>
+
+
+<p>For Facebook messenger, I found that when continuous messages from same person is grouped, avatar is only showed once, in both 1-to-1 or group message. However, sometimes messages are not grouped, I guess it only groups messages within a short time.</p>
+
+<p>For whatsapp, it groups continuous messages to one single bubble, my first reaction is it would be fun to write a list view adapter for that, need to have 3 item types for one message (start, middle, end) and the types may change when new messages come in, eg. end &ndash;> middle.</p>
+
+<h2>Understand what&rsquo;s behind it</h2>
+
+<p>It is easy to reference other&rsquo;s UI, but it is also important to understand why they handle information that way and even we will not handle like them, make sure we aware of it.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-08-03T12:13:04+08:00" pubdate data-updated="true">Aug 3<span>rd</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/chat/'>chat</a>, <a class='category' href='/blog/categories/messaging/'>messaging</a>, <a class='category' href='/blog/categories/ui/'>ui</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -371,71 +469,6 @@
 </div>
 </article>
 
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/05/06/dirty-code/">
-		
-			Write Dirty Code</a>
-	</h2>
-	<div class="entry-content">
-		<h2>Huh?</h2>
-
-<p>As an experienced software engineer, you are expected to write code reusable, modularized, clean, blah blah. Of course you do that in your product, but sometime you need dirty code to do dirty work, and I enjoy doing that. :)</p>
-
-<h2>Code generator</h2>
-
-<p>One of my favorite dirty code is code generator. When writing Java, sometime you need to write lots of getter setter, at first you just copy and paste, but after a few months, you will find the class goes big and messy, and it is easy to make mistakes, you may forget to change a variable, or put in wrong default value&hellip;</p>
-
-<p>So, how about a little code generator? Make a config file containing the fields and data type, and just generate the java class for you. You don&rsquo;t even need to write the generator in Java, in my case, I have a python script that reads yaml config file and generates Java code.</p>
-
-<p>That script is simple and ad hoc, you are not going to maintain that so when you want to &ldquo;reuse&rdquo; it, just copy the script, modify it, do whatever you want.</p>
-
-<h2>Custom build scripts</h2>
-
-<p>I have been using ant to build Android for a long time, just migrated to Gradle recently. One of the problem with the old system is lack of multiple build support. What I did in last 3 years is, have a custom ant task that modify the package name in AndroidManifest.xml and update all import of R in code.</p>
-
-<p>And combine with code generator scripts, I can create builds with different config files which is one very important during development.</p>
-
-<p>It is generally not a good idea to modify every .java files before compile, but with the limitation of the build system and you don&rsquo;t have the resources to dig deep, I would just use the dirty way (proudly).</p>
-
-<h2>Get your hands dirty</h2>
-
-<p>After working for some years, we switched our mind set from a programmer to an engineer, we may forget how to get dirty, forget how we used to &ldquo;hack&rdquo; things, forget how we rushed a course project in one night. By being a better engineer, we write better code, but we should not lose the ability of being dirty.</p>
-
-<p>Use dirty code to do dirty work is just an example of use the right tool for the task.</p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-05-06T22:55:49+08:00" pubdate data-updated="true">May 6<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/development/'>development</a>, <a class='category' href='/blog/categories/dirty/'>dirty</a>
-
-
-</div>
-	
-</div>
-</article>
-
 <nav id="pagenavi">
     
         <a href="/blog/" class="prev">Prev</a>
@@ -445,7 +478,7 @@
     
     <div class="center"><a href="/blog/archives">Blog Archives</a></div>
 </nav></div>
-	<footer id="footer" class="inner">Copyright &copy; 2014
+	<footer id="footer" class="inner">Copyright &copy; 2015
 
     Billy Ng
 
