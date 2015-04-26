@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/android/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2015-01-31T18:16:17+08:00</updated>
+  <updated>2015-04-26T16:16:11+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,149 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Implement meme generator with StaticLayout]]></title>
+    <link href="http://billynyh.github.io//blog/2015/04/26/meme-generator-staticlayout/"/>
+    <updated>2015-04-26T15:56:48+08:00</updated>
+    <id>http://billynyh.github.io//blog/2015/04/26/meme-generator-staticlayout</id>
+    <content type="html"><![CDATA[<p>Two months ago I started writing a meme generator as a side project, what I want to do is not just adding two lines of text on image but a more generic text-on-image solution.</p>
+
+<h1>StaticLayout</h1>
+
+<p>When implementing custom views, we can use canvas.drawText to display text, but if you want to draw text in multiple lines, a straight forward way is to calculate the y position of each line and draw them one by one. One problem with this method is that, you have to do the line splitting yourself and it seems lots of work.</p>
+
+<p><a href="https://developer.android.com/reference/android/text/StaticLayout.html">StaticLayout</a> is a less well-known class in the framework, it is not included in any API Guides or Training documentation.</p>
+
+<blockquote><p>This is used by widgets to control text layout. You should not need to use this class directly unless you are implementing your own widget or custom display object, or would be tempted to call Canvas.drawText() directly.</p></blockquote>
+
+<p>But if you take a quick look of inside TextView (like 5000 lines, I have not read it in detail), you will find that StaticLayout is used to do the text layout.</p>
+
+<h1>Meme generator structure</h1>
+
+<h2>RendererView</h2>
+
+<p>A custom view that extends ImageView to provide text on image drawing ability, the actually text drawing logic is implemented in the renderer.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kd">class</span> <span class="nc">RendererView</span> <span class="kd">extends</span> <span class="n">ImageView</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="kd">private</span> <span class="n">Renderer</span> <span class="n">mRenderer</span><span class="o">;</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">// fill in constrcutor</span>
+</span><span class='line'>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">setRenderer</span><span class="o">(</span><span class="n">MemeRenderer</span> <span class="n">renderer</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="n">mRenderer</span> <span class="o">=</span> <span class="n">renderer</span><span class="o">;</span>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'>
+</span><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">protected</span> <span class="kt">void</span> <span class="nf">onDraw</span><span class="o">(</span><span class="n">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>    <span class="kd">super</span><span class="o">.</span><span class="na">onDraw</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">mRenderer</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="n">mRenderer</span><span class="o">.</span><span class="na">draw</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">}</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<h2>TextGroup</h2>
+
+<p>A basic TextGroup manages the text, Paint and StaticLayout object.</p>
+
+<p>To draw text with stroke, we need to draw it twice, first draw the stroke (using Paint.Style.STROKE), then draw the text over it. I use a wrapper TextGroup interface to wrap the text and the stroke layout, and can extend to arbitrary number of text layer.</p>
+
+<h2>Renderer</h2>
+
+<p>Renderer implements a draw(canvas) function to draw text on canvas. In the case of meme generator, the renderer contains two TextGroup, top and bottom. In the draw function, we translate to proper position and run the draw function implemented in the TextGroup.</p>
+
+<p><div class='bogus-wrapper'><notextile><figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="nd">@Override</span>
+</span><span class='line'><span class="kd">public</span> <span class="kt">void</span> <span class="nf">draw</span><span class="o">(</span><span class="n">Canvas</span> <span class="n">canvas</span><span class="o">)</span> <span class="o">{&lt;/</span><span class="n">p</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">pre</span><span class="o">&gt;&lt;</span><span class="n">code</span><span class="o">&gt;</span><span class="c1">// some calculation</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">canvas</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</span><span class='line'><span class="n">canvas</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">topY</span><span class="o">);</span>
+</span><span class='line'><span class="n">mTopGroup</span><span class="o">.</span><span class="na">draw</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+</span><span class='line'><span class="n">canvas</span><span class="o">.</span><span class="na">restore</span><span class="o">();</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">canvas</span><span class="o">.</span><span class="na">save</span><span class="o">();</span>
+</span><span class='line'><span class="n">canvas</span><span class="o">.</span><span class="na">translate</span><span class="o">(</span><span class="n">x</span><span class="o">,</span> <span class="n">bottomY</span><span class="o">);</span>
+</span><span class='line'><span class="n">mBottomGroup</span><span class="o">.</span><span class="na">draw</span><span class="o">(</span><span class="n">canvas</span><span class="o">);</span>
+</span><span class='line'><span class="n">canvas</span><span class="o">.</span><span class="na">restore</span><span class="o">();</span>
+</span><span class='line'><span class="o">&lt;/</span><span class="n">code</span><span class="o">&gt;&lt;/</span><span class="n">pre</span><span class="o">&gt;</span>
+</span><span class='line'>
+</span><span class='line'><span class="o">&lt;</span><span class="n">p</span><span class="o">&gt;}</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div></p>
+
+<p><img src="/images/posts/20150426/meme-1.jpg" width="300px" /></p>
+
+<h2>AutoResizer</h2>
+
+<p>With the help of StaticLayout, you can get the line count of your current layout and can adjust your text size to provide an auto resize function.</p>
+
+<h1>Play store submission</h1>
+
+<p>When I tried to upload my meme generator demo to play store, the new review system rejected my submission as some meme may have copyright issue&hellip; So I just changed my images to some free stock photo to get pass the review process.</p>
+
+<p>Here is my <a href="https://play.google.com/store/apps/details?id=io.github.billynyh.meme">demo app</a></p>
+
+<h1>Future work</h1>
+
+<p>With the structure I have, I suppose it is easy to modify the app to provide different style/layout and create use case other than meme generator. I have few ideas in mind but that may require other data api and image source to make it works.</p>
+
+<h1>Reference</h1>
+
+<ul>
+<li><a href="http://stackoverflow.com/a/8369690/3623175">http://stackoverflow.com/a/8369690/3623175</a></li>
+<li><a href="http://stackoverflow.com/a/12921000/3623175">http://stackoverflow.com/a/12921000/3623175</a></li>
+<li><a href="http://www.ivity.asia/2010/12/29/using-android-text-staticlayout/">http://www.ivity.asia/2010/12/29/using-android-text-staticlayout/</a></li>
+<li><a href="http://andrdev.blogspot.hk/2012/04/drawing-text-on-canvas.html">http://andrdev.blogspot.hk/2012/04/drawing-text-on-canvas.html</a></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Little experience on solving dex method count limit]]></title>
@@ -279,30 +422,6 @@
 <h2>Understand what&rsquo;s behind it</h2>
 
 <p>It is easy to reference other&rsquo;s UI, but it is also important to understand why they handle information that way and even we will not handle like them, make sure we aware of it.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Y U NO public (or protected)]]></title>
-    <link href="http://billynyh.github.io//blog/2014/07/20/yuno-public/"/>
-    <updated>2014-07-20T20:47:27+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/07/20/yuno-public</id>
-    <content type="html"><![CDATA[<p>Recently started a new project in work so I finally have a chance to use SwipeRefreshLayout. The integration is very simple and does not change the structure of ListView like <a href="https://github.com/chrisbanes/android-pulltorefresh">Android-PullToRefresh</a> (I still love that library), so it should be easier to perform custom logic on the ListView afterwards.</p>
-
-<p>I also like the progress bar embeded in the view very much, and would like to use it in other components to make my apps&rsquo;s UI consistent. A quick look to the <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">source code</a> and found that it is implemented in the class <a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeProgressBar.java">SwipeProgressBar</a>. It is sad that the class is not public and it seems there is no similar class in the framework and support library.</p>
-
-<p>So, I just copy the code of SwipeProgressBar and BakedBezierInterpolator(required by SwipeProgressBar and also not public) myself and put it in my common lib, then use it in my app.</p>
-
-<p>I understand that there are some kind of design principle of the class/methods visibility, but sometime it is quite frustrating that after going through the framework source code and found that you cannot to extend the class because some properties are private and does not have a public/protected getter.</p>
-
-<p><img src="/images/posts/20140720/yuno.jpg" style="width:300px" /></p>
-
-<h2>Reference</h2>
-
-<ul>
-<li><a href="http://docs.oracle.com/javase/tutorial/java/javaOO/accesscontrol.html">Controlling Access to Members of a Class</a></li>
-</ul>
-
 ]]></content>
   </entry>
   
