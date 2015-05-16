@@ -4,7 +4,7 @@
   <title><![CDATA[Just code it]]></title>
   <link href="http://billynyh.github.io//atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2015-05-07T23:44:33+08:00</updated>
+  <updated>2015-05-16T17:14:56+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Connect 163.com with Javamail]]></title>
+    <link href="http://billynyh.github.io//blog/2015/05/16/javamail-163/"/>
+    <updated>2015-05-16T17:09:41+08:00</updated>
+    <id>http://billynyh.github.io//blog/2015/05/16/javamail-163</id>
+    <content type="html"><![CDATA[<p>Last week I was working on supporting more IMAP email service provider in our app. 163.com is a popular email service used in China, so we created a test account to play around with it.</p>
+
+<p>We already have code working on various email service like yahoo and outlook, so I expect it should not be any problem to connect 163.com, maybe a few custom handling on simplified Chinese.</p>
+
+<p>However, when I try to make connection to IMAP server, I got</p>
+
+<pre><code>NO SELECT The login is not safe! Please update your mail client: http://mail.163.com/dashi
+</code></pre>
+
+<p>and the link provided goes to the download page of 163&rsquo;s official app.</p>
+
+<p>It would be sad if 163 somehow limited the IMAP usage to certain apps but let&rsquo;s not jump to conclusion so fast. After some research, we found that Gmail android app can actually login to 163 account, and that&rsquo;s the only one we found so far. Googled around and see others met similar problem and found one interesting (and wtf) workaround.</p>
+
+<p><a href="https://github.com/dinhviethoa/libetpan/pull/190">https://github.com/dinhviethoa/libetpan/pull/190</a>
+<a href="https://github.com/dinhviethoa/libetpan/commit/050f15f30ce40c02d4cf0a9389baca77dec19230">https://github.com/dinhviethoa/libetpan/commit/050f15f30ce40c02d4cf0a9389baca77dec19230</a></p>
+
+<p><img src="http://billynyh.github.io//images/posts/20150516/imap-163.jpg" width="600px" /></p>
+
+<p>So what does that workaround do? IMAP command is usually in the format</p>
+
+<pre><code>1 CAPABILITY 
+2 LOGIN USERNAME PASSWORD 
+3 CAPABILITY 
+4 LIST "" "" 
+5 ID NIL 
+6 SELECT INBOX  
+</code></pre>
+
+<p>but 163 required a &ldquo;C&rdquo; before each command, eg</p>
+
+<pre><code>C1 CAPABILITY
+</code></pre>
+
+<p>so the fix is&hellip; add &ldquo;C&rdquo;.</p>
+
+<p>To apply to Javamail, we need to modify the Protocol object&rsquo;s writeCommand method and use a &ldquo;C&rdquo; prefix for 163 (also 126.com, yeah.net) imap host address.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Implement meme generator with StaticLayout]]></title>
@@ -907,64 +951,6 @@ skia  D  JPEG content is corrupt, got a zero length row(277)
 <h2>What&rsquo;s next</h2>
 
 <p>After working in different startups for 5 years, I think I am still learning and improving as an engineer. I believe someday when I am more experienced and my skill reached certain level, I may have a different view of everything. I am looking forward for what will happen on me and the industry in the next 5 years.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Try out Quartz Composer and Origami]]></title>
-    <link href="http://billynyh.github.io//blog/2014/03/09/quartz-composer-origami/"/>
-    <updated>2014-03-09T19:59:11+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/03/09/quartz-composer-origami</id>
-    <content type="html"><![CDATA[<p>In late Jan, I watched a <a href="https://www.youtube.com/watch/?v=s5kNm-DgyjY">talk &ndash; Bringing Beautiful Interactions to Android Apps</a> from Facebook about how they use Quartz Composer(QC) when developing Facebok Home (and chat head). Compare to other prototyping tools, QC can better illustrate animations and interactions. It is quite impressive and I actually installed QC the day after and tried to play on it. But when I first opened it, I was totally lost, not saying it is hard to use, but it is obvious that there is a learning curve on this tool. I did not spend more time on it that time but kept it in my TODO list.</p>
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/s5kNm-DgyjY" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
-<p>Two weeks later, Facebook released <a href="http://facebook.github.io/origami/">Origami</a>, an extension of QC. Followed with some articles about how it is used in Facebook. Yesterday I gave it another try. This time I am more serious compared to last time. My target is at least understand (not fully) how it works and be able to do a simple demo to my team.</p>
-
-<h2>Let&rsquo;s start</h2>
-
-<p>This time I started with the <a href="https://developer.apple.com/library/mac/documentation/graphicsimaging/conceptual/quartzcomposeruserguide/qc_intro/qc_intro.html">documentation</a>, not saying it is poorly documented, but it is not much fun to read it(my bad)&hellip; Then I went for tutorials, after a quick look of some articles on QC (not Origami), I had little concept of patches (but missed macro patch&hellip;), then I think maybe I can understand the Origami examples.</p>
-
-<p>When I opened the &ldquo;Photo Grid&rdquo; example, I only see three patches, I knew that there must be some hierarchy hidden from the interface, I tried to use the patch inspector to look around but have no idea where to go, I was stuck again. Then I found this <a href="http://vimeo.com/85578380">video</a> on Origami&rsquo;s twitter, which turned out was everything I needed.</p>
-
-<div class="video-container">
-<iframe src="http://player.vimeo.com/video/85578380" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> 
-</div>
-
-
-<pre><code>It is the visual version spaghetti code // 6:50
-</code></pre>
-
-<h2>Short notes</h2>
-
-<ul>
-<li>&ldquo;Phone&rdquo; patch is the basic component for the phone prototype, which displays an image in device frame.</li>
-<li>Use &ldquo;Render in Image&rdquo; for the content to display.</li>
-<li>Double click the &ldquo;Render in Image&rdquo; patch to edit the macro patch of it.</li>
-<li>A &ldquo;Layer&rdquo; patch will be automatically added when you drag in an image.</li>
-</ul>
-
-
-<p><img src="http://billynyh.github.io//images/posts/20140309/qc-1.jpg"/></p></p>
-
-<h2>Reference</h2>
-
-<ul>
-<li><a href="http://facebook.github.io/origami/">http://facebook.github.io/origami/</a></li>
-<li><a href="https://medium.com/the-year-of-the-looking-glass/f1173d0bd181">Introducing Origami for Quartz Composer</a></li>
-<li><a href="http://www.wired.com/wiredenterprise/2014/03/facebook-paper/">Facebook Paper Has Forever Changed the Way We Build Mobile Apps</a></li>
-<li><a href="http://vimeo.com/85578380">Vimeo &ndash; Prototyping with Facebook Origami</a>
-
-<ul>
-<li>Asset for the example <a href="https://github.com/jaythrash/spy-book">https://github.com/jaythrash/spy-book</a></li>
-</ul>
-</li>
-<li><a href="https://www.youtube.com/watch/?v=s5kNm-DgyjY">Youtube &ndash; Bringing Beautiful Interactions to Android Apps &ndash; Mobile @ Scale</a></li>
-</ul>
-
 ]]></content>
   </entry>
   

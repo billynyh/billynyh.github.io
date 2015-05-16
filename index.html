@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="Two months ago I started writing a meme generator as a side project, what I want to do is not just adding two lines of text on image but a more &hellip;">
+	<meta name="description" content="Last week I was working on supporting more IMAP email service provider in our app. 163.com is a popular email service used in China, so we created a &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,82 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/05/16/javamail-163/">
+		
+			Connect 163.com With Javamail</a>
+	</h2>
+	<div class="entry-content">
+		<p>Last week I was working on supporting more IMAP email service provider in our app. 163.com is a popular email service used in China, so we created a test account to play around with it.</p>
+
+<p>We already have code working on various email service like yahoo and outlook, so I expect it should not be any problem to connect 163.com, maybe a few custom handling on simplified Chinese.</p>
+
+<p>However, when I try to make connection to IMAP server, I got</p>
+
+<pre><code>NO SELECT The login is not safe! Please update your mail client: http://mail.163.com/dashi
+</code></pre>
+
+<p>and the link provided goes to the download page of 163&rsquo;s official app.</p>
+
+<p>It would be sad if 163 somehow limited the IMAP usage to certain apps but let&rsquo;s not jump to conclusion so fast. After some research, we found that Gmail android app can actually login to 163 account, and that&rsquo;s the only one we found so far. Googled around and see others met similar problem and found one interesting (and wtf) workaround.</p>
+
+<p><a href="https://github.com/dinhviethoa/libetpan/pull/190">https://github.com/dinhviethoa/libetpan/pull/190</a>
+<a href="https://github.com/dinhviethoa/libetpan/commit/050f15f30ce40c02d4cf0a9389baca77dec19230">https://github.com/dinhviethoa/libetpan/commit/050f15f30ce40c02d4cf0a9389baca77dec19230</a></p>
+
+<p><img src="/images/posts/20150516/imap-163.jpg" width="600px" /></p>
+
+<p>So what does that workaround do? IMAP command is usually in the format</p>
+
+<pre><code>1 CAPABILITY 
+2 LOGIN USERNAME PASSWORD 
+3 CAPABILITY 
+4 LIST "" "" 
+5 ID NIL 
+6 SELECT INBOX  
+</code></pre>
+
+<p>but 163 required a &ldquo;C&rdquo; before each command, eg</p>
+
+<pre><code>C1 CAPABILITY
+</code></pre>
+
+<p>so the fix is&hellip; add &ldquo;C&rdquo;.</p>
+
+<p>To apply to Javamail, we need to modify the Protocol object&rsquo;s writeCommand method and use a &ldquo;C&rdquo; prefix for 163 (also 126.com, yeah.net) imap host address.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-05-16T17:09:41+08:00" pubdate data-updated="true">May 16<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/imap/'>imap</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -465,107 +541,6 @@
 
 
 	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/dex/'>dex</a>, <a class='category' href='/blog/categories/method-limit/'>method limit</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/10/26/android-retrofit-oauth-signpost/">
-		
-			Android OAuth With Signpost and Retrofit</a>
-	</h2>
-	<div class="entry-content">
-		<p>This week I finally got time to play with square&rsquo;s retrofit library. The first thing I wanted to try is to use it to for Twitter API. I immediately met a problem &ndash; how to do oauth? I was hoping retrofit would just work out of the box, but I can&rsquo;t find any example in the site, and even not much results when google/stackoverflow around.</p>
-
-<p>It seems that twitter4j provide full support of twitter api from oauth to getting posts, but as my goal is to try out retrofit, I decided not to use twitter4j at this point. Moreover, I will call different api later so it&rsquo;s better for me to figure out how to do oauth on Android.</p>
-
-<h2>Scribe-java</h2>
-
-<p>I first found this <a href="https://github.com/fernandezpablo85/scribe-java">Scribe</a> java library, I like the way the author describe the library.</p>
-
-<pre><code>Who said OAuth was difficult? Configuring scribe is so easy your grandma can do it! check it out:
-</code></pre>
-
-<p> And it supports many existing oauth library including Google, Facebook, Yahoo, LinkedIn, Twitter, etc&hellip;  It is easy to find <a href="http://schwiz.net/blog/2011/using-scribe-with-android/">example on integrating scribe with android</a>. I tried this library and can successfully get pass the authorization steps, but one problem is that the library wrapped the request object so it may not work well with retrofit, I stopped here and did not dig deeper with this library even I like this a lot.</p>
-
-<h2>Signpost</h2>
-
-<p>Then I tried <a href="https://code.google.com/p/oauth-signpost/">Signpost</a> (<a href="https://github.com/mttkay/signpost">github</a>), this is a simple library that focus on signing the request and does not wrap request with custom object. Not like Scribe, Signpost does not implement any existing service, but implementing one is just providing the corresponding oauth api url.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="n">OAuthConsumer</span> <span class="n">consumer</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultOAuthConsumer</span><span class="o">(</span>
-</span><span class='line'>        <span class="n">API_KEY</span><span class="o">,</span> <span class="n">API_SECRET</span><span class="o">);</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">OAuthProvider</span> <span class="n">provider</span> <span class="o">=</span> <span class="k">new</span> <span class="n">DefaultOAuthProvider</span><span class="o">(</span>
-</span><span class='line'>        <span class="s">&quot;https://api.twitter.com/oauth/request_token&quot;</span><span class="o">,</span>
-</span><span class='line'>        <span class="s">&quot;https://api.twitter.com/oauth/access_token&quot;</span><span class="o">,</span>
-</span><span class='line'>        <span class="s">&quot;https://api.twitter.com/oauth/authorize&quot;</span><span class="o">);</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>The Android integration of signpost is similar to scribe. After the authorization steps, it can hook into retrofit by <a href="https://gist.github.com/julianshen/5889097">extending the client</a>.</p>
-
-<p>Here is my code for integration &ndash; <a href="https://gist.github.com/billynyh/9e96d228b0e64c7c3251">gist</a></p>
-
-<h2>Reference</h2>
-
-<ul>
-<li><p>Signpost</p>
-
-<ul>
-<li><a href="https://github.com/mttkay/signpost">https://github.com/mttkay/signpost</a></li>
-<li><a href="https://code.google.com/p/oauth-signpost/">https://code.google.com/p/oauth-signpost/</a></li>
-<li><a href="https://gist.github.com/julianshen/5889097">https://gist.github.com/julianshen/5889097</a></li>
-<li><a href="http://julianshen.blogspot.hk/2013/06/android-retrofit-signpost-retrofitoauth.html">http://julianshen.blogspot.hk/2013/06/android-retrofit-signpost-retrofitoauth.html</a></li>
-<li><a href="https://github.com/square/retrofit/issues/185">https://github.com/square/retrofit/issues/185</a></li>
-</ul>
-</li>
-<li><p>Scribe</p>
-
-<ul>
-<li><a href="https://github.com/fernandezpablo85/scribe-java">https://github.com/fernandezpablo85/scribe-java</a></li>
-<li><a href="https://github.com/fernandezpablo85/scribe-java/wiki/getting-started">https://github.com/fernandezpablo85/scribe-java/wiki/getting-started</a></li>
-<li><a href="https://github.com/fernandezpablo85/scribe-java/blob/master/src/test/java/org/scribe/examples/TwitterExample.java">scribe twitter example</a></li>
-</ul>
-</li>
-</ul>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-10-26T17:34:45+08:00" pubdate data-updated="true">Oct 26<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/oauth/'>oauth</a>, <a class='category' href='/blog/categories/retrofit/'>retrofit</a>, <a class='category' href='/blog/categories/signpost/'>signpost</a>
 
 
 </div>

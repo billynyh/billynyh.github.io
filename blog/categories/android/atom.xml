@@ -4,7 +4,7 @@
   <title><![CDATA[Category: android | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/android/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2015-05-07T23:44:33+08:00</updated>
+  <updated>2015-05-16T17:14:56+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,50 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Connect 163.com with Javamail]]></title>
+    <link href="http://billynyh.github.io//blog/2015/05/16/javamail-163/"/>
+    <updated>2015-05-16T17:09:41+08:00</updated>
+    <id>http://billynyh.github.io//blog/2015/05/16/javamail-163</id>
+    <content type="html"><![CDATA[<p>Last week I was working on supporting more IMAP email service provider in our app. 163.com is a popular email service used in China, so we created a test account to play around with it.</p>
+
+<p>We already have code working on various email service like yahoo and outlook, so I expect it should not be any problem to connect 163.com, maybe a few custom handling on simplified Chinese.</p>
+
+<p>However, when I try to make connection to IMAP server, I got</p>
+
+<pre><code>NO SELECT The login is not safe! Please update your mail client: http://mail.163.com/dashi
+</code></pre>
+
+<p>and the link provided goes to the download page of 163&rsquo;s official app.</p>
+
+<p>It would be sad if 163 somehow limited the IMAP usage to certain apps but let&rsquo;s not jump to conclusion so fast. After some research, we found that Gmail android app can actually login to 163 account, and that&rsquo;s the only one we found so far. Googled around and see others met similar problem and found one interesting (and wtf) workaround.</p>
+
+<p><a href="https://github.com/dinhviethoa/libetpan/pull/190">https://github.com/dinhviethoa/libetpan/pull/190</a>
+<a href="https://github.com/dinhviethoa/libetpan/commit/050f15f30ce40c02d4cf0a9389baca77dec19230">https://github.com/dinhviethoa/libetpan/commit/050f15f30ce40c02d4cf0a9389baca77dec19230</a></p>
+
+<p><img src="/images/posts/20150516/imap-163.jpg" width="600px" /></p>
+
+<p>So what does that workaround do? IMAP command is usually in the format</p>
+
+<pre><code>1 CAPABILITY 
+2 LOGIN USERNAME PASSWORD 
+3 CAPABILITY 
+4 LIST "" "" 
+5 ID NIL 
+6 SELECT INBOX  
+</code></pre>
+
+<p>but 163 required a &ldquo;C&rdquo; before each command, eg</p>
+
+<pre><code>C1 CAPABILITY
+</code></pre>
+
+<p>so the fix is&hellip; add &ldquo;C&rdquo;.</p>
+
+<p>To apply to Javamail, we need to modify the Protocol object&rsquo;s writeCommand method and use a &ldquo;C&rdquo; prefix for 163 (also 126.com, yeah.net) imap host address.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Implement meme generator with StaticLayout]]></title>
@@ -356,72 +400,6 @@
 <li><a href="https://igniterealtime.jiveon.com/blogs/ignite/2014/09/13/smack-410-alpha1-available">https://igniterealtime.jiveon.com/blogs/ignite/2014/09/13/smack-410-alpha1-available</a></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Quick look of messaging app UI]]></title>
-    <link href="http://billynyh.github.io//blog/2014/08/03/messaging-ui/"/>
-    <updated>2014-08-03T12:13:04+08:00</updated>
-    <id>http://billynyh.github.io//blog/2014/08/03/messaging-ui</id>
-    <content type="html"><![CDATA[<p>I use messaging app everyday, whatsapp, Facebook messenger, gtalk, web and mobile. The UI of different apps looks natural to me and never tried to &ldquo;see&rdquo; the design of it.</p>
-
-<p>Recently I am working on a messaging UI with a screenshot designer gave me. When I try to imagine how will this design looks like with real chat usage, I am sure there are lots of details not included in the design so I take a deeper look of the messaging app I used everyday.</p>
-
-<p>When you received a message, you usually can see sender information (name / avatar), message content, and sent time. And for the message you send, you may also see deliver status (sent/fail/received/read), retry when fail.</p>
-
-<p>Here are some elements besdies those basic thing.</p>
-
-<h2>Date header</h2>
-
-<p>To avoid displaying the date in every message, a common handling is to have a &ldquo;Date header&rdquo; to divide the messages, and whatsapp also added a sticky header for the date.</p>
-
-<p><a rel="gallery-date" href="/images/posts/20140803/b-2.jpg" class="fancybox">
-<img src="/images/posts/20140803/c-2.jpg"/>
-</a>
-<a rel="gallery-date" href="/images/posts/20140803/b-3.jpg" class="fancybox">
-<img src="/images/posts/20140803/c-3.jpg"/>
-</a></p>
-
-<h2>1-to-1 message VS group chat</h2>
-
-<p>In whatsapp 1-to-1, it only shows the name in action bar and does not include it in the content, it totally makes sense because you know who you are talking to when you are in that page. And for group chat, as more then one people you are talking to but the incoming messages are all aligned left, it is necessary to have the name before each message.</p>
-
-<p>Facebook messenger also has similar logic of adding name but it is outside the bubble.</p>
-
-<p></p>
-<a rel="gallery-chat" href="/images/posts/20140803/b-0.jpg" class="fancybox">
-<img src="/images/posts/20140803/c-0.jpg"/>
-</a>
-<a rel="gallery-chat" href="/images/posts/20140803/b-6.jpg" class="fancybox">
-<img src="/images/posts/20140803/c-6.jpg"/>
-</a>
-</p></p>
-
-<h2>Message grouping</h2>
-
-<p>Most messaging app styled the messages with talk bubbles, it is interesting to see that some of them are not simply a bubble.</p>
-
-<p>
-<a rel="gallery-grouping" href="/images/posts/20140803/b-5.jpg" class="fancybox">
-<img src="/images/posts/20140803/c-5.jpg"/>
-</a>
-<a rel="gallery-grouping" href="/images/posts/20140803/b-3.jpg" class="fancybox">
-<img src="/images/posts/20140803/c-3.jpg"/>
-</a>
-<a rel="gallery-grouping" href="/images/posts/20140803/b-1.jpg" class="fancybox">
-<img src="/images/posts/20140803/c-1.jpg"/>
-</a>
-</p>
-
-
-<p>For Facebook messenger, I found that when continuous messages from same person is grouped, avatar is only showed once, in both 1-to-1 or group message. However, sometimes messages are not grouped, I guess it only groups messages within a short time.</p>
-
-<p>For whatsapp, it groups continuous messages to one single bubble, my first reaction is it would be fun to write a list view adapter for that, need to have 3 item types for one message (start, middle, end) and the types may change when new messages come in, eg. end &ndash;> middle.</p>
-
-<h2>Understand what&rsquo;s behind it</h2>
-
-<p>It is easy to reference other&rsquo;s UI, but it is also important to understand why they handle information that way and even we will not handle like them, make sure we aware of it.</p>
 ]]></content>
   </entry>
   
