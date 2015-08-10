@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="At the beginning of last few years, I wrote down a list of things I want to do through out the year. I finished some, gave up some, and some stays &hellip;">
+	<meta name="description" content="Due to watching world cup evey night through out the week, I spent most of my time these two weekends sleeping. Even not able to do some serious &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,90 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/06/22/viewcompat-support-v4/">
+		
+			ViewCompat.canScrollVertically()</a>
+	</h2>
+	<div class="entry-content">
+		<p>Due to watching world cup evey night through out the week, I spent most of my time these two weekends sleeping. Even not able to do some serious coding, I tried to clean up my long pending reading list, and I just took a look of <a href="http://developer.android.com/reference/android/support/v4/widget/SwipeRefreshLayout.html">SwipeRefreshLayout</a>.</p>
+
+<p>Saw this class a while ago, just from the name of this class, I expected it to be a ViewGroup that handles the pull gesture of the Android style pull to refresh. I was not very interested in this class because there is no plan to touch the refresh UI in work, but it is always good to know it is in the support library.</p>
+
+<p>What really caught my attention is the canChildScrollUp() method in SwipeRefreshLayout. It used ViewCompat.canScrollVertically and special handled pre-ICS.</p>
+
+<p><a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">Source line 348</a></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">canChildScrollUp</span><span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">os</span><span class="o">.</span><span class="na">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.</span><span class="na">SDK_INT</span> <span class="o">&lt;</span> <span class="mi">14</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">mTarget</span> <span class="k">instanceof</span> <span class="n">AbsListView</span><span class="o">)</span> <span class="o">{</span>
+</span><span class='line'>            <span class="kd">final</span> <span class="n">AbsListView</span> <span class="n">absListView</span> <span class="o">=</span> <span class="o">(</span><span class="n">AbsListView</span><span class="o">)</span> <span class="n">mTarget</span><span class="o">;</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getChildCount</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</span><span class='line'>                    <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">absListView</span><span class="o">.</span><span class="na">getFirstVisiblePosition</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getChildAt</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
+</span><span class='line'>                            <span class="o">.</span><span class="na">getTop</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getPaddingTop</span><span class="o">());</span>
+</span><span class='line'>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>            <span class="k">return</span> <span class="n">mTarget</span><span class="o">.</span><span class="na">getScrollY</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
+</span><span class='line'>        <span class="o">}</span>
+</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+</span><span class='line'>        <span class="k">return</span> <span class="n">ViewCompat</span><span class="o">.</span><span class="na">canScrollVertically</span><span class="o">(</span><span class="n">mTarget</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
+</span><span class='line'>    <span class="o">}</span>
+</span><span class='line'><span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>(Well I don&rsquo;t understand why the ViewCompat method cannot(?) handle pre-ICS&hellip; then what&rsquo;s the point of Compat?)</p>
+
+<p>I wasn&rsquo;t aware there is a canScrollVertically() method in View since ICS, and the ViewCompat also provides some interesting method that could simplify some custom ViewGroup implementation. Should put more time to review what&rsquo;s new in those commonly used classes as I believe there is no need to support pre-ICS soon.</p>
+
+<p>Refrerence: <a href="http://antonioleiva.com/swiperefreshlayout/">http://antonioleiva.com/swiperefreshlayout/</a></p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-06-22T19:56:29+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -364,71 +448,6 @@
 
 
 	<a class='category' href='/blog/categories/thoughts/'>thoughts</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/04/21/talks-from-paper/">
-		
-			Talks From Facebook, Paper Team</a>
-	</h2>
-	<div class="entry-content">
-		<p>During the long weekend of Easter holiday, I spent some time on watching tech talks from Facebook. The newly uploaded &ldquo;Building Paper 2014&rdquo; series is really cool. Even I don&rsquo;t do iOS, seeing how they tackle the problems and share their approach is totally enjoyable.</p>
-
-<p>Android and iOS apps may have different platform structures, but when your app goes bigger, most likely you will need another level of abstraction to handle large amount of logic, UI and communication betweens components. And when you want further performance tuning, you may need to go beyond the platform like what Paper team did. At that stage, although you are using different languages, the architecture will be similar across platforms.</p>
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/ZdiBPHpxGd0" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
-<p>I also like the part about <a href="https://www.youtube.com/watch?v=-KrF4bIofeo">contextually aware tutorials</a>, if you have time, you should watch the <a href="https://www.youtube.com/watch?v=OiY1cheLpmI">whole event</a>.</p>
-
-<h2>UI details and A/B test</h2>
-
-<p>Besides new talks, I also watched an old talk from &ldquo;Mobile Developer Day by Facebook + Parse 2013&rdquo;. Not sure why I skipped this talk before, probably because the title is so generic &ndash; <a href="https://www.youtube.com/watch?v=e2w8z6mI47U">Mobile at Facebook</a>. The part that caught my attention is the A/B testing on their drawer to nav bar changes. It&rsquo;s not about what framework they used, not about how many users they put in the AB test, it&rsquo;s about how you see the numbers.</p>
-
-<p>She mentioned that after changing the drawer to nav bar, the result in internal test is good, navigation experience is improved, users feel the app faster. However, when they shipped to 1% test, they find that users liking and commenting less, because users are kind of distracted by the nav bar notification.</p>
-
-<p>This is very interesting to me. We do not have a very detailed metrics system on mobile (have some, but not detailed), I am sure if we do AB test like that, we will not be able to see the abnormal usage changes. This even put me in a doubt that what if we already did changes like that and we still don&rsquo;t know that?</p>
-
-<p>This is like a regression test, not on code but on usage.</p>
-
-<div class="video-container">
-<iframe src="http://www.youtube.com/embed/e2w8z6mI47U" frameborder="0" allowfullscreen></iframe>
-</div>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-04-21T21:10:00+08:00" pubdate data-updated="true">Apr 21<span>st</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/a-slash-b-test/'>A/B test</a>, <a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/facebook/'>facebook</a>, <a class='category' href='/blog/categories/paper/'>paper</a>, <a class='category' href='/blog/categories/ui/'>ui</a>
 
 
 </div>

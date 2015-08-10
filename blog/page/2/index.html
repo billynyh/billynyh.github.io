@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="This week I finally got time to play with square&rsquo;s retrofit library. The first thing I wanted to try is to use it to for Twitter API. I &hellip;">
+	<meta name="description" content="I have heard about the dex 65536 method count limit long time ago and I finally meet this problem recently. After digging around, I decided to strip &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,98 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2014/11/01/dex-method-count/">
+		
+			Little Experience on Solving Dex Method Count Limit</a>
+	</h2>
+	<div class="entry-content">
+		<p>I have heard about the dex 65536 method count limit long time ago and I finally meet this problem recently. After digging around, I decided to strip off some unused method in an external jar, using jarjar.</p>
+
+<p>Here are some little steps I used, using asmack jar as example.</p>
+
+<h3>Before fix</h3>
+
+<pre><code># convert jar to dex
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack.dex asmack.jar
+# method count
+&gt;&gt; dex-method-count asmack.dex
+5584
+&gt;&gt; dex-method-count-by-package asmack.dex
+...
+113 com.novell
+...
+61  de.measite
+...
+1894    org.jivesoftware.smack
+...
+3585    org.jivesoftware.smackx
+...
+423 org.apachea
+...
+</code></pre>
+
+<h3>Create rule.txt with this line</h3>
+
+<pre><code>zap org.jivesoftware.**
+</code></pre>
+
+<h3>Run jarjar</h3>
+
+<pre><code># run modify jar
+&gt;&gt; java -jar jarjar.jar process rule.txt asmack.jar asmack-modified.jar
+
+# build dex file again
+&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack-modified.dex asmack-modified.jar
+
+# see the difference
+&gt;&gt; dex-method-count asmack-modified.dex
+554
+</code></pre>
+
+<h2>Reference</h2>
+
+<ul>
+<li><a href="https://code.google.com/p/jarjar/">https://code.google.com/p/jarjar/</a></li>
+<li><a href="https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71">https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71</a></li>
+<li><a href="http://jakewharton.com/play-services-is-a-monolith/">http://jakewharton.com/play-services-is-a-monolith/</a></li>
+<li>dex.sh &ndash; <a href="https://gist.github.com/JakeWharton/6002797">https://gist.github.com/JakeWharton/6002797</a></li>
+</ul>
+
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-11-01T20:02:45+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2014</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/dex/'>dex</a>, <a class='category' href='/blog/categories/method-limit/'>method limit</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -432,90 +524,6 @@
 
 
 <time datetime="2014-07-20T20:47:27+08:00" pubdate data-updated="true">Jul 20<span>th</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/06/22/viewcompat-support-v4/">
-		
-			ViewCompat.canScrollVertically()</a>
-	</h2>
-	<div class="entry-content">
-		<p>Due to watching world cup evey night through out the week, I spent most of my time these two weekends sleeping. Even not able to do some serious coding, I tried to clean up my long pending reading list, and I just took a look of <a href="http://developer.android.com/reference/android/support/v4/widget/SwipeRefreshLayout.html">SwipeRefreshLayout</a>.</p>
-
-<p>Saw this class a while ago, just from the name of this class, I expected it to be a ViewGroup that handles the pull gesture of the Android style pull to refresh. I was not very interested in this class because there is no plan to touch the refresh UI in work, but it is always good to know it is in the support library.</p>
-
-<p>What really caught my attention is the canChildScrollUp() method in SwipeRefreshLayout. It used ViewCompat.canScrollVertically and special handled pre-ICS.</p>
-
-<p><a href="https://android.googlesource.com/platform/frameworks/support/+/refs/heads/master/v4/java/android/support/v4/widget/SwipeRefreshLayout.java">Source line 348</a></p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-</pre></td><td class='code'><pre><code class='java'><span class='line'><span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">canChildScrollUp</span><span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>    <span class="k">if</span> <span class="o">(</span><span class="n">android</span><span class="o">.</span><span class="na">os</span><span class="o">.</span><span class="na">Build</span><span class="o">.</span><span class="na">VERSION</span><span class="o">.</span><span class="na">SDK_INT</span> <span class="o">&lt;</span> <span class="mi">14</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">if</span> <span class="o">(</span><span class="n">mTarget</span> <span class="k">instanceof</span> <span class="n">AbsListView</span><span class="o">)</span> <span class="o">{</span>
-</span><span class='line'>            <span class="kd">final</span> <span class="n">AbsListView</span> <span class="n">absListView</span> <span class="o">=</span> <span class="o">(</span><span class="n">AbsListView</span><span class="o">)</span> <span class="n">mTarget</span><span class="o">;</span>
-</span><span class='line'>            <span class="k">return</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getChildCount</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span>
-</span><span class='line'>                    <span class="o">&amp;&amp;</span> <span class="o">(</span><span class="n">absListView</span><span class="o">.</span><span class="na">getFirstVisiblePosition</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getChildAt</span><span class="o">(</span><span class="mi">0</span><span class="o">)</span>
-</span><span class='line'>                            <span class="o">.</span><span class="na">getTop</span><span class="o">()</span> <span class="o">&lt;</span> <span class="n">absListView</span><span class="o">.</span><span class="na">getPaddingTop</span><span class="o">());</span>
-</span><span class='line'>        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class='line'>            <span class="k">return</span> <span class="n">mTarget</span><span class="o">.</span><span class="na">getScrollY</span><span class="o">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">;</span>
-</span><span class='line'>        <span class="o">}</span>
-</span><span class='line'>    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
-</span><span class='line'>        <span class="k">return</span> <span class="n">ViewCompat</span><span class="o">.</span><span class="na">canScrollVertically</span><span class="o">(</span><span class="n">mTarget</span><span class="o">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">);</span>
-</span><span class='line'>    <span class="o">}</span>
-</span><span class='line'><span class="o">}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>(Well I don&rsquo;t understand why the ViewCompat method cannot(?) handle pre-ICS&hellip; then what&rsquo;s the point of Compat?)</p>
-
-<p>I wasn&rsquo;t aware there is a canScrollVertically() method in View since ICS, and the ViewCompat also provides some interesting method that could simplify some custom ViewGroup implementation. Should put more time to review what&rsquo;s new in those commonly used classes as I believe there is no need to support pre-ICS soon.</p>
-
-<p>Refrerence: <a href="http://antonioleiva.com/swiperefreshlayout/">http://antonioleiva.com/swiperefreshlayout/</a></p>
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-06-22T19:56:29+08:00" pubdate data-updated="true">Jun 22<span>nd</span>, 2014</time></div>
 	<div class="tags">
 
 

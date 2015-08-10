@@ -4,7 +4,7 @@
   <title><![CDATA[Category: facebook | Just code it]]></title>
   <link href="http://billynyh.github.io//blog/categories/facebook/atom.xml" rel="self"/>
   <link href="http://billynyh.github.io//"/>
-  <updated>2015-05-16T17:14:56+08:00</updated>
+  <updated>2015-08-11T05:33:37+08:00</updated>
   <id>http://billynyh.github.io//</id>
   <author>
     <name><![CDATA[Billy Ng]]></name>
@@ -12,6 +12,17 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Hi Facebook]]></title>
+    <link href="http://billynyh.github.io//blog/2015/08/10/hi-facebook/"/>
+    <updated>2015-08-10T22:06:26+08:00</updated>
+    <id>http://billynyh.github.io//blog/2015/08/10/hi-facebook</id>
+    <content type="html"><![CDATA[<p>Today is my first day in Facebook London. It has been almost six months since I got the offer, and the wait is finally over.</p>
+
+<p>New job, new country, new life.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[F8 Mobile talks]]></title>

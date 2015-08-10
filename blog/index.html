@@ -7,7 +7,7 @@
 	<meta name="author" content="Billy Ng">
 
 	
-	<meta name="description" content="Last week I was working on supporting more IMAP email service provider in our app. 163.com is a popular email service used in China, so we created a &hellip;">
+	<meta name="description" content="Today is my first day in Facebook London. It has been almost six months since I got the offer, and the wait is finally over. New job, new country, &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -90,6 +90,49 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2015/08/10/hi-facebook/">
+		
+			Hi Facebook</a>
+	</h2>
+	<div class="entry-content">
+		<p>Today is my first day in Facebook London. It has been almost six months since I got the offer, and the wait is finally over.</p>
+
+<p>New job, new country, new life.</p>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2015-08-10T22:06:26+08:00" pubdate data-updated="true">Aug 10<span>th</span>, 2015</time></div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/facebook/'>facebook</a>
+
+
+</div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -449,98 +492,6 @@
 
 
 	<a class='category' href='/blog/categories/thoughts/'>thoughts</a>
-
-
-</div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2014/11/01/dex-method-count/">
-		
-			Little Experience on Solving Dex Method Count Limit</a>
-	</h2>
-	<div class="entry-content">
-		<p>I have heard about the dex 65536 method count limit long time ago and I finally meet this problem recently. After digging around, I decided to strip off some unused method in an external jar, using jarjar.</p>
-
-<p>Here are some little steps I used, using asmack jar as example.</p>
-
-<h3>Before fix</h3>
-
-<pre><code># convert jar to dex
-&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack.dex asmack.jar
-# method count
-&gt;&gt; dex-method-count asmack.dex
-5584
-&gt;&gt; dex-method-count-by-package asmack.dex
-...
-113 com.novell
-...
-61  de.measite
-...
-1894    org.jivesoftware.smack
-...
-3585    org.jivesoftware.smackx
-...
-423 org.apachea
-...
-</code></pre>
-
-<h3>Create rule.txt with this line</h3>
-
-<pre><code>zap org.jivesoftware.**
-</code></pre>
-
-<h3>Run jarjar</h3>
-
-<pre><code># run modify jar
-&gt;&gt; java -jar jarjar.jar process rule.txt asmack.jar asmack-modified.jar
-
-# build dex file again
-&gt;&gt; $BUILD_TOOL_PATH/dx --dex --output asmack-modified.dex asmack-modified.jar
-
-# see the difference
-&gt;&gt; dex-method-count asmack-modified.dex
-554
-</code></pre>
-
-<h2>Reference</h2>
-
-<ul>
-<li><a href="https://code.google.com/p/jarjar/">https://code.google.com/p/jarjar/</a></li>
-<li><a href="https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71">https://medium.com/@rotxed/dex-skys-the-limit-no-65k-methods-is-28e6cb40cf71</a></li>
-<li><a href="http://jakewharton.com/play-services-is-a-monolith/">http://jakewharton.com/play-services-is-a-monolith/</a></li>
-<li>dex.sh &ndash; <a href="https://gist.github.com/JakeWharton/6002797">https://gist.github.com/JakeWharton/6002797</a></li>
-</ul>
-
-
-		
-		
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2014-11-01T20:02:45+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2014</time></div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/android/'>android</a>, <a class='category' href='/blog/categories/dex/'>dex</a>, <a class='category' href='/blog/categories/method-limit/'>method limit</a>
 
 
 </div>
